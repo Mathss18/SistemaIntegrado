@@ -18,7 +18,7 @@ class NfeService{
         public function __construct($config){
  
             $this->config = $config;
-            $certificadoDigital = file_get_contents('C:\Users\Matheus\Desktop\Metal-Flex\laravel\app\Services\certFM.pfx');
+            $certificadoDigital = file_get_contents('C:\Users\Metal-Flex\Desktop\SistemaIntegrado\SistemaIntegrado\app\Services\certFM.pfx');
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
@@ -38,9 +38,9 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = 9710;
+            $ide->nNF = 9711;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
-            $ide->natOp = '5101-VENDA DENTRO DO ESTADO';
+            $ide->natOp = '5101-VENDA DENTRO DO ESTADE';
 
             //$stdIde->indPag = 0; //NÃO EXISTE MAIS NA VERSÃO 4.00
 
