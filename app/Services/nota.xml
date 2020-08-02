@@ -1,0 +1,190 @@
+<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+    <infNFe Id="NFe35200713971196000103550010000108631119188260" versao="4.00">
+        <ide>
+            <cUF>35</cUF>
+            <cNF>11918826</cNF>
+            <natOp>6101 - VENDAS FORA DO ESTADO</natOp>
+            <mod>55</mod>
+            <serie>1</serie>
+            <nNF>10863</nNF>
+            <dhEmi>2020-07-31T22:42:52-03:00</dhEmi>
+            <dhSaiEnt>2020-07-31T22:42:52-03:00</dhSaiEnt>
+            <tpNF>1</tpNF>
+            <idDest>2</idDest>
+            <cMunFG>3538709</cMunFG>
+            <tpImp>1</tpImp>
+            <tpEmis>1</tpEmis>
+            <cDV>0</cDV>
+            <tpAmb>2</tpAmb>
+            <finNFe>1</finNFe>
+            <indFinal>1</indFinal>
+            <indPres>1</indPres>
+            <procEmi>0</procEmi>
+            <verProc>4.00</verProc>
+        </ide>
+        <emit>
+            <CNPJ>13971196000103</CNPJ>
+            <xNome>METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME</xNome>
+            <enderEmit>
+                <xLgr>RUA PRINCESA ISABEL</xLgr>
+                <nro>70</nro>
+                <xBairro>JARDIM PACAEMBU</xBairro>
+                <cMun>3538709</cMun>
+                <xMun>Piracicaba</xMun>
+                <UF>SP</UF>
+                <CEP>13424586</CEP>
+                <cPais>1058</cPais>
+                <xPais>Brasil</xPais>
+                <fone>1934227978</fone>
+            </enderEmit>
+            <IE>53526809611</IE>
+            <CRT>1</CRT>
+        </emit>
+        <dest>
+            <CNPJ>29315713000126</CNPJ>
+            <xNome>NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL</xNome>
+            <enderDest>
+                <xLgr>RUA BENEDITO GONCALVES</xLgr>
+                <nro>2181</nro>
+                <xBairro>DISTRITO INDUSTRIAL CORONEL JOVELINO RABELO</xBairro>
+                <cMun>3122306</cMun>
+                <xMun>Divinopolis</xMun>
+                <UF>MG</UF>
+                <CEP>35502287</CEP>
+                <cPais>1058</cPais>
+                <xPais>Brasil</xPais>
+                <fone>3732162538</fone>
+            </enderDest>
+            <indIEDest>1</indIEDest>
+            <IE>0030991780035</IE>
+            <email>elenicepilates@gmail.com</email>
+        </dest>
+        <det nItem="1">
+            <prod>
+                <cProd>393-21</cProd>
+                <cEAN>SEM GTIN</cEAN>
+                <xProd>MOLA VERMELHA LO 530 C/ 2 MOSQ.</xProd>
+                <NCM>73209000</NCM>
+                <CFOP>6101</CFOP>
+                <uCom>PC</uCom>
+                <qCom>1</qCom>
+                <vUnCom>25</vUnCom>
+                <vProd>25</vProd>
+                <cEANTrib>SEM GTIN</cEANTrib>
+                <uTrib>PC</uTrib>
+                <qTrib>1</qTrib>
+                <vUnTrib>25</vUnTrib>
+                <indTot>1</indTot>
+            </prod>
+            <imposto>
+                <ICMS>
+                    <ICMSSN101>
+                        <orig>0</orig>
+                        <CSOSN>101</CSOSN>
+                        <pCredSN>2.83</pCredSN>
+                        <vCredICMSSN>9.08</vCredICMSSN>
+                    </ICMSSN101>
+                </ICMS>
+                <PIS>
+                    <PISOutr>
+                        <CST>99</CST>
+                        <vBC>0.00</vBC>
+                        <pPIS>0.0000</pPIS>
+                        <vPIS>0.00</vPIS>
+                    </PISOutr>
+                </PIS>
+                <COFINS>
+                    <COFINSOutr>
+                        <CST>99</CST>
+                        <vBC>0.00</vBC>
+                        <pCOFINS>0.0000</pCOFINS>
+                        <vCOFINS>0.00</vCOFINS>
+                    </COFINSOutr>
+                </COFINS>
+            </imposto>
+        </det>
+        <total>
+            <ICMSTot>
+                <vBC>0.00</vBC>
+                <vICMS>0.00</vICMS>
+                <vICMSDeson>0.00</vICMSDeson>
+                <vFCP>0.00</vFCP>
+                <vBCST>0.00</vBCST>
+                <vST>0.00</vST>
+                <vFCPST>0.00</vFCPST>
+                <vFCPSTRet>0.00</vFCPSTRet>
+                <vProd>25.00</vProd>
+                <vFrete>0.00</vFrete>
+                <vSeg>0.00</vSeg>
+                <vDesc>0.00</vDesc>
+                <vII>0.00</vII>
+                <vIPI>0.00</vIPI>
+                <vIPIDevol>0.00</vIPIDevol>
+                <vPIS>0.00</vPIS>
+                <vCOFINS>0.00</vCOFINS>
+                <vOutro>0.00</vOutro>
+                <vNF>25.00</vNF>
+            </ICMSTot>
+        </total>
+        <transp>
+            <modFrete>1</modFrete>
+            <transporta>
+                <CNPJ>44914992000138</CNPJ>
+                <xNome>RODONAVES TRANSPORTES E ENCOMENDAS LTDA</xNome>
+                <IE>582249216111</IE>
+                <xEnder>TRAV. FORTUNATO POMPERMAYER,207</xEnder>
+                <xMun>Piracicaba</xMun>
+                <UF>SP</UF>
+            </transporta>
+            <vol>
+                <qVol>1</qVol>
+                <esp>VOLUME</esp>
+                <marca>MARCA</marca>
+                <pesoL>77.050</pesoL>
+                <pesoB>77.050</pesoB>
+            </vol>
+        </transp>
+        <cobr>
+            <fat>
+                <nFat>10863</nFat>
+                <vOrig>25.00</vOrig>
+                <vDesc>0.00</vDesc>
+                <vLiq>25.00</vLiq>
+            </fat>
+            <dup>
+                <nDup>001</nDup>
+                <dVenc>2020-08-22</dVenc>
+                <vDup>25.00</vDup>
+            </dup>
+        </cobr>
+        <pag>
+            <detPag>
+                <tPag>15</tPag>
+                <vPag>25.00</vPag>
+            </detPag>
+        </pag>
+        <infAdic>
+            <infAdFisco>PEDIDO CLIENTE NUMERO</infAdFisco>
+        </infAdic>
+    </infNFe>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+            <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+            <Reference URI="#NFe35200713971196000103550010000108631119188260">
+                <Transforms>
+                    <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                    <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+                <DigestValue>8RJjZODR/An72mPmaVgNcTYpc4w=</DigestValue>
+            </Reference>
+        </SignedInfo>
+        <SignatureValue>JOCoi2zy4Q4mwzN9/rGnHuJ1wT6egDNg0zmBWl3CzcTUXv6NV7T+QNQmDiF4MYg1JZdR2Mfi83JpMqsovOonpkcOG8li4l49tl2vHN2Ip/5jv6+IlCHaWewLRP6BLq56vagzuQONzmqQD6/DXMWgeavLUxn9ilQ+QmFWUZXPJhZRdIQGSvx8qIQd+0aPEHhG1LH1aSGHkN/QCjjWhFIQUUk184pE/B8zfqv8zc9I4Z6gGy61+JmTruZyeU+rdvKgA2TYhCTENNGlqwsH82v/tzVLzqYA8QpUr6pdfGh0KFwDU7AjcZjhuOFohSVrXH29VQOcUObWrkBs6ZwFyqkbVw==</SignatureValue>
+        <KeyInfo>
+            <X509Data>
+                <X509Certificate>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</X509Certificate>
+            </X509Data>
+        </KeyInfo>
+    </Signature>
+</NFe>
