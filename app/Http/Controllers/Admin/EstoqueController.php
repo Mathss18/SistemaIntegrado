@@ -21,8 +21,14 @@ class EstoqueController extends Controller
         $titulo = 'Gestão de Produtos';
         $firma = Auth::user()->firma;
         $estoques = collect();
-        $estoques = DB::table('estoque as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->select('p.ID_produto','p.nome', 'e.qtde', 'p.utilizacao', 'e.valor_unitario')->get();
-        return view('admin.estoque.index',compact('titulo','estoques','firma'));
+        if($firma == 'FM'){
+            $estoques = DB::table('estoque as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->select('p.ID_produto','p.nome', 'e.qtde', 'p.utilizacao', 'e.valor_unitario')->where('p.utilizacao','=','MATERIAL P/ MOLA')->get();
+            return view('admin.estoque.index',compact('titulo','estoques','firma'));
+        }
+        else{
+            $estoques = DB::table('estoque as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->select('p.ID_produto','p.nome', 'e.qtde', 'p.utilizacao', 'e.valor_unitario')->where('p.utilizacao','<>','MATERIAL P/ MOLA')->get();
+            return view('admin.estoque.index',compact('titulo','estoques','firma'));
+        }
     }
 
 
