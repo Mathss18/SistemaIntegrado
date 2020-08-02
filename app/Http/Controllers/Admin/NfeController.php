@@ -45,7 +45,7 @@ class NfeController extends Controller
         $xmlAssinada = $nfeService->assinar($xml);
         $xmlEnviada = $nfeService->transmitir($xmlAssinada);
         $danfe = $nfeService->gerarDanfe();
-        dd('oi');
+        dd('OLA');
     }
 
     public function show($id)
