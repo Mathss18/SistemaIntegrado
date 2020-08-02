@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'AdminLTE')
+@section('title', 'Sistema Integrado')
 
 @section('content_header')
     <h1 class="m-0 text-dark">Bem Vindo <strong>{{Auth::user()->name}}</strong></h1>
