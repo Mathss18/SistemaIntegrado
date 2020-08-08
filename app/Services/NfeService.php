@@ -22,7 +22,7 @@ class NfeService{
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
-        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas){
+        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$produtos,$cliente){
             //Criar Nota Fiscal Vazia
             $nfe = new Make();
 
@@ -38,9 +38,9 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = 9718;
+            $ide->nNF = 9727;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
-            $ide->natOp = '5101-VENDA DENTRO DO ESTADO';
+            $ide->natOp = $nfe1['natOp'];
 
             //$stdIde->indPag = 0; //NÃO EXISTE MAIS NA VERSÃO 4.00
 
@@ -49,7 +49,13 @@ class NfeService{
             $ide->dhEmi = date('Y-m-d\TH:i:sP');
             $ide->dhSaiEnt = date('Y-m-d\TH:i:sP');
             $ide->tpNF = 1;  //Nota de entrada ou saida. 0-Entrada / 1-Saida
-            $ide->idDest = 1; //Dentro ou fora do estado. 1-Dentro / 2-Fora
+            if($cliente[0]->uf=='SP'){
+                $dentroEstado = 1;
+            }
+            else{
+                $dentroEstado = 2;
+            }
+            $ide->idDest = $dentroEstado; //Dentro ou fora do estado. 1-Dentro / 2-Fora
             $ide->cMunFG = 3538709;
             $ide->tpImp = 1; //Formato de Impressão da DANFE 1-Retrato / 2-Paisagem
             $ide->tpEmis = 1; 
@@ -98,13 +104,13 @@ class NfeService{
 
             //====================TAG DESTINATARIO===================
             $dest = new stdClass();
-            $dest->xNome = 'ALFA CENTRI MANUTENCAO DE MAQUINAS LTDA ME';
+            $dest->xNome = $nfe1['nomeCli'];
             $dest->indIEDest = '1';
-            $dest->IE = '582695475110';
+            $dest->IE = $nfe1['ieCli'];
             //$dest->ISUF;
             //$dest->IM;
-            $dest->email = 'adautocardoso@cdcequipamentos.com.br';
-            $dest->CNPJ = '07702492000106'; //indicar apenas um CNPJ ou CPF ou idEstrangeiro
+            $dest->email = $nfe1['emailCli'];
+            $dest->CNPJ = $nfe1['cpf_cnpjCli']; //indicar apenas um CNPJ ou CPF ou idEstrangeiro
             //$dest->CPF;
             //$dest->idEstrangeiro;
 
@@ -112,126 +118,127 @@ class NfeService{
 
             //====================TAG ENDERECO DESTINATARIO===================
             $enderDest = new stdClass();
-            $enderDest->xLgr = 'RUA CLEMENTE BARTOLOMUCCI';
-            $enderDest->nro = '725';
+            $enderDest->xLgr = $cliente[0]->logradouro;
+            $enderDest->nro = $cliente[0]->numero;
             //$enderDest->xCpl;
-            $enderDest->xBairro = 'JD ZARA';
-            $enderDest->cMun = '3543402';
-            $enderDest->xMun = 'Ribeirao Preto';
-            $enderDest->UF = 'SP';
-            $enderDest->CEP = '14092270';
+            $enderDest->xBairro = $cliente[0]->bairro;
+            $enderDest->cMun = '2304400';
+            $enderDest->xMun = $cliente[0]->cidade;
+            $enderDest->UF = $cliente[0]->uf;
+            $enderDest->CEP = str_replace("-", "", $cliente[0]->cep);
             $enderDest->cPais = '1058';
             $enderDest->xPais = 'Brasil';
-            $enderDest->fone = '1633230400';
+            $enderDest->fone = $cliente[0]->telefone;
 
             $respEnderDest = $nfe->tagenderDest($enderDest);
 
             //====================TAG PRODUTO===================
-            
-                $prod = new stdClass();
-                $prod->item = 1; //item da NFe
-                $prod->cProd = '393-21';
-                $prod->cEAN = 'SEM GTIN';
-                $prod->xProd = 'MOLA DES. FESX-51231 (62763)';
-                $prod->NCM = '73202090';
+                for ($i=0; $i < $nfe2['totalQtde']; $i++) { 
+                    # code...
+                    $prod = new stdClass();
+                    $prod->item = $i+1; //item da NFe
+                    $prod->cProd = $nfe2['codFabriProd'][$i];
+                    $prod->cEAN = 'SEM GTIN';
+                    $prod->xProd = $nfe2['descricaoProd'][$i];
+                    $prod->NCM = $nfe2['ncm'][$i];
 
-                //$prod->cBenef = null; //incluido no layout 4.00
+                    //$prod->cBenef = null; //incluido no layout 4.00
 
-                //$prod->EXTIPI;
-                $prod->CFOP = '5101';
-                $prod->uCom = 'PC'; //Unidade do produto
-                $prod->qCom = 1; //Quantidade do produto
-                $prod->vUnCom = 25.00;
-                $prod->cEANTrib = 'SEM GTIN';
-                $prod->uTrib = 'PC';
-                $prod->qTrib = 1;
-                $prod->vUnTrib = 25.00;
-                $prod->vProd = $prod->qTrib * $prod->vUnTrib; // Valor do produto = QUANTIDADE X Unidade Tributaria
-                //$prod->vFrete = 0.00;
-                //$prod->vSeg = 0.00;
-                //$prod->vDesc = 0.00;
-                //$prod->vOutro = 0.00;
-                $prod->indTot = 1;
-                //$prod->xPed;         //Numero de pedido do cliente
-                //$prod->nItemPed;
-                //$prod->nFCI;
+                    //$prod->EXTIPI;
+                    $prod->CFOP = $nfe1['natOp'];
+                    $prod->uCom = 'PC'; //Unidade do produto
+                    $prod->qCom = $nfe2['quantidade'][$i]; //Quantidade do produto
+                    $prod->vUnCom = $nfe2['precoProd'][$i];
+                    $prod->cEANTrib = 'SEM GTIN';
+                    $prod->uTrib = 'PC';
+                    $prod->qTrib = $nfe2['quantidade'][$i];
+                    $prod->vUnTrib = $nfe2['precoProd'][$i];
+                    $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
+                    //$prod->vFrete = 0.00;
+                    //$prod->vSeg = 0.00;
+                    //$prod->vDesc = 0.00;
+                    //$prod->vOutro = 0.00;
+                    $prod->indTot = 1;
+                    //$prod->xPed;         //Numero de pedido do cliente
+                    //$prod->nItemPed;
+                    //$prod->nFCI;
 
-                $respProd = $nfe->tagprod($prod);
+                    $respProd = $nfe->tagprod($prod);
 
-                //====================TAG INFORMACAO ADICIONAL PRODUTO===================
-                /*$adciProd = new stdClass();
-                $adciProd->item = 1; //item da NFe
+                    //====================TAG INFORMACAO ADICIONAL PRODUTO===================
+                    /*$adciProd = new stdClass();
+                    $adciProd->item = 1; //item da NFe
 
-                $adciProd->infAdProd = 'informacao adicional do item';
+                    $adciProd->infAdProd = 'informacao adicional do item';
 
-                $respAdiciProd = $nfe->taginfAdProd($adciProd);
-                */
-                //====================TAG IMPOSTO===================
-                $imposto = new stdClass();
-                $imposto->item = 1; //item da NFe
-                //$imposto->vTotTrib = 1000.00;
+                    $respAdiciProd = $nfe->taginfAdProd($adciProd);
+                    */
+                    //====================TAG IMPOSTO===================
+                    $imposto = new stdClass();
+                    $imposto->item = $i+1; //item da NFe
+                    //$imposto->vTotTrib = 1000.00;
 
-                $respImposto = $nfe->tagimposto($imposto);
+                    $respImposto = $nfe->tagimposto($imposto);
 
-                //====================TAG ICMS N101===================
-                $icms = new stdClass();
-                $icms->item = 1; //item da NFe
-                $icms->orig = 0;
-                $icms->CSOSN = '101';
-                $icms->pCredSN = 3.12;
-                $icms->vCredICMSSN = 13.09;
-                //$icms->modBCST = null;
-                //$icms->pMVAST = null;
-                //$icms->pRedBCST = null;
-                //$icms->vBCST = null;
-                //$icms->pICMSST = null;
-                //$icms->vICMSST = null;
-                //$icms->vBCFCPST = null; //incluso no layout 4.00
-                //$icms->pFCPST = null; //incluso no layout 4.00
-                //$icms->vFCPST = null; //incluso no layout 4.00
-                //$icms->vBCSTRet = null;
-                //$icms->pST = null;
-                //$icms->vICMSSTRet = null;
-                //$icms->vBCFCPSTRet = null; //incluso no layout 4.00
-                //$icms->pFCPSTRet = null; //incluso no layout 4.00
-                //$icms->vFCPSTRet = null; //incluso no layout 4.00
-                //$icms->modBC = null;
-                //$icms->vBC = null;
-                //$icms->pRedBC = null;
-                //$icms->pICMS = null;
-                //$icms->vICMS = null;
-                //$icms->pRedBCEfet = null;
-                //$icms->vBCEfet = null;
-                //$icms->pICMSEfet = null;
-                //$icms->vICMSEfet = null;
-                //$icms->vICMSSubstituto = null;
+                    //====================TAG ICMS N101===================
+                    $icms = new stdClass();
+                    $icms->item = $i+1; //item da NFe
+                    $icms->orig = 0;
+                    $icms->CSOSN = '101';
+                    $icms->pCredSN = 3.12;
+                    $icms->vCredICMSSN = 13.09;
+                    //$icms->modBCST = null;
+                    //$icms->pMVAST = null;
+                    //$icms->pRedBCST = null;
+                    //$icms->vBCST = null;
+                    //$icms->pICMSST = null;
+                    //$icms->vICMSST = null;
+                    //$icms->vBCFCPST = null; //incluso no layout 4.00
+                    //$icms->pFCPST = null; //incluso no layout 4.00
+                    //$icms->vFCPST = null; //incluso no layout 4.00
+                    //$icms->vBCSTRet = null;
+                    //$icms->pST = null;
+                    //$icms->vICMSSTRet = null;
+                    //$icms->vBCFCPSTRet = null; //incluso no layout 4.00
+                    //$icms->pFCPSTRet = null; //incluso no layout 4.00
+                    //$icms->vFCPSTRet = null; //incluso no layout 4.00
+                    //$icms->modBC = null;
+                    //$icms->vBC = null;
+                    //$icms->pRedBC = null;
+                    //$icms->pICMS = null;
+                    //$icms->vICMS = null;
+                    //$icms->pRedBCEfet = null;
+                    //$icms->vBCEfet = null;
+                    //$icms->pICMSEfet = null;
+                    //$icms->vICMSEfet = null;
+                    //$icms->vICMSSubstituto = null;
 
-                $respIcms = $nfe->tagICMSSN($icms);
+                    $respIcms = $nfe->tagICMSSN($icms);
 
-                //====================TAG PIS===================
-                $pis = new stdClass();
-                $pis->item = 1; //item da NFe
-                $pis->CST = 99;
-                $pis->vBC = 0.00;
-                $pis->pPIS = 0.00;
-                $pis->vPIS = 0.00;
-                //$pis->qBCProd = null;
-                //$pis->vAliqProd = null;
+                    //====================TAG PIS===================
+                    $pis = new stdClass();
+                    $pis->item = $i+1; //item da NFe
+                    $pis->CST = 99;
+                    $pis->vBC = 0.00;
+                    $pis->pPIS = 0.00;
+                    $pis->vPIS = 0.00;
+                    //$pis->qBCProd = null;
+                    //$pis->vAliqProd = null;
 
-                $respPis = $nfe->tagPIS($pis);
-            
-                //====================TAG COFINS===================
-                $cofis = new stdClass();
-                $cofis->item = 1; //item da NFe
-                $cofis->CST = 99;
-                $cofis->vBC = 0.00;
-                $cofis->pCOFINS = 0.00;
-                $cofis->vCOFINS = 0.00;
-                //$cofis->qBCProd = null;
-                //$cofis->vAliqProd = null;
+                    $respPis = $nfe->tagPIS($pis);
+                
+                    //====================TAG COFINS===================
+                    $cofis = new stdClass();
+                    $cofis->item = $i+1; //item da NFe
+                    $cofis->CST = 99;
+                    $cofis->vBC = 0.00;
+                    $cofis->pCOFINS = 0.00;
+                    $cofis->vCOFINS = 0.00;
+                    //$cofis->qBCProd = null;
+                    //$cofis->vAliqProd = null;
 
-                $repsCofis = $nfe->tagCOFINS($cofis);
-
+                    $repsCofis = $nfe->tagCOFINS($cofis);
+                }
                 //====================TAG ICMSTOTAL===================
                 $icmsTotal = new stdClass();
                 $icmsTotal->vBC = 0.00;
@@ -242,7 +249,7 @@ class NfeService{
                 $icmsTotal->vST = 0.00;
                 $icmsTotal->vFCPST = 0.00; //incluso no layout 4.00
                 $icmsTotal->vFCPSTRet = 0.00; //incluso no layout 4.00
-                $icmsTotal->vProd = 25.00;
+                $icmsTotal->vProd = number_format($nfe3['precoFinal'],2,'.','');
                 $icmsTotal->vFrete = 0.00;
                 $icmsTotal->vSeg = 0.00;
                 $icmsTotal->vDesc = 0.00;
@@ -252,14 +259,14 @@ class NfeService{
                 $icmsTotal->vPIS = 0.00;
                 $icmsTotal->vCOFINS = 0.00;
                 $icmsTotal->vOutro = 0.00;
-                $icmsTotal->vNF = 25.00;
+                $icmsTotal->vNF = $nfe3['precoFinal'];
                 //$icmsTotal->vTotTrib = 0.00;
 
                 $repsIcmsTotal = $nfe->tagICMSTot($icmsTotal);
 
                 //====================TAG TRANSP===================
                 $transp = new stdClass();
-                $transp->modFrete = 1; //0-Por conta do emitente; 1-Por conta do destinatário/remetente; 2-Por conta de terceiros; 9-Sem frete. (V2.0)
+                $transp->modFrete = $nfe1['modFrete']; //0-Por conta do emitente; 1-Por conta do destinatário/remetente; 2-Por conta de terceiros; 9-Sem frete. (V2.0)
                 
 
                 $respTransp = $nfe->tagtransp($transp);
@@ -278,33 +285,36 @@ class NfeService{
 
                 //====================TAG VOLUME===================
                 $vol = new stdClass();
-                $vol->item = 1; //indicativo do numero do volume
-                $vol->qVol = 1;
-                $vol->esp = 'VOLUME';
+                //$vol->item = 1; //indicativo do numero do volume
+                $vol->qVol = $nfe3['qtdeComp'];
+                $vol->esp = $nfe3['especie'];
                 $vol->marca = 'MARCA';
                 //$vol->nVol = '11111';
-                $vol->pesoL = 77.050;
-                $vol->pesoB = 77.050;
+                $vol->pesoL = $nfe3['pesoLiq'];
+                $vol->pesoB = $nfe3['pesoBruto'];
 
                 $respVol = $nfe->tagvol($vol);
 
                 //====================TAG FATURA===================
                 $fat = new stdClass();
-                $fat->nFat = '9682';
-                $fat->vOrig = 25.00;
-                $fat->vDesc = 0.00;
-                $fat->vLiq = 25.00;
+                $fat->nFat = '001';
+                $fat->vOrig = $nfe2['total'];
+                $fat->vDesc = $nfe3['desconto'];
+                $fat->vLiq = $nfe3['precoFinal'];
 
                 $respFat = $nfe->tagfat($fat);
 
                 //====================TAG DUPLICATA===================
+                for ($i=0; $i < $nfe1['numParc']; $i++) { 
+                    # code...
+                
                 $dup = new stdClass();
-                $dup->nDup = '001';
-                $dup->dVenc = '2020-08-22';
-                $dup->vDup = 25.00;
+                $dup->nDup = '00'.($i+1);
+                $dup->dVenc = $datas[$i];
+                $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
 
                 $respDup = $nfe->tagdup($dup);
-
+                }
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();
                 //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
@@ -314,7 +324,7 @@ class NfeService{
                 //====================TAG DETALHE PAGAMENTO===================
                 $detPag = new stdClass();
                 $detPag->tPag = '15';
-                $detPag->vPag = 25.00; //Obs: deve ser informado o valor pago pelo cliente
+                $detPag->vPag = $nfe3['precoFinal']; //Obs: deve ser informado o valor pago pelo cliente
                 //$detPag->CNPJ = '12345678901234';
                 //$detPag->tBand = '01';
                 //$detPag->cAut = '3333333';
@@ -325,7 +335,7 @@ class NfeService{
 
                 //====================INFO ADICIONAL===================
                 $stdInfo = new stdClass();
-                $stdInfo->infAdFisco = 'PEDIDO CLIENTE NUMERO';
+                $stdInfo->infAdFisco = $nfe3['infoAdc'];
                 //$std->infCpl = 'informacoes complementares';
 
                 $nfe->taginfAdic($stdInfo);
@@ -367,7 +377,7 @@ class NfeService{
             try {
                 $xmlFinal = Complements::toAuthorize($request, $response);
 
-                "{cnpj}/nfe/homologacao/2020-08/{chave}.xml";
+                //"{cnpj}/nfe/homologacao/2020-08/{chave}.xml";
 
 
                 header('Content-type: text/xml; charset=UTF-8');

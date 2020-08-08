@@ -22,6 +22,9 @@ $(document).ready(function(){
     }).bind("typeahead:selected", function(obj, datum, name) {
         console.log(datum);
         $(this).data("seletectedId", datum.value);
+        $('#ID_cliente').val(datum.ID_cliente);
+        $('#emailCli').val(datum.email);
+        $('#ieCli').val(datum.IE);
         $('#nomeCli').val(datum.nome);
         $('#cpf_cnpjCli').val(datum.cpf_cnpj);
         $('#contatoCli').val(datum.contato);

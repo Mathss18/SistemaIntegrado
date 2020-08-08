@@ -57,6 +57,7 @@
             <div class="form-group col-md-2">
                 <label for="OF">Número da OF</label>
                 <div class="input-group">
+                    <input required value="{{$nfe['ID_cliente'] ?? '' }}" style="display:none" name="ID_cliente" id="ID_cliente" type="text" class="typeahead form-control " style="margin:0px auto;width:360px;">
                     <input required value="{{$nfe['OF'] ?? '' }}" class="typeahead form-control" name="OF" id="ttexto" style="margin:0px auto;width:150px;" type="text">
                 </div>
             </div>
@@ -156,7 +157,7 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="nomeCli">Nome do Cliente</label>
                 <div class="input-group">
                     <div class="input-group-addon">
@@ -166,7 +167,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="cpf_cnpjCli">CPF / CNPJ</label>
                 <div class="input-group">
                     <div class="input-group-addon">
@@ -176,15 +177,26 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-4">
-                <label for="contatoCli">Contato</label>
+            <div class="form-group col-md-3">
+                <label for="emailCli">Email</label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-address-book"></i>
                     </div>
-                    <input readonly id="contatoCli" name="contatoCli" type="text" class="form-control" value="{{$nfe['contatoCli'] ?? '' }}">
+                    <input readonly id="emailCli" name="emailCli" type="text" class="form-control" value="{{$nfe['emailCli'] ?? '' }}">
                 </div>
             </div>
+
+            <div class="form-group col-md-3">
+                <label for="ieCli">Inscrição Estadual</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-address-book"></i>
+                    </div>
+                    <input readonly id="ieCli" name="ieCli" type="text" class="form-control" value="{{$nfe['ieCli'] ?? '' }}">
+                </div>
+            </div>
+
         </div>
         <br>
 

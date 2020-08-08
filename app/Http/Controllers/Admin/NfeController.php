@@ -22,6 +22,7 @@ class NfeController extends Controller
         $request->session()->forget('nfe3');
         $request->session()->forget('datas');
         $request->session()->forget('produtosNfe');
+        $request->session()->forget('cliente');
         
         return view('admin.nfe.index');
     }
@@ -95,7 +96,7 @@ class NfeController extends Controller
             'submit'
         ]);
 
-
+        //dd($dataFormNfe);
         
         if(empty($request->session()->get('nfe1'))){
             $nfe = new nfe;
@@ -108,6 +109,13 @@ class NfeController extends Controller
             $nfe->fill($dataFormNfe);
             $request->session()->put('nfe1', $nfe->getAttributes());
         }
+
+        $nfe1 = $request->session()->get('nfe1');
+        
+        $idCli = $nfe1['ID_cliente'];
+        $cliente = DB::table('cliente as c')->select('c.logradouro','c.numero','c.cidade','c.uf','c.bairro','c.cep','c.telefone')->where('c.ID_cliente', $idCli)->get()->toArray();
+
+        $request->session()->put('cliente', $cliente);
 
         return redirect('admin/nfe/emitirPasso2');
         
@@ -230,15 +238,19 @@ class NfeController extends Controller
         $nfe2 = $request->session()->get('nfe2');
         $nfe3 = $request->session()->get('nfe3');
         $datas = $request->session()->get('datas');
+        $produtos = $request->session()->get('produtos');
+        $cliente = $request->session()->get('cliente');
         $data = $request->session()->all();
 
-        dd($data);
+        //dd($data);
         
-        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas);
+        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$produtos,$cliente);
         $xmlAssinada = $nfeService->assinar($xml);
+        
         $xmlEnviada = $nfeService->transmitir($xmlAssinada);
+        //dd($xmlEnviada);
         $danfe = $nfeService->gerarDanfe();
-
+        //dd($danfe);
         //return redirect('admin/nfe/postFinalizar');
         
     
@@ -258,7 +270,7 @@ class NfeController extends Controller
 
         $firma = Auth::user()->firma;
         $produto_cliente = 
-        pedido::select(DB::raw('concat(OF) as text, pedido.ID_cliente as value, c.nome as nome,c.cpf_cnpj as cpf_cnpj,c.contato as contato'))->join('cliente as c','c.ID_cliente','=','pedido.ID_cliente')
+        pedido::select(DB::raw('concat(OF) as text, pedido.ID_cliente as ID_cliente, c.nome as nome,c.cpf_cnpj as cpf_cnpj,c.email as email,c.inscricao_estadual as IE'))->join('cliente as c','c.ID_cliente','=','pedido.ID_cliente')
                     ->where("OF","LIKE","%{$request->input('query')}%")->where("firma",$firma)->where('c.ID_Cliente',DB::raw('pedido.ID_cliente'))->groupBy('OF')
                     ->get();
         return response()->json($produto_cliente);
