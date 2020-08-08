@@ -16,8 +16,6 @@
     @section('js')
         <script>
                 $("#uf>option[value={{$cliente->uf}}]").attr("selected", true);
-        </script>
-        <script>
                 $("#tipo>option[value={{$cliente->tipo}}]").attr("selected", true);
         </script>
     @stop
@@ -70,7 +68,7 @@
                     <label for="nome">Nome</label>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <i class="fa fa-address-card"></i>
+                            <i class="fa fa-user"></i>
                         </div>
                         <input required id="nome" name="nome" type="text" class="form-control" value="{{$cliente->nome ?? '' }}">
                     </div>
@@ -92,7 +90,7 @@
                     <label for="cpf_cnpj">CPF / CNPJ</label>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <i class="fa fa-wpforms"></i>
+                            <i class="fa fa-address-card"></i>
                         </div>
                         <input id="cpf_cnpj" name="cpf_cnpj" type="text" class="form-control" value="{{$cliente->cpf_cnpj ?? '' }}">
                     </div>
@@ -119,7 +117,7 @@
                 </div>
             </div>
 
-            </div>
+            
 
             
 
@@ -221,4 +219,5 @@
 
         </form>
 </div>
+
 @stop

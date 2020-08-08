@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use DB;
+use Auth;
 
 class ClienteController extends Controller
 {
@@ -65,5 +67,14 @@ class ClienteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function AutoCompleteTransp(Request $request){
+        $clientes = 
+        cliente::select(DB::raw('concat(nome) as text, ID_cliente as value, cpf_cnpj as cpf_cnpj, contato as contato'))
+                    ->where("nome","LIKE","%{$request->input('query')}%")->where('tipo','T')
+                    ->get();
+        return response()->json($clientes);
+    
     }
 }

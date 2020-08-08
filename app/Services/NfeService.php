@@ -18,11 +18,11 @@ class NfeService{
         public function __construct($config){
  
             $this->config = $config;
-            $certificadoDigital = file_get_contents('C:\Users\Matheus\Desktop\Metal-Flex\laravel\app\Services\certFM.pfx');
+            $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
-        public function gerarNfe(){
+        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas){
             //Criar Nota Fiscal Vazia
             $nfe = new Make();
 
@@ -38,9 +38,9 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = 9712;
+            $ide->nNF = 9718;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
-            $ide->natOp = '5101-VENDA DENTRO DO ESTADE';
+            $ide->natOp = '5101-VENDA DENTRO DO ESTADO';
 
             //$stdIde->indPag = 0; //NÃO EXISTE MAIS NA VERSÃO 4.00
 
