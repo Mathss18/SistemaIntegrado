@@ -244,7 +244,7 @@ return [
             'icon'        => 'far fa-fw fa-file',
             'label_color' => 'success',
         ],
-        ['header' => 'Configurações Gerais'],
+        //['header' => 'Configurações Gerais'],
         [
             'text' => 'Clientes/Transp.
             ',
@@ -280,6 +280,17 @@ return [
                 [
                     'text' => 'Pedidos Fechados',
                     'url'  => 'admin/pedido/fechado',
+                ],
+            ]
+            
+        ],
+        [
+            'text' => 'Nota Fiscal Eletrônica',
+            'icon' => 'fas fa-fw fa-balance-scale-left',
+            'submenu' => [
+                [
+                    'text' => 'Emitir NFe: OF',
+                    'url'  => 'admin/nfe',
                 ],
             ]
             

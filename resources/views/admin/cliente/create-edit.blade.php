@@ -6,43 +6,26 @@
 @stop
 
 @section('css')
-@stack('css')
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 @stop
-
-
-@if(isset($cliente))
-    @section('js')
-        <script>
-                $("#uf>option[value={{$cliente->uf}}]").attr("selected", true);
-        </script>
-        <script>
-                $("#tipo>option[value={{$cliente->tipo}}]").attr("selected", true);
-        </script>
-    @stop
-@endif
 
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
 <script src="{{ asset('js/cep.js') }}"></script>
 
-<script>
-    $(document).ready(function() {
-        $('#cep').mask('00000-000');
-        $('#telefone').mask('(00) 0000-0000');
-        $('#telefone2').mask('(00) 00000-0000');
-        $('#cpf').mask('000.000.000-00', {
-            reverse: true
-        });
-        $('#rg').mask('00.000.000-00', {
-            reverse: true
-        });
-    });
-        
-</script>
+@if(isset($cliente))
+    
+        <script>
+                $("#tipo>option[value={{$cliente->tipo}}]").attr("selected", true);
+                $("#uf>option[value={{$cliente->uf}}]").attr("selected", true);
+                
+        </script>
+    
+@endif
 @stop
+
 <!------ Include the above in your HEAD tag ---------->
 @section('content')
 <div class="container-fluid">
@@ -66,23 +49,33 @@
         {!! csrf_field() !!}
     @endif
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="nome">Nome</label>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <i class="fa fa-address-card"></i>
+                            <i class="fa fa-user"></i>
                         </div>
                         <input required id="nome" name="nome" type="text" class="form-control" value="{{$cliente->nome ?? '' }}">
                     </div>
                 </div>
 
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-4">
                     <label for="email">Email</label>
                     <div class="input-group">
                         <div class="input-group-addon ">
                             <i class="fa fa-envelope"></i>
                         </div>
                         <input id="email" name="email" type="text" class="form-control" value="{{$cliente->email ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="ibge">Código Municipio</label>
+                    <div class="input-group">
+                        <div class="input-group-addon ">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <input id="ibge" name="ibge" type="text" class="form-control" value="{{$cliente->ibge ?? '' }}">
                     </div>
                 </div>
             </div>
@@ -92,7 +85,7 @@
                     <label for="cpf_cnpj">CPF / CNPJ</label>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <i class="fa fa-wpforms"></i>
+                            <i class="fa fa-address-card"></i>
                         </div>
                         <input id="cpf_cnpj" name="cpf_cnpj" type="text" class="form-control" value="{{$cliente->cpf_cnpj ?? '' }}">
                     </div>
@@ -119,7 +112,7 @@
                 </div>
             </div>
 
-            </div>
+            
 
             
 
@@ -221,4 +214,5 @@
 
         </form>
 </div>
+
 @stop

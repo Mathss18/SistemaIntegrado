@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth']],function(){
     //Rotas de Clientes
     Route::resource('/admin/cliente', 'Admin\ClienteController')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('autocompleteclientes','Admin\PedidoController@AutoCompleteClientes');
+    Route::get('autocompletetransp','Admin\ClienteController@AutoCompleteTransp');
 
     //Rotas de Fornecedores
     Route::resource('/admin/fornecedor', 'Admin\FornecedorController')->middleware('auth.tipo:Admin,Secretaria');
@@ -107,6 +108,20 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/produto_fornecedor', 'Admin\Produto_FornecedorController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas NFe
+    Route::get('/admin/nfe/finalizarNfe','Admin\NfeController@finalizarNfe')->name('nfe.finalizarNfe')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfe/addParcela','Admin\NfeController@addParcela')->name('nfe.addParcela')->middleware('auth.tipo:Admin,Secretaria');
+
+    Route::get('/admin/nfe/emitirPasso1', 'Admin\NfeController@emitir1')->name('nfe.emitirPasso1')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfe/postEmitirPasso1', 'Admin\NfeController@postEmitir1')->name('nfe.postEmitirPasso1')->middleware('auth.tipo:Admin,Secretaria');
+    
+    Route::get('/admin/nfe/emitirPasso2', 'Admin\NfeController@emitir2')->name('nfe.emitirPasso2')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfe/postEmitirPasso2', 'Admin\NfeController@postEmitir2')->name('nfe.postEmitirPasso2')->middleware('auth.tipo:Admin,Secretaria');
+
+    Route::get('/admin/nfe/emitirPasso3', 'Admin\NfeController@emitir3')->name('nfe.emitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfe/postEmitirPasso3', 'Admin\NfeController@postEmitir3')->name('nfe.postEmitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
+
+    Route::get('autocompleteCodigoProdNfe','Admin\NfeController@autocompleteCodigoProdNfe');
+
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
 });
 
