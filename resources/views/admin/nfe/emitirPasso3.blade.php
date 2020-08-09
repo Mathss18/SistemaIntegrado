@@ -45,21 +45,21 @@
             <div class="form-group col-md-2">
                 <label for="especie">Especie</label>
                 <div class="input-group">
-                    <input id="especie" name="especie" type="text" class="form-control" value="{{$nfe3['especie'] ?? '' }}">
+                    <input required id="especie" name="especie" type="text" class="form-control" value="{{$nfe3['especie'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="qtdeComp">Quantidade</label>
                 <div class="input-group">
-                    <input id="qtdeComp" name="qtdeComp" type="text" class="form-control" value="{{$nfe3['qtdeComp'] ?? '' }}">
+                    <input required required id="qtdeComp" name="qtdeComp" type="number" min="1" class="form-control" value="{{$nfe3['qtdeComp'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="desconto">Desconto</label>
                 <div class="input-group">
-                    <input id="desconto" name="desconto" type="text" class="form-control" value="{{$nfe3['desconto'] ?? '' }}">
+                    <input required id="desconto" name="desconto" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['desconto'] ?? '' }}">
                 </div>
             </div>
 
@@ -86,21 +86,21 @@
             <div class="form-group col-md-2">
                 <label for="pesoBruto">Peso Bruto</label>
                 <div class="input-group">
-                    <input id="pesoBruto" name="pesoBruto" type="text" class="form-control" value="{{$nfe3['pesoBruto'] ?? '' }}">
+                    <input required id="pesoBruto" name="pesoBruto" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['pesoBruto'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="pesoLiq">Peso Liquido</label>
                 <div class="input-group">
-                    <input id="pesoLiq" name="pesoLiq" type="text" class="form-control" value="{{$nfe3['pesoLiq'] ?? '' }}">
+                    <input required id="pesoLiq" name="pesoLiq" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['pesoLiq'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="unidade">Unidade Padrão</label>
                 <div class="input-group">
-                    <input id="unidade" name="unidade" type="text" class="form-control" value="{{$nfe3['unidade'] ?? '' }}">
+                    <input required id="unidade" name="unidade" type="text" class="form-control" value="{{$nfe3['unidade'] ?? '' }}">
                 </div>
             </div>
 

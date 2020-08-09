@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/produto_fornecedor', 'Admin\Produto_FornecedorController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas NFe
+    Route::get('/admin/nfe/finalizarNfe','Admin\NfeController@finalizarNfe')->name('nfe.finalizarNfe')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/nfe/addParcela','Admin\NfeController@addParcela')->name('nfe.addParcela')->middleware('auth.tipo:Admin,Secretaria');
 
     Route::get('/admin/nfe/emitirPasso1', 'Admin\NfeController@emitir1')->name('nfe.emitirPasso1')->middleware('auth.tipo:Admin,Secretaria');

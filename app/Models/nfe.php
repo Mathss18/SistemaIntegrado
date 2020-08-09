@@ -14,9 +14,9 @@ class nfe extends Model
 
     protected $fillable = [
         'OF','tpNF','finNFe','natOp','nomeCli','cpf_cnpjCli','contatoCli','formaPag','numParc',
-        'modFrete','valorFrete','meioPagto','nomeTransp','tipo','cpf_cnpjTransp','contatoTransp',
+        'modFrete','valorFrete','meioPagto','tipo','cpf_cnpjTransp','contatoTransp',
         'descricaoProd','precoProd','especie','qtdeComp','desconto','tipoDesc','pesoBruto','pesoLiq','unidade',
         'infoAdc','precoFinal','qtdProd','codFabriProd','ncm','total','codFabriProd','descricaoProd','quantidade',
-        'precoProd','totalQtde','ieCli','emailCli','ID_cliente'
+        'precoProd','totalQtde','ieCli','emailCli','ID_cliente','ID_transp','ufCli','nomeTransp'
     ];
 }

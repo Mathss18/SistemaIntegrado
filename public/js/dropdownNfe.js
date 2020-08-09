@@ -28,7 +28,8 @@ $(document).ready(function(){
         $('#nomeCli').val(datum.nome);
         $('#cpf_cnpjCli').val(datum.cpf_cnpj);
         $('#contatoCli').val(datum.contato);
-        console.log(datum.value);
+        $('#ufCli').val(datum.ufCli);
+        console.log(datum.nomeTransp);
     });                        
 });
 

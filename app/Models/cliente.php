@@ -13,6 +13,7 @@ class cliente extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nome','cpf_cnpj','email','telefone','telefone2','inscricao_estadual','logradouro','numero','cidade','uf','bairro','contato','cep','tipo'
+        'nome','cpf_cnpj','email','telefone','telefone2','inscricao_estadual','logradouro',
+        'numero','cidade','uf','bairro','contato','cep','tipo','ibge','ID_transp'
     ];
 }

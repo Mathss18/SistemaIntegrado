@@ -22,7 +22,7 @@ class NfeService{
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
-        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$produtos,$cliente){
+        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente){
             //Criar Nota Fiscal Vazia
             $nfe = new Make();
 
@@ -38,7 +38,7 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = 9727;
+            $ide->nNF = 9807;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
             $ide->natOp = $nfe1['natOp'];
 
@@ -122,7 +122,7 @@ class NfeService{
             $enderDest->nro = $cliente[0]->numero;
             //$enderDest->xCpl;
             $enderDest->xBairro = $cliente[0]->bairro;
-            $enderDest->cMun = '2304400';
+            $enderDest->cMun = $cliente[0]->ibge;
             $enderDest->xMun = $cliente[0]->cidade;
             $enderDest->UF = $cliente[0]->uf;
             $enderDest->CEP = str_replace("-", "", $cliente[0]->cep);
@@ -273,12 +273,12 @@ class NfeService{
 
                 //====================TAG TRANSPORTADORA===================
                 $transportadora = new stdClass();
-                $transportadora->xNome = 'RODONAVES TRANSPORTES E ENCOMENDAS LTDA';
-                $transportadora->IE = '582249216111';
-                $transportadora->xEnder = 'TRAV. FORTUNATO POMPERMAYER, 207';
-                $transportadora->xMun = 'Piracicaba';
-                $transportadora->UF = 'SP';
-                $transportadora->CNPJ = '44914992000138';//só pode haver um ou CNPJ ou CPF, se um deles é especificado o outro deverá ser null
+                $transportadora->xNome = $nfe1['nomeTransp'];
+                $transportadora->IE = $transpo[0]->inscricao_estadual;
+                $transportadora->xEnder = $transpo[0]->logradouro;
+                $transportadora->xMun = $transpo[0]->cidade;
+                $transportadora->UF = $transpo[0]->uf;
+                $transportadora->CNPJ = $nfe1['cpf_cnpjTransp'];//só pode haver um ou CNPJ ou CPF, se um deles é especificado o outro deverá ser null
                 //$transportadora->CPF = null;
 
                 $respTransportadora = $nfe->tagtransporta($transportadora);
@@ -297,23 +297,29 @@ class NfeService{
 
                 //====================TAG FATURA===================
                 $fat = new stdClass();
-                $fat->nFat = '001';
+                $fat->nFat = $ide->nNF;
                 $fat->vOrig = $nfe2['total'];
                 $fat->vDesc = $nfe3['desconto'];
                 $fat->vLiq = $nfe3['precoFinal'];
 
                 $respFat = $nfe->tagfat($fat);
-
-                //====================TAG DUPLICATA===================
+                //====================TAG DUPLICATA===================      
+                $diff = $fat->vLiq - (round($nfe3['precoFinal']/$nfe1['numParc'],2)) * $nfe1['numParc'];
+                $diff = round($diff,2);
                 for ($i=0; $i < $nfe1['numParc']; $i++) { 
                     # code...
                 
-                $dup = new stdClass();
-                $dup->nDup = '00'.($i+1);
-                $dup->dVenc = $datas[$i];
-                $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
+                    $dup = new stdClass();
+                    $dup->nDup = '00'.($i+1);
+                    $dup->dVenc = $datas[$i];
+                    $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
+                    if($i == $nfe1['numParc']-1){
 
-                $respDup = $nfe->tagdup($dup);
+                        $dup->vDup += $diff;
+                    }
+                    $respDup = $nfe->tagdup($dup);
+
+                    
                 }
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();
@@ -399,7 +405,7 @@ class NfeService{
             try {
                 $danfe = new Danfe($xml);
                 $danfe->debugMode(false);
-                $danfe->creditsIntegratorFooter('WEBNFe Sistemas - http://www.webenf.com.br');
+                $danfe->creditsIntegratorFooter('FlexCode - By Matheus Filho');
                 // Caso queira mudar a configuracao padrao de impressao
                 /*  $this->printParameters( $orientacao = '', $papel = 'A4', $margSup = 2, $margEsq = 2 ); */
                 //Informe o numero DPEC
@@ -409,8 +415,10 @@ class NfeService{
                 //Gera o PDF
                 $pdf = $danfe->render($logo);
                 file_put_contents('notaFimDanfe.pdf',$pdf);
-                header('Content-Type: application/pdf');
-                echo $pdf;
+                
+                //DESCOMENTAR AS DUAS LINHAS ABAIXO PARA MOSTRAR A DANFE
+                //header('Content-Type: application/pdf');
+                //echo $pdf;
             } catch (Exception $e) {
                 echo "Ocorreu um erro durante o processamento :" . $e->getMessage();
             }  

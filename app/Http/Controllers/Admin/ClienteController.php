@@ -71,7 +71,7 @@ class ClienteController extends Controller
 
     public function AutoCompleteTransp(Request $request){
         $clientes = 
-        cliente::select(DB::raw('concat(nome) as text, ID_cliente as value, cpf_cnpj as cpf_cnpj, contato as contato'))
+        cliente::select(DB::raw('concat(nome) as text, ID_cliente as ID_transp, cpf_cnpj as cpf_cnpj, contato as contato, nome as nomeTransp'))
                     ->where("nome","LIKE","%{$request->input('query')}%")->where('tipo','T')
                     ->get();
         return response()->json($clientes);

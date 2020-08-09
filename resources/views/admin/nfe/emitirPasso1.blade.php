@@ -19,10 +19,9 @@
 <script src="{{ asset('js/dropdownNfe.js') }}"></script>
 <script src="{{ asset('js/dropdownTransp.js') }}"></script>
 <script src="{{ asset('js/parcela.js') }}"></script>
-@stop
 
 @if(isset($nfe))
-@section('js')
+
 <script>
     $("#tpNF>option[value={{$nfe['OF']}}]").attr("selected", true);
     $("#tpNF>option[value={{$nfe['tpNF']}}]").attr("selected", true);
@@ -33,8 +32,9 @@
     $("#modFrete>option[value={{$nfe['modFrete']}}]").attr("selected", true);
     $("#meioPagto>option[value={{$nfe['meioPagto']}}]").attr("selected", true);
 </script>
-@endsection
 @endif
+@endsection
+
 
 
 <!------ Include the above in your HEAD tag ---------->
@@ -160,9 +160,6 @@
             <div class="form-group col-md-3">
                 <label for="nomeCli">Nome do Cliente</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-address-book"></i>
-                    </div>
                     <input readonly id="nomeCli" name="nomeCli" type="text" class="form-control" value="{{$nfe['nomeCli'] ?? '' }}">
                 </div>
             </div>
@@ -170,9 +167,6 @@
             <div class="form-group col-md-3">
                 <label for="cpf_cnpjCli">CPF / CNPJ</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-wpforms"></i>
-                    </div>
                     <input readonly id="cpf_cnpjCli" name="cpf_cnpjCli" type="text" class="form-control" value="{{$nfe['cpf_cnpjCli'] ?? '' }}">
                 </div>
             </div>
@@ -180,20 +174,21 @@
             <div class="form-group col-md-3">
                 <label for="emailCli">Email</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-address-book"></i>
-                    </div>
                     <input readonly id="emailCli" name="emailCli" type="text" class="form-control" value="{{$nfe['emailCli'] ?? '' }}">
                 </div>
             </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <label for="ieCli">Inscrição Estadual</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-address-book"></i>
-                    </div>
                     <input readonly id="ieCli" name="ieCli" type="text" class="form-control" value="{{$nfe['ieCli'] ?? '' }}">
+                </div>
+            </div>
+
+            <div class="form-group col-md-1">
+                <label for="ufCli">UF</label>
+                <div class="input-group">
+                    <input readonly id="ufCli" name="ufCli" type="text" class="form-control" value="{{$nfe['ufCli'] ?? '' }}">
                 </div>
             </div>
 
@@ -225,7 +220,7 @@
             <div class="form-group col-md-2">
                 <label for="numParc">N° de Parcelas</label>
                 <div class="input-group">
-                    <input id="numParc" name="numParc" type="text" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
+                    <input required id="numParc" name="numParc" type="number" min="0" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="btnParcela" data-toggle="modal" data-target="#modalParcelas"><i class="fas fa-pen"></i></button>
                     </div>
@@ -249,7 +244,7 @@
             <div class="form-group col-md-2">
                 <label for="valorFrete">Valor do Frete</label>
                 <div class="input-group">
-                    <input id="valorFrete" name="valorFrete" type="text" class="form-control" value="{{$nfe['valorFrete'] ?? '' }}">
+                    <input id="valorFrete" name="valorFrete" type="numeber" min="0" step="0.01" class="form-control" value="{{$nfe['valorFrete'] ?? '' }}">
                 </div>
             </div>
 
@@ -282,9 +277,7 @@
             <div class="form-group col-md-4">
                 <label for="nomeTransp">Nome da Transportadora</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-address-book"></i>
-                    </div>
+                    <input required value="{{$nfe['ID_transp'] ?? '' }}" style="display:none" name="ID_transp" id="ID_transp" type="text" class="typeahead form-control " style="margin:0px auto;width:360px;">
                     <input value="{{$nfe['nomeTransp'] ?? '' }}" class="typeahead form-control" name="nomeTransp" id="nomeTransp" style="margin:0px auto;width:260px;" type="text">
                 </div>
             </div>
@@ -292,19 +285,13 @@
             <div class="form-group col-md-4">
                 <label for="cpf_cnpjTransp">CPF / CNPJ</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-wpforms"></i>
-                    </div>
-                    <input readonly id="cpf_cnpjTransp" name="cpf_cnpjTransp" type="text" class="form-control" value="{{$nfe['cpf_cnpjTransp'] ?? '' }}">
+                    <input required readonly id="cpf_cnpjTransp" name="cpf_cnpjTransp" type="text" class="form-control" value="{{$nfe['cpf_cnpjTransp'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-4">
                 <label for="contatoTransp">Contato</label>
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-address-book"></i>
-                    </div>
                     <input readonly id="contatoTransp" name="contatoTransp" type="text" class="form-control" value="{{$nfe['contatoTransp'] ?? '' }}">
                 </div>
             </div>

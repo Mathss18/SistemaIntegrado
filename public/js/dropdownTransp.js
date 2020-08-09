@@ -6,7 +6,7 @@ $(document).ready(function(){
             url: "/autocompletetransp?query=%QUERY",
             wildcard: '%QUERY'
         },
-        limit: 10
+        limit: 50
     });
     trasnportadora.initialize();
 
@@ -21,11 +21,12 @@ $(document).ready(function(){
         source: trasnportadora.ttAdapter()
     }).bind("typeahead:selected", function(obj, datum, name) {
         console.log(datum);
-        $(this).data("seletectedId", datum.value);
-        $('#ID_transp').val(datum.value);
+        $(this).data("seletectedId", datum.ID_transp);
+        $('#ID_transp').val(datum.ID_transp);
         $('#cpf_cnpjTransp').val(datum.cpf_cnpj);
         $('#contatoTransp').val(datum.contato);
-        console.log(datum.value);
+        
+        console.log(datum.text);
     });                        
 });
 
