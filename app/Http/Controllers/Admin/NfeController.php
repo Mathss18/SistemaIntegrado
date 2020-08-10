@@ -222,12 +222,16 @@ class NfeController extends Controller
         $transp = $request->session()->get('transp');
         $cliente = $request->session()->get('cliente');
         $data = $request->session()->all();
+        $ultimo = DB::table('nfe')->orderBy('ID_nfe', 'desc')->first();
+        //dd($ultimo);
+        $nNFdb = $ultimo->nNF+1;
         
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
         //dd($data);
         
-        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente);
-        $xmlAssinada = $nfeService->assinar($xml);
+        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb);
+        //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
+        $xmlAssinada = $nfeService->assinar($xml[0]);
 
         //DESCOMENTAR ESSA LINHA PARA VER A VALIDACAO DO XML NO SEFAZ
         //dd($xmlAssinada);
@@ -238,6 +242,17 @@ class NfeController extends Controller
 
         if($xmlEnviada==null){
             return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador.');
+        }
+        else{
+            
+            
+            $nfe = new nfe();
+            $nfe->chaveNfe = $xml[1];
+            $nfe->nNF = $xml[2];
+
+            DB::table('nfe')->insert(
+                ['chaveNF' => $xml[1], 'nNF' => $xml[2]]
+            );
         }
 
         $danfe = $nfeService->gerarDanfe();
