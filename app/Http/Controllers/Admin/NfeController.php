@@ -227,7 +227,7 @@ class NfeController extends Controller
         $nNFdb = $ultimo->nNF+1;
         
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
-        //dd($data);
+        dd($data);
         
         $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb);
         //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
@@ -241,17 +241,18 @@ class NfeController extends Controller
         //dd($xmlEnviada);
 
         if($xmlEnviada==null){
+            //CASO A NOTA SEJA REJEITADA 
             return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador.');
         }
         else{
             
-            
+            //CASO A NOTA PASSE, SERA SALVA NO BANCO DE DADOS
             $nfe = new nfe();
             $nfe->chaveNfe = $xml[1];
             $nfe->nNF = $xml[2];
 
             DB::table('nfe')->insert(
-                ['chaveNF' => $xml[1], 'nNF' => $xml[2]]
+                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente']]
             );
         }
 
