@@ -17,6 +17,7 @@ class nfe extends Model
         'modFrete','valorFrete','meioPagto','tipo','cpf_cnpjTransp','contatoTransp',
         'descricaoProd','precoProd','especie','qtdeComp','desconto','tipoDesc','pesoBruto','pesoLiq','unidade',
         'infoAdc','precoFinal','qtdProd','codFabriProd','ncm','total','codFabriProd','descricaoProd','quantidade',
-        'precoProd','totalQtde','ieCli','emailCli','ID_cliente','ID_transp','ufCli','nomeTransp','chaveNF','nNF'
+        'precoProd','totalQtde','ieCli','emailCli','ID_cliente','ID_transp','ufCli','nomeTransp','chaveNF','nNF',
+        'data_abertura'
     ];
 }

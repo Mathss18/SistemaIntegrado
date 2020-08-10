@@ -21,7 +21,9 @@
             "language": {
                 url: '../js/traducao.json',
                 decimal: ",",
-            }
+                
+            },
+            "order": [[ 0, "desc" ]]
         });
     });
 </script>
@@ -64,15 +66,23 @@
         <table id="tableDT" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">CPF/CNPJ</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Fone 1</th>
-                    <th scope="col">Contato</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">OF</th>
+                    <th scope="col">Chave</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Abertura</th>
                 </tr>
             </thead>
             <tbody>
-            
+            @foreach($nfe as $nf)
+                <tr>
+                    <td>{{$nf->nNF}}</td>
+                    <td>{{$nf->OF}}</td>
+                    <td>{{$nf->chaveNF}}</td>
+                    <td>{{$nf->nome}}</td>
+                    <td>{{$nf->data_abertura}}</td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
 

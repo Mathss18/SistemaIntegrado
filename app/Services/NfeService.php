@@ -5,6 +5,7 @@
     use Exception;
     use NFePHP\NFe\Make;
     use NFePHP\Common\Certificate;
+    use NFePHP\Common\Keys;
     use NFePHP\NFe\Tools;
     use NFePHP\NFe\Common\Standardize;
     use NFePHP\NFe\Complements;
@@ -349,7 +350,7 @@ class NfeService{
 
                 //====================MONTA A NOTA FISCAL ====================
 
-                //$erros = $nfe->getErrors();
+                $erros = $nfe->getErrors();
                 //$chave = $nfe->getChave();
                 $resp = array();
                 $xml = $nfe->monta();
@@ -357,7 +358,8 @@ class NfeService{
                 $mes = date('m');
                 $ano = date('y');
                 $cNFcomZero = STR_PAD($ide->nNF, 9, '0', STR_PAD_LEFT);               
-                $chave = "NFe".$ide->cUF.$ano.$mes.$emit->CNPJ.$ide->mod.'00'.$ide->serie.$cNFcomZero.$ide->tpEmis.$ide->cNF.'0';
+                //$chave = $ide->cUF.$ano.$mes.$emit->CNPJ.$ide->mod.'00'.$ide->serie.$cNFcomZero.$ide->tpEmis.$ide->cNF.'0';
+                $chave = Keys::build($ide->cUF, $ano, $mes, $emit->CNPJ, $ide->mod, $ide->serie, $ide->nNF, $ide->tpEmis, $ide->cNF);
                 //=== COLOCA O XML E A CHAVE NO ARRAY DE RETORNO
                 array_push($resp,$xml);
                 array_push($resp,$chave);
