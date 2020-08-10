@@ -38,7 +38,7 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = 9807;
+            $ide->nNF = 9812;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
             $ide->natOp = $nfe1['natOp'];
 
