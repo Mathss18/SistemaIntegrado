@@ -1,8 +1,9 @@
 <?php 
     namespace App\Services;
 
-use Exception;
-use NFePHP\NFe\Make;
+    use DateTime;
+    use Exception;
+    use NFePHP\NFe\Make;
     use NFePHP\Common\Certificate;
     use NFePHP\NFe\Tools;
     use NFePHP\NFe\Common\Standardize;
@@ -22,7 +23,7 @@ class NfeService{
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
-        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente){
+        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente,$nNFdb){
             //Criar Nota Fiscal Vazia
             $nfe = new Make();
 
@@ -38,7 +39,7 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = 9807;
+            $ide->nNF = $nNFdb;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
             $ide->natOp = $nfe1['natOp'];
 
@@ -348,11 +349,23 @@ class NfeService{
 
                 //====================MONTA A NOTA FISCAL ====================
 
-                
                 //$erros = $nfe->getErrors();
                 //$chave = $nfe->getChave();
+                $resp = array();
                 $xml = $nfe->monta();
-                return $xml;
+                //=== CODIGO PARA GERAR O CÓDIGO DA NFE
+                $mes = date('m');
+                $ano = date('y');
+                $cNFcomZero = STR_PAD($ide->nNF, 9, '0', STR_PAD_LEFT);               
+                $chave = "NFe".$ide->cUF.$ano.$mes.$emit->CNPJ.$ide->mod.'00'.$ide->serie.$cNFcomZero.$ide->tpEmis.$ide->cNF.'0';
+                //=== COLOCA O XML E A CHAVE NO ARRAY DE RETORNO
+                array_push($resp,$xml);
+                array_push($resp,$chave);
+                array_push($resp,$ide->nNF);
+                // DECOMENTAR PARA VER SE A CHAVE É IGUAL A NOTA 
+                //dd($chave,$nfe->getChave());
+                
+                return $resp;
                 
         }
 
@@ -429,6 +442,7 @@ class NfeService{
         public function format($numero,$dec = 2){
             return number_format($numero,$dec,'.','');
         }
+        
 
     }
 

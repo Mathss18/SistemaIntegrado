@@ -220,7 +220,7 @@
             <div class="form-group col-md-2">
                 <label for="numParc">N° de Parcelas</label>
                 <div class="input-group">
-                    <input required id="numParc" name="numParc" type="number" min="0" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
+                    <input required id="numParc" name="numParc" type="number" min="1" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="btnParcela" data-toggle="modal" data-target="#modalParcelas"><i class="fas fa-pen"></i></button>
                     </div>
@@ -244,7 +244,7 @@
             <div class="form-group col-md-2">
                 <label for="valorFrete">Valor do Frete</label>
                 <div class="input-group">
-                    <input id="valorFrete" name="valorFrete" type="numeber" min="0" step="0.01" class="form-control" value="{{$nfe['valorFrete'] ?? '' }}">
+                    <input id="valorFrete" name="valorFrete" type="number" min="0" step="0.01" class="form-control" value="{{$nfe['valorFrete'] ?? '' }}">
                 </div>
             </div>
 
