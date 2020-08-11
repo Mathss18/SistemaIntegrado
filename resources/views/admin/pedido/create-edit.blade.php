@@ -184,6 +184,7 @@
                         <option value="Inox⠀304">Inox 304</option>
                         <option value="Fosfato⠀de⠀Zinco">Fosfato de Zinco</option>
                         <option value="Fosfato⠀de⠀Manganes">Fosfato de Manganês</option>
+                        <option value="Pintura⠀KTL">Pintura KTL</option>
                         <option value="Sem⠀Banho">Sem Banho</option>
                     </select>
                 </div>
