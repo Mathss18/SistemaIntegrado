@@ -24,8 +24,10 @@ class NfeController extends Controller
         $request->session()->forget('datas');
         $request->session()->forget('transp');
         $request->session()->forget('cliente');
-        
-        return view('admin.nfe.index');
+
+        $firma = Auth::user()->firma;
+        $nfe = DB::table('nfe as n')->join('cliente as c','n.ID_cliente','=','c.ID_cliente')->select('n.ID_nfe','n.OF','n.nNF', 'n.chaveNF', 'c.nome','n.data_abertura')->orderBy('ID_nfe', 'desc')->get();
+        return view('admin.nfe.index',compact('nfe'));
     }
 
     public function create()
@@ -223,10 +225,11 @@ class NfeController extends Controller
         $cliente = $request->session()->get('cliente');
         $data = $request->session()->all();
         $ultimo = DB::table('nfe')->orderBy('ID_nfe', 'desc')->first();
+        //dd($ultimo);
         $nNFdb = $ultimo->nNF+1;
         
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
-        dd($data);
+        //dd($data);
         
         $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb);
         //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
@@ -249,9 +252,10 @@ class NfeController extends Controller
             $nfe = new nfe();
             $nfe->chaveNfe = $xml[1];
             $nfe->nNF = $xml[2];
+            $hoje = date('d/m/Y');
 
             DB::table('nfe')->insert(
-                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente']]
+                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente'],'data_abertura' =>$hoje]
             );
         }
 
