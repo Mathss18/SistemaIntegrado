@@ -157,7 +157,7 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label for="precoFinal">Valor final da Nota</label>
+                <label for="precoFinal">Valor Final</label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-dollar-sign"></i>
@@ -167,7 +167,7 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label for="precoFinal">Valor original da Nota</label>
+                <label for="precoFinal">Valor Original</label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-dollar-sign"></i>

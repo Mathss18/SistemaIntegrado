@@ -236,7 +236,7 @@ class NfeController extends Controller
         $xmlAssinada = $nfeService->assinar($xml[0]);
 
         //DESCOMENTAR ESSA LINHA PARA VER A VALIDACAO DO XML NO SEFAZ
-        dd($xmlAssinada);
+        //dd($xmlAssinada);
 
         $xmlEnviada = $nfeService->transmitir($xmlAssinada);
         //DESCOMENTAR ESSA LINHA PARA VER O SE ESTÁ FUNFANDO A XML
