@@ -357,15 +357,9 @@ class NfeService{
                 //=== CODIGO PARA GERAR O CÓDIGO DA NFE
                 $mes = date('m');
                 $ano = date('y');
-<<<<<<< HEAD
-                $cNFcomZero = STR_PAD($ide->nNF, 9, '0', STR_PAD_LEFT);        
-                $chave = Keys::build($ide->cUF, $ano, $mes, $emit->CNPJ, $ide->mod, $ide->serie, $ide->nNF, $ide->tpEmis, $ide->cNF);    
-                //$chave = "NFe".$ide->cUF.$ano.$mes.$emit->CNPJ.$ide->mod.'00'.$ide->serie.$cNFcomZero.$ide->tpEmis.$ide->cNF.'0';
-=======
                 $cNFcomZero = STR_PAD($ide->nNF, 9, '0', STR_PAD_LEFT);               
                 //$chave = $ide->cUF.$ano.$mes.$emit->CNPJ.$ide->mod.'00'.$ide->serie.$cNFcomZero.$ide->tpEmis.$ide->cNF.'0';
                 $chave = Keys::build($ide->cUF, $ano, $mes, $emit->CNPJ, $ide->mod, $ide->serie, $ide->nNF, $ide->tpEmis, $ide->cNF);
->>>>>>> 391b1a1e0cfee624af03d6acce268be128b2d32f
                 //=== COLOCA O XML E A CHAVE NO ARRAY DE RETORNO
                 array_push($resp,$xml);
                 array_push($resp,$chave);

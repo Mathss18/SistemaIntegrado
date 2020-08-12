@@ -11,18 +11,16 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 @stop
 
+@section('js')
 
 @if(isset($nfe))
-@section('js')
 <script>
      $("#{{$nfe3['tipoDesc']}}").prop("checked", true);
 </script>
-@stop
 @endif
-
-@section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
+<script src="{{ asset('js/descontoNfe.js') }}"></script>
 
 @stop
 <!------ Include the above in your HEAD tag ---------->
@@ -38,7 +36,7 @@
         </div>
     </div>
 
-    <form class="form-horizontal" method='POST' action="{{route('nfe.postEmitirPasso3')}}">
+    <form class="form-horizontal" id="myForm" method='POST' action="{{route('nfe.postEmitirPasso3')}}">
         {!! method_field('POST') !!}
         {!! csrf_field() !!}
         <div class="row">
@@ -59,7 +57,7 @@
             <div class="form-group col-md-2">
                 <label for="desconto">Desconto</label>
                 <div class="input-group">
-                    <input required id="desconto" name="desconto" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['desconto'] ?? '' }}">
+                    <input required id="desconto" name="desconto" type="number" min="0" step="0.000000000000001" oninput="validity.valid||(value='');" class="form-control" value="{{$nfe3['desconto'] ?? '0' }}">
                 </div>
             </div>
 
@@ -164,7 +162,13 @@
                     <div class="input-group-addon">
                         <i class="fa fa-dollar-sign"></i>
                     </div>
-                    <input readonly id="precoFinal" name="precoFinal" type="text" class="form-control" value="{{$nfe2['total'] ?? '' }}">
+                    <input readonly id="precoFinal" name="precoFinal" type="number" min="0" class="form-control" value="{{$nfe2['total'] ?? '' }}">
+                </div>
+            </div>
+
+            <div class="form-group col-md-2">
+                <div class="input-group">
+                    <input readonly disabled id="precoFinalAux" name="precoFinalAux" type="number" min="0" class="form-control" value="{{$nfe2['total'] ?? '' }}">
                 </div>
             </div>
         </div>
