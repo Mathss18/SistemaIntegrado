@@ -18,6 +18,6 @@ class nfe extends Model
         'descricaoProd','precoProd','especie','qtdeComp','desconto','tipoDesc','pesoBruto','pesoLiq','unidade',
         'infoAdc','precoFinal','qtdProd','codFabriProd','ncm','total','codFabriProd','descricaoProd','quantidade',
         'precoProd','totalQtde','ieCli','emailCli','ID_cliente','ID_transp','ufCli','nomeTransp','chaveNF','nNF',
-        'data_abertura'
+        'data_abertura','porcento'
     ];
 }

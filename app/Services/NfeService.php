@@ -150,15 +150,15 @@ class NfeService{
                     $prod->CFOP = $nfe1['natOp'];
                     $prod->uCom = 'PC'; //Unidade do produto
                     $prod->qCom = $nfe2['quantidade'][$i]; //Quantidade do produto
-                    $prod->vUnCom = $nfe2['precoProd'][$i];
+                    $prod->vUnCom = $nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100); // Valor total - %desconto
                     $prod->cEANTrib = 'SEM GTIN';
                     $prod->uTrib = 'PC';
                     $prod->qTrib = $nfe2['quantidade'][$i];
-                    $prod->vUnTrib = $nfe2['precoProd'][$i];
+                    $prod->vUnTrib = $nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100); // Valor total - %desconto
                     $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
                     //$prod->vFrete = 0.00;
                     //$prod->vSeg = 0.00;
-                    //$prod->vDesc = 0.00;
+                    //$prod->vDesc =  (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100);
                     //$prod->vOutro = 0.00;
                     $prod->indTot = 1;
                     //$prod->xPed;         //Numero de pedido do cliente

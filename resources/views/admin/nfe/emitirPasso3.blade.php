@@ -64,13 +64,13 @@
             <div class="form-group col-md-2">
                 <label for="finNFe">&nbsp</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipoDesc" id="valorCheio" value="valorCheio">
+                    <input class="form-check-input desc" type="radio" name="tipoDesc" id="valorCheio" value="valorCheio">
                     <label class="form-check-label" for="tipoDesc">
                         Valor Cheio
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="tipoDesc" id="porcentagem" value="porcentagem">
+                    <input class="form-check-input desc" type="radio" name="tipoDesc" id="porcentagem" value="porcentagem">
                     <label class="form-check-label" for="tipoDesc">
                         Porcentagem
                     </label>
@@ -167,8 +167,17 @@
             </div>
 
             <div class="form-group col-md-2">
+                <label for="precoFinal">Valor original da Nota</label>
                 <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-dollar-sign"></i>
+                    </div>
                     <input readonly disabled id="precoFinalAux" name="precoFinalAux" type="number" min="0" class="form-control" value="{{$nfe2['total'] ?? '' }}">
+                </div>
+            </div>
+            <div class="form-group col-md-2">
+                <div class="input-group">
+                    <input readonly id="porcento" name="porcento" type="hidden" min="0" class="form-control" value="">
                 </div>
             </div>
         </div>
