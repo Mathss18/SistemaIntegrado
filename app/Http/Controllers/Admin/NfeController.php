@@ -229,14 +229,14 @@ class NfeController extends Controller
         $nNFdb = $ultimo->nNF+1;
         
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
-        dd($data);
+        //dd($data);
         
         $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb);
         //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
         $xmlAssinada = $nfeService->assinar($xml[0]);
 
         //DESCOMENTAR ESSA LINHA PARA VER A VALIDACAO DO XML NO SEFAZ
-        //dd($xmlAssinada);
+        dd($xmlAssinada);
 
         $xmlEnviada = $nfeService->transmitir($xmlAssinada);
         //DESCOMENTAR ESSA LINHA PARA VER O SE ESTÁ FUNFANDO A XML
