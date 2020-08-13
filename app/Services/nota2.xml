@@ -1,0 +1,188 @@
+<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+    <infNFe Id="NFe35200804568351000154550010000098321000098333" versao="4.00">
+        <ide>
+            <cUF>35</cUF>
+            <cNF>00009833</cNF>
+            <natOp>6101</natOp>
+            <mod>55</mod>
+            <serie>1</serie>
+            <nNF>9832</nNF>
+            <dhEmi>2020-08-12T17:13:51-03:00</dhEmi>
+            <dhSaiEnt>2020-08-12T17:13:51-03:00</dhSaiEnt>
+            <tpNF>1</tpNF>
+            <idDest>2</idDest>
+            <cMunFG>3538709</cMunFG>
+            <tpImp>1</tpImp>
+            <tpEmis>1</tpEmis>
+            <cDV>3</cDV>
+            <tpAmb>2</tpAmb>
+            <finNFe>1</finNFe>
+            <indFinal>1</indFinal>
+            <indPres>1</indPres>
+            <procEmi>0</procEmi>
+            <verProc>4.00</verProc>
+        </ide>
+        <emit>
+            <CNPJ>04568351000154</CNPJ>
+            <xNome>FLEXMOL INDUSTRIA E COMERCIO DE MOLAS LTDA ME</xNome>
+            <enderEmit>
+                <xLgr>RUA JOSE PASSARELA</xLgr>
+                <nro>240</nro>
+                <xBairro>JARDIM SAO JORGE</xBairro>
+                <cMun>3538709</cMun>
+                <xMun>Piracicaba</xMun>
+                <UF>SP</UF>
+                <CEP>13402705</CEP>
+                <cPais>1058</cPais>
+                <xPais>Brasil</xPais>
+                <fone>1934345840</fone>
+            </enderEmit>
+            <IE>535338509117</IE>
+            <CRT>1</CRT>
+        </emit>
+        <dest>
+            <CNPJ>09540291000185</CNPJ>
+            <xNome>NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL</xNome>
+            <enderDest>
+                <xLgr>Rua 20 de Abril</xLgr>
+                <nro>115</nro>
+                <xBairro>Paupina</xBairro>
+                <cMun>2304400</cMun>
+                <xMun>Fortaleza</xMun>
+                <UF>CE</UF>
+                <CEP>60873750</CEP>
+                <cPais>1058</cPais>
+                <xPais>Brasil</xPais>
+            </enderDest>
+            <indIEDest>1</indIEDest>
+            <IE>063671506</IE>
+            <email>gerencia@newpilates.com.br</email>
+        </dest>
+        <det nItem="1">
+            <prod>
+                <cProd>000</cProd>
+                <cEAN>SEM GTIN</cEAN>
+                <xProd>mola teste</xProd>
+                <NCM>73209000</NCM>
+                <CFOP>6101</CFOP>
+                <uCom>PC</uCom>
+                <qCom>10.00</qCom>
+                <vUnCom>1000.0000</vUnCom>
+                <vProd>10000.00</vProd>
+                <cEANTrib>SEM GTIN</cEANTrib>
+                <uTrib>PC</uTrib>
+                <qTrib>10.00</qTrib>
+                <vUnTrib>10000</vUnTrib>
+                <vDesc>100.00</vDesc>
+                <indTot>1</indTot>
+            </prod>
+            <imposto>
+                <ICMS>
+                    <ICMSSN101>
+                        <orig>0</orig>
+                        <CSOSN>101</CSOSN>
+                        <pCredSN>3.12</pCredSN>
+                        <vCredICMSSN>13.09</vCredICMSSN>
+                    </ICMSSN101>
+                </ICMS>
+                <PIS>
+                    <PISOutr>
+                        <CST>99</CST>
+                        <vBC>0.00</vBC>
+                        <pPIS>0.0000</pPIS>
+                        <vPIS>0.00</vPIS>
+                    </PISOutr>
+                </PIS>
+                <COFINS>
+                    <COFINSOutr>
+                        <CST>99</CST>
+                        <vBC>0.00</vBC>
+                        <pCOFINS>0.0000</pCOFINS>
+                        <vCOFINS>0.00</vCOFINS>
+                    </COFINSOutr>
+                </COFINS>
+            </imposto>
+        </det>
+        <total>
+            <ICMSTot>
+                <vBC>0.00</vBC>
+                <vICMS>0.00</vICMS>
+                <vICMSDeson>0.00</vICMSDeson>
+                <vFCP>0.00</vFCP>
+                <vBCST>0.00</vBCST>
+                <vST>0.00</vST>
+                <vFCPST>0.00</vFCPST>
+                <vFCPSTRet>0.00</vFCPSTRet>
+                <vProd>9000.00</vProd>
+                <vFrete>0.00</vFrete>
+                <vSeg>0.00</vSeg>
+                <vDesc>100.00</vDesc>
+                <vII>0.00</vII>
+                <vIPI>0.00</vIPI>
+                <vIPIDevol>0.00</vIPIDevol>
+                <vPIS>0.00</vPIS>
+                <vCOFINS>0.00</vCOFINS>
+                <vOutro>0.00</vOutro>
+                <vNF>9000.00</vNF>
+            </ICMSTot>
+        </total>
+        <transp>
+            <modFrete>1</modFrete>
+            <transporta>
+                <CNPJ>44914992000138</CNPJ>
+                <xNome>RODONAVES TRANSPORTES E ENCOMENDAS LTDA</xNome>
+                <IE>582249216111</IE>
+                <xEnder>Travessa Fortunato Pompermayer</xEnder>
+                <xMun>Piracicaba</xMun>
+                <UF>SP</UF>
+            </transporta>
+            <vol>
+                <qVol>10</qVol>
+                <esp>caixa</esp>
+                <marca>MARCA</marca>
+                <pesoL>69.000</pesoL>
+                <pesoB>69.000</pesoB>
+            </vol>
+        </transp>
+        <cobr>
+            <fat>
+                <nFat>9832</nFat>
+                <vOrig>10000.00</vOrig>
+                <vDesc>1000.00</vDesc>
+                <vLiq>9000.00</vLiq>
+            </fat>
+            <dup>
+                <nDup>001</nDup>
+                <dVenc>2020-08-12</dVenc>
+                <vDup>9000.00</vDup>
+            </dup>
+        </cobr>
+        <pag>
+            <detPag>
+                <tPag>15</tPag>
+                <vPag>9000.00</vPag>
+            </detPag>
+        </pag>
+        <infAdic />
+    </infNFe>
+    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+            <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+            <Reference URI="#NFe35200804568351000154550010000098321000098333">
+                <Transforms>
+                    <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                    <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+                <DigestValue>i6VNy1F7XSM54nRhoTGLpQ2I43k=</DigestValue>
+            </Reference>
+        </SignedInfo>
+        <SignatureValue>HOPIfc0PgogQrhP6O7QRAdye+OOTBe66Y1yXOcsMWud6vMcRi2n7ZO8X2aKhd8fb9UF2jRjlChoYbErU5ULRlZxyR2Te45w8RS1HgblH4ymhlwxXuBq0XEAYYWZ+6FmCBL3naUvIhBvhwK/iy8xkcoRRRdL3+Llb7C5jtxxMHo9Firfdx3P11BgQkbYX1yeAg+hSq4DqLJbIeQnPd2s11LhriapZQ5XCcjTs8jDuSZ8TZpJX/bN9OhFlQz8mEXTAgihc1Erowl46PqAfnqCHEIZrNsu3EDr6QAnRiiM/RehSoYw4B1uuAKVXZdtLkADsa6anJuVKAu99VCvGao5OYg==</SignatureValue>
+        <KeyInfo>
+            <X509Data>
+                <X509Certificate>MIIIIjCCBgqgAwIBAgIIGBHqucNj/F8wDQYJKoZIhvcNAQELBQAwdTELMAkGA1UEBhMCQlIxEzARBgNVBAoMCklDUC1CcmFzaWwxNjA0BgNVBAsMLVNlY3JldGFyaWEgZGEgUmVjZWl0YSBGZWRlcmFsIGRvIEJyYXNpbCAtIFJGQjEZMBcGA1UEAwwQQUMgU0VSQVNBIFJGQiB2NTAeFw0xOTA5MTYxMjE0MDBaFw0yMDA5MTUxMjE0MDBaMIIBPDELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAlNQMRMwEQYDVQQHDApQSVJBQ0lDQUJBMRMwEQYDVQQKDApJQ1AtQnJhc2lsMRgwFgYDVQQLDA8wMDAwMDEwMDkyMjM1MzExNjA0BgNVBAsMLVNlY3JldGFyaWEgZGEgUmVjZWl0YSBGZWRlcmFsIGRvIEJyYXNpbCAtIFJGQjEWMBQGA1UECwwNUkZCIGUtQ05QSiBBMTEZMBcGA1UECwwQQUMgU0VSQVNBIFJGQiB2NTEXMBUGA1UECwwOMTQ2MDIyNjkwMDAxNTIxFDASBgNVBAsMCyhFTSBCUkFOQ08pMUIwQAYDVQQDDDlGTEVYTU9MIElORFVTVFJJQSBFIENPTUVSQ0lPIERFIE1PTEFTIExUREE6MDQ1NjgzNTEwMDAxNTQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCJJ5ScfQr4X4x7MytOK44Txvu+lLtbMNfE0SBND3Yl/q+FdTFHmJ3cu7JPrd1WQHeVlWDpEUOdYpg2+3cV7w7axaIl0izcuo6uqTjH8otLqJ4nAeVEmcVSz8CjBkEiizvYDe+qD4FvSCoJFFVt8LfmYaYRnDgSIfaOnDqDPvvz8etM3DzW5wKXjUHebm1FXyvzsEbaYqxkF/Q44G1HBNaSjrcOIpSfLfhHk4H8n0EiVwRKbOi4SiJ0t1PQO69nam+tVa8sMqqp2wmq8nNL5IhmiUZpw2bqDosFMtrjfsQfYvnbgQOZGsOArUw4TuW1euefXIrcprci3T/b5sqlrhPPAgMBAAGjggLrMIIC5zAJBgNVHRMEAjAAMB8GA1UdIwQYMBaAFOzxQVFXqOY66V6zoCL5CIq1OoePMIGZBggrBgEFBQcBAQSBjDCBiTBIBggrBgEFBQcwAoY8aHR0cDovL3d3dy5jZXJ0aWZpY2Fkb2RpZ2l0YWwuY29tLmJyL2NhZGVpYXMvc2VyYXNhcmZidjUucDdiMD0GCCsGAQUFBzABhjFodHRwOi8vb2NzcC5jZXJ0aWZpY2Fkb2RpZ2l0YWwuY29tLmJyL3NlcmFzYXJmYnY1MIG7BgNVHREEgbMwgbCBGUZJTkFOQ0VJUk9ARkxFWE1PTC5DT00uQlKgIAYFYEwBAwKgFxMVR0lMQkVSVE8gU0FOVE9TIEZJTEhPoBkGBWBMAQMDoBATDjA0NTY4MzUxMDAwMTU0oD0GBWBMAQMEoDQTMjAxMTExOTcyMTc3NjM5NDg4NzYwMDAwMDAwMDAwMDAwMDAwMDAyNDMyMzM5M1NTUFNQoBcGBWBMAQMHoA4TDDAwMDAwMDAwMDAwMDBxBgNVHSAEajBoMGYGBmBMAQIBDTBcMFoGCCsGAQUFBwIBFk5odHRwOi8vcHVibGljYWNhby5jZXJ0aWZpY2Fkb2RpZ2l0YWwuY29tLmJyL3JlcG9zaXRvcmlvL2RwYy9kZWNsYXJhY2FvLXJmYi5wZGYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMIGdBgNVHR8EgZUwgZIwSqBIoEaGRGh0dHA6Ly93d3cuY2VydGlmaWNhZG9kaWdpdGFsLmNvbS5ici9yZXBvc2l0b3Jpby9sY3Ivc2VyYXNhcmZidjUuY3JsMESgQqBAhj5odHRwOi8vbGNyLmNlcnRpZmljYWRvcy5jb20uYnIvcmVwb3NpdG9yaW8vbGNyL3NlcmFzYXJmYnY1LmNybDAdBgNVHQ4EFgQU4ecscaK6l7Rm+Y0XaFScZvVTKsIwDgYDVR0PAQH/BAQDAgXgMA0GCSqGSIb3DQEBCwUAA4ICAQC2rFurgEjp1KBEE/muFUL46y4u0vhxFBA69cEZXJvPiFMwdUK/IP1EUqfc+YK6zE3NftznJm61hexqNd7Xej7TFNO6neDCdR+Dd1aXkJjPMvuyBCB3x+oMiwIOb+j02QXFUd1BTtP12XGmPac9iBO9beM268Z8HDM29NWKkoUJXZ/0dQPQlYG2EeBMxTBErWe++t0+nqa0kW5q3T1oy0/mOnbJwfk8gix53aSigFAFf2AG6rz30wE83lRH1olXSGmuLWw/dqB5+rQwhPMV3f3csLkkKM6t/HNEEMCP6Rr6UplHX4hwHTwRM83ftQjqXVIMMcCagxQhuVEvAZ6N5HJZK1m+HaLZ+YqiuxeDCOriasccy30E9P2jWFoyPXDgkhL3gIaxHfBmijtXg+gN2OWWyAo8viPXVcMO+99cXoaJS2PKKWeA3D7A+Ng0g5k8cDFQ17ienykA8XpCbRXbzsUukL0eMWhopPWFh/imBfzXky4PbaE8OAQPsudR4YFwUTGKRskSTKppllOTTkxrwKL2xK3Qn3i9swyp0PFP4CxFPTr4DgD3pmtRuikcmeVQqeGh85wuYCNPNas7guWoBu73TBjnvkk0w1xSBDnS06Fh3RWSVL73cv47wYY8QF2P9f0Xs+CAHwjCHr6kPN/Gx5OZkgc4CVlBBjzjdmEJTh0Rkw==</X509Certificate>
+            </X509Data>
+        </KeyInfo>
+    </Signature>
+</NFe>

@@ -3,7 +3,9 @@
 
     use DateTime;
     use Exception;
-    use NFePHP\NFe\Make;
+use Facade\FlareClient\Stacktrace\File;
+use Illuminate\Support\Facades\Storage;
+use NFePHP\NFe\Make;
     use NFePHP\Common\Certificate;
     use NFePHP\Common\Keys;
     use NFePHP\NFe\Tools;
@@ -24,7 +26,7 @@ class NfeService{
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
-        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente,$nNFdb){
+        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente,$nNFdb,$request){
             //Criar Nota Fiscal Vazia
             $nfe = new Make();
 
@@ -315,6 +317,7 @@ class NfeService{
                     $dup->nDup = '00'.($i+1);
                     $dup->dVenc = $datas[$i];
                     $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
+                    // IF para adicionar o centavos na ultima parcela se necessario
                     if($i == $nfe1['numParc']-1){
 
                         $dup->vDup += $diff;
@@ -376,7 +379,7 @@ class NfeService{
             return $xmlSigned;
         }
 
-        public function transmitir($xmlSigned){
+        public function transmitir($xmlSigned,$chave){
             //Envia o lote
             $resp = $this->tools->sefazEnviaLote([$xmlSigned], 1);
 
@@ -400,10 +403,13 @@ class NfeService{
 
                 //"{cnpj}/nfe/homologacao/2020-08/{chave}.xml";
 
-
+                $mes = date('m');
+                $ano = date('Y');
                 header('Content-type: text/xml; charset=UTF-8');
-                file_put_contents('notaFim.xml',$xmlFinal);
-                $xmlFinal1 = file_get_contents('notaFim.xml');
+                file_put_contents('storage/'.$mes.$ano.'/'.$chave.'.xml',$xmlFinal);
+                
+                //Storage::putFile('uploadedFile',  new File('/path/to/file'));
+                $xmlFinal1 = file_get_contents('storage/'.$mes.$ano.'/'.$chave.'.xml');
                 return $xmlFinal1;
             } catch (\Exception $e) {
                 echo "Erro Protocolo: " . $e->getMessage();
@@ -413,8 +419,11 @@ class NfeService{
         }
 
         //GERAR A DANFE
-        public function gerarDanfe(){
-            $xml = file_get_contents('notaFim.xml');
+        public function gerarDanfe($chave){
+            $mes = date('m');
+            $ano = date('Y');
+            $xml = file_get_contents('storage/'.$mes.$ano.'/'.$chave.'.xml');
+            
             $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoFM.jpg"));;
 
             try {

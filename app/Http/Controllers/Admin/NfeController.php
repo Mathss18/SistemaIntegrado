@@ -231,14 +231,14 @@ class NfeController extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
         //dd($data);
         
-        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb);
+        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb,$request);
         //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
         $xmlAssinada = $nfeService->assinar($xml[0]);
 
         //DESCOMENTAR ESSA LINHA PARA VER A VALIDACAO DO XML NO SEFAZ
         //dd($xmlAssinada);
 
-        $xmlEnviada = $nfeService->transmitir($xmlAssinada);
+        $xmlEnviada = $nfeService->transmitir($xmlAssinada,$xml[1]);
         //DESCOMENTAR ESSA LINHA PARA VER O SE ESTÁ FUNFANDO A XML
         //dd($xmlEnviada);
 
@@ -259,7 +259,7 @@ class NfeController extends Controller
             );
         }
 
-        $danfe = $nfeService->gerarDanfe();
+        $danfe = $nfeService->gerarDanfe($xml[1]);
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
