@@ -300,9 +300,9 @@ class NfeService{
                 //====================TAG FATURA===================
                 $fat = new stdClass();
                 $fat->nFat = $ide->nNF;
-                $fat->vOrig = $nfe2['total'];
-                $fat->vDesc = $nfe3['desconto'];
-                $fat->vLiq = $nfe3['precoFinal'];
+                $fat->vOrig = number_format($nfe2['total'],9);
+                $fat->vDesc = number_format($nfe3['desconto'],9);
+                $fat->vLiq = number_format($nfe3['precoFinal'],9);
 
                 $respFat = $nfe->tagfat($fat);
                 //====================TAG DUPLICATA===================      
