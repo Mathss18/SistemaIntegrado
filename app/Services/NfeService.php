@@ -302,14 +302,15 @@ class NfeService{
                 //====================TAG FATURA===================
                 $fat = new stdClass();
                 $fat->nFat = $ide->nNF;
-                $fat->vOrig = number_format($nfe2['total'],9);
-                $fat->vDesc = number_format($nfe3['desconto'],9);
-                $fat->vLiq = number_format($nfe3['precoFinal'],9);
+                $fat->vOrig = number_format($nfe2['total'],9,'.','');
+                $fat->vDesc = number_format($nfe3['desconto'],9,'.','');
+                $fat->vLiq = number_format($nfe3['precoFinal'],9,'.','');
 
                 $respFat = $nfe->tagfat($fat);
-                //====================TAG DUPLICATA===================      
-                $diff = $fat->vLiq - (round($nfe3['precoFinal']/$nfe1['numParc'],2)) * $nfe1['numParc'];
-                $diff = round($diff,2);
+                //====================TAG DUPLICATA===================    
+                //dd($fat->vLiq); 
+                $diff = $fat->vLiq - (round($nfe3['precoFinal']/$nfe1['numParc'],9)) * $nfe1['numParc'];
+                $diff = round($diff,9);
                 for ($i=0; $i < $nfe1['numParc']; $i++) { 
                     # code...
                 
@@ -397,7 +398,7 @@ class NfeService{
             //Protocola o recibo no XML
             $request = $xmlSigned;
             $response = $protocolo;
-    
+            
             try {
                 $xmlFinal = Complements::toAuthorize($request, $response);
 
@@ -405,11 +406,15 @@ class NfeService{
 
                 $mes = date('m');
                 $ano = date('Y');
-                header('Content-type: text/xml; charset=UTF-8');
-                file_put_contents('storage/'.$mes.$ano.'/'.$chave.'.xml',$xmlFinal);
-                
+                //header('Content-type: text/xml; charset=UTF-8');
+                //file_put_contents('storage/'.$mes.$ano.'/'.$chave.'.xml',$xmlFinal);
+                Storage::put('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xmlFinal);
                 //Storage::putFile('uploadedFile',  new File('/path/to/file'));
-                $xmlFinal1 = file_get_contents('storage/'.$mes.$ano.'/'.$chave.'.xml');
+                
+                $path = 'Nfe/'.$mes.'-'.$ano.'/'.$chave;
+                session(['path_nfe' => $path]);
+                $xmlFinal1 = Storage::get('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.xml');
+                
                 return $xmlFinal1;
             } catch (\Exception $e) {
                 echo "Erro Protocolo: " . $e->getMessage();
@@ -422,7 +427,7 @@ class NfeService{
         public function gerarDanfe($chave){
             $mes = date('m');
             $ano = date('Y');
-            $xml = file_get_contents('storage/'.$mes.$ano.'/'.$chave.'.xml');
+            $xml = Storage::get('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.xml');
             
             $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoFM.jpg"));;
 
@@ -438,8 +443,9 @@ class NfeService{
                 /*  $danfe->logoParameters($logo, 'C', false);  */
                 //Gera o PDF
                 $pdf = $danfe->render($logo);
-                file_put_contents('notaFimDanfe.pdf',$pdf);
+                Storage::put('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
                 
+               
                 //DESCOMENTAR AS DUAS LINHAS ABAIXO PARA MOSTRAR A DANFE
                 //header('Content-Type: application/pdf');
                 //echo $pdf;

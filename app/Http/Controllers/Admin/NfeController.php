@@ -17,13 +17,14 @@ class NfeController extends Controller
 
     public function index(Request $request)
     {
-        
+
         $request->session()->forget('nfe1');
         $request->session()->forget('nfe2');
         $request->session()->forget('nfe3');
         $request->session()->forget('datas');
         $request->session()->forget('transp');
         $request->session()->forget('cliente');
+        $request->session()->forget('path_nfe');
 
         $firma = Auth::user()->firma;
         $nfe = DB::table('nfe as n')->join('cliente as c','n.ID_cliente','=','c.ID_cliente')->select('n.ID_nfe','n.OF','n.nNF', 'n.chaveNF', 'c.nome','n.data_abertura')->orderBy('ID_nfe', 'desc')->get();
@@ -223,6 +224,7 @@ class NfeController extends Controller
         $datas = $request->session()->get('datas');
         $transp = $request->session()->get('transp');
         $cliente = $request->session()->get('cliente');
+        
         $data = $request->session()->all();
         $ultimo = DB::table('nfe')->orderBy('ID_nfe', 'desc')->first();
         //dd($ultimo);
@@ -242,12 +244,15 @@ class NfeController extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER O SE ESTÁ FUNFANDO A XML
         //dd($xmlEnviada);
 
+        $path_nfe = $request->session()->get('path_nfe');
+        //dd($path_nfe);
         if($xmlEnviada==null){
             //CASO A NOTA SEJA REJEITADA 
             return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador.');
         }
         else{
-            
+            $path_nfe = $request->session()->get('path_nfe');
+            //dd($path_nfe);
             //CASO A NOTA PASSE, SERA SALVA NO BANCO DE DADOS
             $nfe = new nfe();
             $nfe->chaveNfe = $xml[1];
@@ -255,7 +260,7 @@ class NfeController extends Controller
             $hoje = date('d/m/Y');
 
             DB::table('nfe')->insert(
-                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente'],'data_abertura' =>$hoje]
+                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente'],'data_abertura' =>$hoje,'path_nfe' => $path_nfe]
             );
         }
 
@@ -263,8 +268,9 @@ class NfeController extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
+        $path = session('path_nfe');
 
-        return redirect('admin/nfe/finalizarNfe');
+        return view('admin.nfe.finalizarNfe',compact('path'));
         
     
     }

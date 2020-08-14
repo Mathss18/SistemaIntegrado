@@ -52,7 +52,7 @@
     <div class="card-body">
         <div class="container-fluid">
             <div class="row">
-                <iframe style="border: 2px solid black;" src="{{url('notaFimDanfe.pdf')}}" width="600" height="780" style="border: none;"></iframe>
+                <iframe style="border: 2px solid black;" src="{{url('storage/'.$path.'.pdf')}}" width="600" height="780" style="border: none;"></iframe>
 
                 <div class="row">
                     <div class="container-fluid ml-3">
