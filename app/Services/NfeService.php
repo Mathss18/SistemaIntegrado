@@ -26,7 +26,7 @@ class NfeService{
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
         }
 
-        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente,$nNFdb,$request){
+        public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente,$nNFdb,$aliquota){
             //Criar Nota Fiscal Vazia
             $nfe = new Make();
 
@@ -189,8 +189,8 @@ class NfeService{
                     $icms->item = $i+1; //item da NFe
                     $icms->orig = 0;
                     $icms->CSOSN = '101';
-                    $icms->pCredSN = 3.12;
-                    $icms->vCredICMSSN = 13.09;
+                    $icms->pCredSN = $aliquota->aliquota;
+                    $icms->vCredICMSSN = $nfe3['precoFinal'] * ($aliquota->aliquota/100);
                     //$icms->modBCST = null;
                     //$icms->pMVAST = null;
                     //$icms->pRedBCST = null;
@@ -347,7 +347,7 @@ class NfeService{
 
                 //====================INFO ADICIONAL===================
                 $stdInfo = new stdClass();
-                $stdInfo->infAdFisco = $nfe3['infoAdc'];
+                $stdInfo->infAdFisco = $nfe3['infoAdc'] ?? "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL, CONFORME LEI COMPLEMENTAR 123/2006 II - NAO GERA DIREITO A CREDITO FISCAL DE IPI. III - PERMITE O APROVEITAMENTO DO CREDITO DE ICMS NO VALOR DE R$ ".number_format($nfe3['precoFinal'] * ($aliquota->aliquota/100),2,',')." CORRESPONDENTE A ALIQUOTA DE ".number_format($aliquota->aliquota,6,',').", NOS TERMOS DO ART. 23 DA LC 123/2006";
                 //$std->infCpl = 'informacoes complementares';
 
                 $nfe->taginfAdic($stdInfo);

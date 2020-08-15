@@ -75,7 +75,7 @@
             </thead>
             <tbody>
             @foreach($nfe as $nf)
-                <tr>
+                <tr class='clickable-row' data-href="{{route('nfe.edit',$nf->ID_nfe)}}">
                     <td>{{$nf->nNF}}</td>
                     <td>{{$nf->OF}}</td>
                     <td>{{$nf->chaveNF}}</td>

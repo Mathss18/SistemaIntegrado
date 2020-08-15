@@ -63,7 +63,7 @@
                                 </a>
                             </div>
                         </div>
-
+                        <!--
                         <div class="row mb-2">
                             <div>
                                 <a href="#" class="btn btn-info ml-3"><i class="fas fa-eraser"></i></i>
@@ -79,6 +79,7 @@
                                 </a>
                             </div>
                         </div>
+                        -->
                     </div>
                 </div>
             </div>

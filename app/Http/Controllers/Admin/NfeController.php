@@ -49,7 +49,11 @@ class NfeController extends Controller
 
     public function edit($id)
     {
-        //
+        $nfe = new nfe();
+        $nfe = $nfe->find($id);
+        $firma = Auth::user()->firma;
+
+        return view('admin.nfe.show',compact('nfe','firma'));
     }
 
     public function update(Request $request, $id)
@@ -227,13 +231,14 @@ class NfeController extends Controller
         
         $data = $request->session()->all();
         $ultimo = DB::table('nfe')->orderBy('ID_nfe', 'desc')->first();
-        //dd($ultimo);
+        $aliquota = DB::table('aliquota')->first();
+        
         $nNFdb = $ultimo->nNF+1;
         
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
         //dd($data);
         
-        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb,$request);
+        $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb,$aliquota);
         //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
         $xmlAssinada = $nfeService->assinar($xml[0]);
 
