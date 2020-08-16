@@ -304,13 +304,15 @@ class NfeService{
                 $fat->nFat = $ide->nNF;
                 $fat->vOrig = number_format($nfe2['total'],9,'.','');
                 $fat->vDesc = number_format($nfe3['desconto'],9,'.','');
-                $fat->vLiq = number_format($nfe3['precoFinal'],9,'.','');
+                //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
+                $fat->vLiq =  $fat->vOrig - $fat->vDesc;
 
                 $respFat = $nfe->tagfat($fat);
                 //====================TAG DUPLICATA===================    
-                //dd($fat->vLiq); 
-                $diff = $fat->vLiq - (round($nfe3['precoFinal']/$nfe1['numParc'],9)) * $nfe1['numParc'];
-                $diff = round($diff,9);
+                $diff = number_format($nfe3['precoFinal']/$nfe1['numParc'],2,'.','');
+                
+                $diff = number_format($fat->vLiq - $diff*$nfe1['numParc'],2);
+                
                 for ($i=0; $i < $nfe1['numParc']; $i++) { 
                     # code...
                 
@@ -347,7 +349,7 @@ class NfeService{
 
                 //====================INFO ADICIONAL===================
                 $stdInfo = new stdClass();
-                $stdInfo->infAdFisco = $nfe3['infoAdc'] ?? "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL, CONFORME LEI COMPLEMENTAR 123/2006 II - NAO GERA DIREITO A CREDITO FISCAL DE IPI. III - PERMITE O APROVEITAMENTO DO CREDITO DE ICMS NO VALOR DE R$ ".number_format($nfe3['precoFinal'] * ($aliquota->aliquota/100),2,',')." CORRESPONDENTE A ALIQUOTA DE ".number_format($aliquota->aliquota,6,',').", NOS TERMOS DO ART. 23 DA LC 123/2006";
+                $stdInfo->infAdFisco = $nfe3['infoAdc'] ?? "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL, CONFORME LEI COMPLEMENTAR 123/2006 II - NAO GERA DIREITO A CREDITO FISCAL DE IPI. III - PERMITE O APROVEITAMENTO DO CREDITO DE ICMS NO VALOR DE R$ ".$icms->vCredICMSSN." CORRESPONDENTE A ALIQUOTA DE ".$aliquota->aliquota.", NOS TERMOS DO ART. 23 DA LC 123/2006";
                 //$std->infCpl = 'informacoes complementares';
 
                 $nfe->taginfAdic($stdInfo);
@@ -456,9 +458,6 @@ class NfeService{
         }
 
         //FUNCOES EXTRAS
-        public function format($numero,$dec = 2){
-            return number_format($numero,$dec,'.','');
-        }
         
 
     }

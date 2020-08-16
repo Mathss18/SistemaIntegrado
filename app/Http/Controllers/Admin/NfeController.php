@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\nfe;
+use App\Models\cliente;
 use App\Models\pedido;
 use App\Services\NfeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NfeMail;
 use Auth;
 use DB;
 use stdClass;
@@ -17,7 +20,7 @@ class NfeController extends Controller
 
     public function index(Request $request)
     {
-
+        
         $request->session()->forget('nfe1');
         $request->session()->forget('nfe2');
         $request->session()->forget('nfe3');
@@ -50,10 +53,14 @@ class NfeController extends Controller
     public function edit($id)
     {
         $nfe = new nfe();
+        $cliente = new cliente();
+
         $nfe = $nfe->find($id);
+        $cliente = $cliente->find($nfe->ID_cliente);
+
         $firma = Auth::user()->firma;
 
-        return view('admin.nfe.show',compact('nfe','firma'));
+        return view('admin.nfe.show',compact('nfe','firma','cliente'));
     }
 
     public function update(Request $request, $id)
@@ -228,6 +235,8 @@ class NfeController extends Controller
         $datas = $request->session()->get('datas');
         $transp = $request->session()->get('transp');
         $cliente = $request->session()->get('cliente');
+        $nfeCad = new nfe();
+        $clienteCad= new cliente();
         
         $data = $request->session()->all();
         $ultimo = DB::table('nfe')->orderBy('ID_nfe', 'desc')->first();
@@ -257,7 +266,6 @@ class NfeController extends Controller
         }
         else{
             $path_nfe = $request->session()->get('path_nfe');
-            //dd($path_nfe);
             //CASO A NOTA PASSE, SERA SALVA NO BANCO DE DADOS
             $nfe = new nfe();
             $nfe->chaveNfe = $xml[1];
@@ -267,15 +275,14 @@ class NfeController extends Controller
             DB::table('nfe')->insert(
                 ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente'],'data_abertura' =>$hoje,'path_nfe' => $path_nfe]
             );
+
         }
 
         $danfe = $nfeService->gerarDanfe($xml[1]);
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
-        $path = session('path_nfe');
-
-        return view('admin.nfe.finalizarNfe',compact('path'));
+        return redirect('admin/nfe')->with('success', 'Sucesso, NFe criada! Clique na primeira linha da tabela para exibi-la.');
         
     
     }
@@ -292,6 +299,29 @@ class NfeController extends Controller
         ]);
         $request->session()->put('datas', $dataFormNfe['datas']);
         
+    }
+
+    public function enviarEmail(Request $request){
+        $dataFormMail = $request->except([
+            '_token',
+            '_method',
+            'submit'
+        ]);
+        
+        $nfe = new nfe();
+        $cliente = new cliente();
+        
+
+        $nfe = $nfe->find($dataFormMail['ID_nfe']);
+        $cliente = $cliente->find($dataFormMail['ID_cliente']);
+
+        $nfe = $nfe->getAttributes();
+        $cliente = $cliente->getAttributes();
+
+        $mail = new NfeMail($nfe,$cliente);
+        $mail->enviarEmail();
+        
+        return back()->with('success', 'Email enviado com sucesso!');
     }
 
     public function autocompleteCodigoProdNfe(Request $request){

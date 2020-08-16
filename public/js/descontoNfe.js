@@ -11,7 +11,7 @@ $(document).ready(function() {
             var desc = 0.0;
 
             resp = valorFinalNotaAux.value - desconto.value;
-            resp = (Math.round(resp * 100) / 100).toFixed(4);
+            //resp = (Math.round(resp * 100) / 100);
             valorFinalNota.value = resp;
 
             porcento.value = (100*valorFinalNota.value)/valorFinalNotaAux.value;
@@ -27,7 +27,7 @@ $(document).ready(function() {
             
             resp = valorFinalNotaAux.value - (valorFinalNotaAux.value*desconto.value)/100;
             //resp = (Math.round(resp * 100) / 100);
-            valorFinalNota.value = resp.toFixed(4);
+            valorFinalNota.value = resp;
             console.log(resp);
             desc = valorFinalNotaAux.value - valorFinalNota.value;
             //desc = (Math.round(desc * 100) / 100);
