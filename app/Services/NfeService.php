@@ -302,11 +302,10 @@ class NfeService{
                 //====================TAG FATURA===================
                 $fat = new stdClass();
                 $fat->nFat = $ide->nNF;
-                $fat->vOrig = number_format($nfe2['total'],9,'.','');
-                $fat->vDesc = number_format($nfe3['desconto'],9,'.','');
-                //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
+                $fat->vOrig = number_format($nfe2['total'],2,'.','');
+                $fat->vDesc = number_format($nfe3['desconto'],2,'.','');
                 $fat->vLiq =  $fat->vOrig - $fat->vDesc;
-
+                //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
                 $respFat = $nfe->tagfat($fat);
                 //====================TAG DUPLICATA===================    
                 $diff = number_format($nfe3['precoFinal']/$nfe1['numParc'],2,'.','');
@@ -317,7 +316,7 @@ class NfeService{
                     # code...
                 
                     $dup = new stdClass();
-                    $dup->nDup = '00'.($i+1);
+                    $dup->nDup = str_pad($i+1, 3, "0", STR_PAD_LEFT);
                     $dup->dVenc = $datas[$i];
                     $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
                     // IF para adicionar o centavos na ultima parcela se necessario
@@ -362,8 +361,7 @@ class NfeService{
                 $xml = $nfe->monta();
                 //=== CODIGO PARA GERAR O CÓDIGO DA NFE
                 $mes = date('m');
-                $ano = date('y');
-                $cNFcomZero = STR_PAD($ide->nNF, 9, '0', STR_PAD_LEFT);               
+                $ano = date('y');           
                 //$chave = $ide->cUF.$ano.$mes.$emit->CNPJ.$ide->mod.'00'.$ide->serie.$cNFcomZero.$ide->tpEmis.$ide->cNF.'0';
                 $chave = Keys::build($ide->cUF, $ano, $mes, $emit->CNPJ, $ide->mod, $ide->serie, $ide->nNF, $ide->tpEmis, $ide->cNF);
                 //=== COLOCA O XML E A CHAVE NO ARRAY DE RETORNO

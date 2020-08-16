@@ -43,6 +43,15 @@
     </button>
 </div>
 @endif
+@if (\Session::has('error'))
+<div class="alert alert-danger alert-dismissible fade show">
+    {!! \Session::get('error') !!}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
         <h6>Gestão de NF-e</h6>
