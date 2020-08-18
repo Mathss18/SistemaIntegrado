@@ -44,7 +44,16 @@ class NfeService{
             $ide->cUF = 35;
             $ide->nNF = $nNFdb;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
-            $ide->natOp = $nfe1['natOp'];
+            if($nfe1['natOp'] == "6101"){
+                $ide->natOp = $nfe1['natOp']."- Vendas Fora do Estado";
+            }
+            else if($nfe1['natOp'] == "5101"){
+                $ide->natOp = $nfe1['natOp']."- Vendas Dentro do Estado";
+            }
+            else{
+                $ide->natOp = $nfe1['natOp'];
+            }
+            //$ide->natOp = $nfe1['natOp'];
 
             //$stdIde->indPag = 0; //NÃO EXISTE MAIS NA VERSÃO 4.00
 
@@ -316,6 +325,7 @@ class NfeService{
                     # code...
                 
                     $dup = new stdClass();
+
                     $dup->nDup = str_pad($i+1, 3, "0", STR_PAD_LEFT);
                     $dup->dVenc = $datas[$i];
                     $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
@@ -348,7 +358,7 @@ class NfeService{
 
                 //====================INFO ADICIONAL===================
                 $stdInfo = new stdClass();
-                $stdInfo->infAdFisco = $nfe3['infoAdc'] ?? "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL, CONFORME LEI COMPLEMENTAR 123/2006 II - NAO GERA DIREITO A CREDITO FISCAL DE IPI. III - PERMITE O APROVEITAMENTO DO CREDITO DE ICMS NO VALOR DE R$ ".$icms->vCredICMSSN." CORRESPONDENTE A ALIQUOTA DE ".$aliquota->aliquota.", NOS TERMOS DO ART. 23 DA LC 123/2006";
+                $stdInfo->infAdFisco = $nfe3['infoAdc']." --- DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL, CONFORME LEI COMPLEMENTAR 123/2006 II - NAO GERA DIREITO A CREDITO FISCAL DE IPI. III - PERMITE O APROVEITAMENTO DO CREDITO DE ICMS NO VALOR DE R$ ".$icms->vCredICMSSN." CORRESPONDENTE A ALIQUOTA DE ".$aliquota->aliquota.", NOS TERMOS DO ART. 23 DA LC 123/2006";
                 //$std->infCpl = 'informacoes complementares';
 
                 $nfe->taginfAdic($stdInfo);

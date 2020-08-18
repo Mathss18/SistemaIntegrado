@@ -25,7 +25,7 @@ class NfeMail extends Mailable
     {
         return $this->markdown('admin.nfe.mail');
     }
-    public function enviarEmail()
+    public function enviarEmailCli()
     {
 
         Mail::send('admin.nfe.mail', ['cliente' => $this->cliente, 'nfe' => $this->nfe], function ($m) {
@@ -37,10 +37,31 @@ class NfeMail extends Mailable
             $xml = $path_xml . $this->nfe['path_nfe'] . '.xml';
             $pdf = $path_xml . $this->nfe['path_nfe'] . '.pdf';
 
-            $m->from('theus.7@hotmail.com', 'Flex-Mol Nota Fiscal Eletrônica');
+            $m->from('flexmol@flexmol.com.br', 'Flex-Mol, Nota Fiscal Eletrônica');
             $m->attach($xml);
             $m->attach($pdf);
-            $m->to('theus.7@hotmail.com', $this->cliente['nome'])->subject('Nota Fiscal Eletrônica '.$this->nfe['chaveNF']);
+            $m->to($this->cliente['email'], $this->cliente['nome'])->subject('NFe chave: '.$this->nfe['chaveNF']);
+        
+        });
+       
+    }
+
+    public function enviarEmailProprio()
+    {
+
+        Mail::send('admin.nfe.mail', ['cliente' => $this->cliente, 'nfe' => $this->nfe], function ($m) {
+            //Configurando path dos arquivos para enviar os paths são absolutos
+            $path_xml = storage_path('app\public\\');
+            $path_xml = storage_path('app\public\\');
+            $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
+            $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
+            $xml = $path_xml . $this->nfe['path_nfe'] . '.xml';
+            $pdf = $path_xml . $this->nfe['path_nfe'] . '.pdf';
+
+            $m->from('flexmol@flexmol.com.br', 'Flex-Mol, Nota Fiscal Eletrônica');
+            $m->attach($xml);
+            $m->attach($pdf);
+            $m->to('flexmol@flexmol.com.br', $this->cliente['nome'])->subject('NFe chave: '.$this->nfe['chaveNF']);
         
         });
        

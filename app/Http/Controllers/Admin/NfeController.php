@@ -20,7 +20,7 @@ class NfeController extends Controller
 
     public function index(Request $request)
     {
-        /* 
+        
         $request->session()->forget('nfe1');
         $request->session()->forget('nfe2');
         $request->session()->forget('nfe3');
@@ -28,7 +28,7 @@ class NfeController extends Controller
         $request->session()->forget('transp');
         $request->session()->forget('cliente');
         $request->session()->forget('path_nfe');
-        */
+        
         $firma = Auth::user()->firma;
         $nfe = DB::table('nfe as n')->join('cliente as c','n.ID_cliente','=','c.ID_cliente')->select('n.ID_nfe','n.OF','n.nNF', 'n.chaveNF', 'c.nome','n.data_abertura')->orderBy('ID_nfe', 'desc')->get();
         return view('admin.nfe.index',compact('nfe'));
@@ -320,7 +320,8 @@ class NfeController extends Controller
             $cliente = $cliente->getAttributes();
 
             $mail = new NfeMail($nfe,$cliente);
-            $mail->enviarEmail();
+            $mail->enviarEmailCli();
+            $mail->enviarEmailProprio();
             
             return back()->with('success', 'Email enviado com sucesso!');
         }
