@@ -88,7 +88,7 @@
                 <label for="natOp">CFOP</label>
                 <div class="input-group">
                     <select id="natOp" name="natOp" class="custom-select">
-                        <option value="5101">5101-VENDA DENTRO DO ESTADO</option>
+                        <option value="5101">5101 - VENDA DENTRO DO ESTADO</option>
                         <option value="6101">6101 - VENDAS FORA DO ESTADO</option>
                         <option value="1201">1201 - NOTA ENTRADA</option>
                         <option value="2209">2209 - DEVOLUCAO DE MERCADORIA</option>
@@ -277,7 +277,7 @@
             <div class="form-group col-md-4">
                 <label for="nomeTransp">Nome da Transportadora</label>
                 <div class="input-group">
-                    <input required value="{{$nfe['ID_transp'] ?? '' }}" style="display:none" name="ID_transp" id="ID_transp" type="text" class="typeahead form-control " style="margin:0px auto;width:360px;">
+                    <input value="{{$nfe['ID_transp'] ?? '' }}" style="display:none" name="ID_transp" id="ID_transp" type="text" class="typeahead form-control " style="margin:0px auto;width:360px;">
                     <input value="{{$nfe['nomeTransp'] ?? '' }}" class="typeahead form-control" name="nomeTransp" id="nomeTransp" style="margin:0px auto;width:260px;" type="text">
                 </div>
             </div>
@@ -285,7 +285,7 @@
             <div class="form-group col-md-4">
                 <label for="cpf_cnpjTransp">CPF / CNPJ</label>
                 <div class="input-group">
-                    <input required readonly id="cpf_cnpjTransp" name="cpf_cnpjTransp" type="text" class="form-control" value="{{$nfe['cpf_cnpjTransp'] ?? '' }}">
+                    <input readonly id="cpf_cnpjTransp" name="cpf_cnpjTransp" type="text" class="form-control" value="{{$nfe['cpf_cnpjTransp'] ?? '' }}">
                 </div>
             </div>
 

@@ -42,7 +42,7 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = $nNFdb;
+            $ide->nNF = $nNFdb;  //Homologacao = 9909;
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
             if($nfe1['natOp'] == "6101"){
                 $ide->natOp = $nfe1['natOp']."- Vendas Fora do Estado";
@@ -73,7 +73,7 @@ class NfeService{
             $ide->tpImp = 1; //Formato de Impressão da DANFE 1-Retrato / 2-Paisagem
             $ide->tpEmis = 1; 
             //$ide->cDV = 0; // Dígito Verificador da Chave de Acesso da NF-e
-            $ide->tpAmb = 2; // Tipo de Ambiente. 1-Producao / 2-Homologacao
+            $ide->tpAmb = 1; // Tipo de Ambiente. 1-Producao / 2-Homologacao
             $ide->finNFe = 1; // Finalidade de emissão da NF-e  1- NF-e normal/ 2-NF-e complementar / 3 – NF-e de ajuste
             $ide->indFinal = 1; // Consumidor Final ou não. 0-Não / 1-Sim
             $ide->indPres = 1; //Presenca do Consumidor na hora da emissao ou não. 0-Não / 1-Sim
@@ -123,7 +123,13 @@ class NfeService{
             //$dest->ISUF;
             //$dest->IM;
             $dest->email = $nfe1['emailCli'];
-            $dest->CNPJ = $nfe1['cpf_cnpjCli']; //indicar apenas um CNPJ ou CPF ou idEstrangeiro
+            if(strlen($nfe1['cpf_cnpjCli']) == 14){
+                $dest->CNPJ = $nfe1['cpf_cnpjCli'];
+            }
+            else{
+                $dest->CPF = $nfe1['cpf_cnpjCli'];
+            }
+            //$dest->CNPJ = $nfe1['cpf_cnpjCli']; //indicar apenas um CNPJ ou CPF ou idEstrangeiro
             //$dest->CPF;
             //$dest->idEstrangeiro;
 
@@ -285,16 +291,18 @@ class NfeService{
                 $respTransp = $nfe->tagtransp($transp);
 
                 //====================TAG TRANSPORTADORA===================
-                $transportadora = new stdClass();
-                $transportadora->xNome = $nfe1['nomeTransp'];
-                $transportadora->IE = $transpo[0]->inscricao_estadual;
-                $transportadora->xEnder = $transpo[0]->logradouro;
-                $transportadora->xMun = $transpo[0]->cidade;
-                $transportadora->UF = $transpo[0]->uf;
-                $transportadora->CNPJ = $nfe1['cpf_cnpjTransp'];//só pode haver um ou CNPJ ou CPF, se um deles é especificado o outro deverá ser null
-                //$transportadora->CPF = null;
+                if( $nfe1['nomeTransp'] != null ||  $nfe1['nomeTransp'] != ''){
+                    $transportadora = new stdClass();
+                    $transportadora->xNome = $nfe1['nomeTransp'];
+                    $transportadora->IE = $transpo[0]->inscricao_estadual;
+                    $transportadora->xEnder = $transpo[0]->logradouro;
+                    $transportadora->xMun = $transpo[0]->cidade;
+                    $transportadora->UF = $transpo[0]->uf;
+                    $transportadora->CNPJ = $nfe1['cpf_cnpjTransp'];//só pode haver um ou CNPJ ou CPF, se um deles é especificado o outro deverá ser null
+                    //$transportadora->CPF = null;
 
                 $respTransportadora = $nfe->tagtransporta($transportadora);
+                }
 
                 //====================TAG VOLUME===================
                 $vol = new stdClass();
@@ -467,6 +475,46 @@ class NfeService{
 
         //FUNCOES EXTRAS
         
+        public function inutilizaNfe($config){
+            //dd('oi');
+
+            try {
+                $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+                $certificate = Certificate::readPfx($certificadoDigital, '31083684');
+                $tools = new Tools(json_encode($config), $certificate);
+            
+                $nSerie = '1';
+                $nIni = '9764';
+                $nFin = '9904';
+                $xJust = 'Erro de digitação dos números sequenciais das notas';
+                $response = $tools->sefazInutiliza($nSerie, $nIni, $nFin, $xJust);
+            
+                //você pode padronizar os dados de retorno atraves da classe abaixo
+                //de forma a facilitar a extração dos dados do XML
+                //NOTA: mas lembre-se que esse XML muitas vezes será necessário, 
+                //      quando houver a necessidade de protocolos
+                $stdCl = new Standardize($response);
+                //nesse caso $std irá conter uma representação em stdClass do XML
+                $std = $stdCl->toStd();
+                //nesse caso o $arr irá conter uma representação em array do XML
+                $arr = $stdCl->toArray();
+                //nesse caso o $json irá conter uma representação em JSON do XML
+                $json = $stdCl->toJson();
+                echo $json;
+                $std1 = new Standardize($response);
+                $retorno = $std1->toStd();
+                $cStat = $retorno->infInut->cStat;
+                if ($cStat == '102' || $cStat == '563') {//validou
+                    file_put_contents('inutizar.xml',$response);//grava o xml da inutilzação
+                } else {
+                    dd('houve alguma falha no evento');
+                }
+                
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+            }
+            
+        }
 
     }
 

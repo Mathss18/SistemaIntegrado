@@ -28,7 +28,7 @@ class NfeController extends Controller
         $request->session()->forget('transp');
         $request->session()->forget('cliente');
         $request->session()->forget('path_nfe');
-        
+       
         $firma = Auth::user()->firma;
         $nfe = DB::table('nfe as n')->join('cliente as c','n.ID_cliente','=','c.ID_cliente')->select('n.ID_nfe','n.OF','n.nNF', 'n.chaveNF', 'c.nome','n.data_abertura')->orderBy('ID_nfe', 'desc')->get();
         return view('admin.nfe.index',compact('nfe'));
@@ -142,10 +142,11 @@ class NfeController extends Controller
             $qtde = DB::table('pedido as p')->select('p.codigo','p.quantidade')->where('p.OF', $of)->get()->toArray();
             array_push($quantidades,$qtde[$key]->quantidade);  
         }
+        
         foreach ($produtosNota as $key => $value) {
             array_push($produtosNota2,$produtosNota[$key][0]);    
         }
-        
+        //dd($produtosNota2);
         $produtos = $produtosNota2;
         
 
@@ -212,7 +213,7 @@ class NfeController extends Controller
 
         $nfeService = new NfeService([
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
             "siglaUF" => "SP",
             "cnpj" => "04568351000154",
@@ -248,6 +249,7 @@ class NfeController extends Controller
         //dd($data);
         
         $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb,$aliquota);
+        //dd($xml[0]);
         //dd($xml); $xml[0] -Nfe  /  $xml[1] -chaveNfe  /  $xml[2] -nNF
         $xmlAssinada = $nfeService->assinar($xml[0]);
 
@@ -329,6 +331,52 @@ class NfeController extends Controller
             return back()->with('error', 'Função indisponível no momento!');
         }
     }
+    public function inutilizarShow(){
+        return view('admin.nfe.inutilizar');
+    }
+    public function inutilizar(Request $request){
+
+        $nfeService = new NfeService([
+            "atualizacao" => "2015-10-02 06:01:21",
+            "tpAmb" => 1,
+            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+            "siglaUF" => "SP",
+            "cnpj" => "04568351000154",
+            "schemes" => "PL_009_V4",
+            "versao" => "4.00",
+            "tokenIBPT" => "AAAAAAA",
+            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+            "CSCid" => "000002",
+            "aProxyConf" => [
+                "proxyIp" => "",
+                "proxyPort" => "",
+                "proxyUser" => "",
+                "proxyPass" => ""
+            ]
+        ]);
+
+                $configu = [
+                    "atualizacao" => "2015-10-02 06:01:21",
+                    "tpAmb" => 1,
+                    "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+                    "siglaUF" => "SP",
+                    "cnpj" => "04568351000154",
+                    "schemes" => "PL_009_V4",
+                    "versao" => "4.00",
+                    "tokenIBPT" => "AAAAAAA",
+                    "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+                    "CSCid" => "000002",
+                    "aProxyConf" => [
+                        "proxyIp" => "",
+                        "proxyPort" => "",
+                        "proxyUser" => "",
+                        "proxyPass" => ""
+                    ]
+                    ];
+
+        $nfeService->inutilizaNfe($configu);
+    }
+
 
     public function autocompleteCodigoProdNfe(Request $request){
 
@@ -340,4 +388,6 @@ class NfeController extends Controller
         return response()->json($produto_cliente);
         }
 
+    
+    
 }

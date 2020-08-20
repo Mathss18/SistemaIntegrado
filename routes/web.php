@@ -124,6 +124,10 @@ Route::group(['middleware' => ['auth']],function(){
 
     Route::get('autocompleteCodigoProdNfe','Admin\NfeController@autocompleteCodigoProdNfe');
 
+    /* Rotas de Inutilização de NFe
+    Route::get('/admin/nfe/inutilizarShow','Admin\NfeController@inutilizarShow')->middleware('auth.tipo:Admin');
+    Route::post('/admin/nfe/inutilizar','Admin\NfeController@inutilizar')->name('nfe.inutilizar')->middleware('auth.tipo:Admin');
+    */
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
 });
 
