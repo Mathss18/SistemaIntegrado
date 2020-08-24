@@ -65,41 +65,75 @@
 
                 <div class="row">
                     <form action="{{route('nfe.enviarEmail')}}" method="post">
-                    {!! method_field('POST') !!}
-                    {!! csrf_field() !!}
-                    <div class="container-fluid ml-3">
-                        <div class="row mb-2">
-                            <div>
-                                <input readonly id="ID_nfe" name="ID_nfe" type="hidden" class="form-control" value="{{$nfe->ID_nfe ?? '' }}">
-                                <input readonly id="ID_cliente" name="ID_cliente" type="hidden" class="form-control" value="{{$cliente->ID_cliente ?? '' }}">
-                                <button type="submit" class="btn btn-success ml-3" value='true' name='email'>
-                                <i class="fas fa-paper-plane"></i>
-                                Enviar nota por Email
-                                </button>
+                        {!! method_field('POST') !!}
+                        {!! csrf_field() !!}
+                        <div class="container-fluid ml-3">
+                            <div class="row mb-5">
+                                <div>
+                                    <input readonly id="ID_nfe" name="ID_nfe" type="hidden" class="form-control" value="{{$nfe->ID_nfe ?? '' }}">
+                                    <input readonly id="ID_cliente" name="ID_cliente" type="hidden" class="form-control" value="{{$cliente->ID_cliente ?? '' }}">
+                                    <button type="submit" class="btn btn-success ml-3" value='true' name='email'>
+                                        <i class="fas fa-paper-plane"></i>
+                                        Enviar nota por Email
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-2">
-                            <div>
-                                <button type="submit" class="btn btn-info ml-3" value='true' name='cartaCorrecao1'>
-                                <i class="fas fa-eraser"></i>
-                                Carta de Correção
-                                </button>
+                            <div class="row mb-5">
+                                <div>
+                                    <button type="button" data-toggle="modal" data-target="#modalCartaCorrecao" class="btn btn-info ml-3" value='true' name='cartaCorrecao1'>
+                                        <i class="fas fa-eraser"></i>
+                                        Carta de Correção
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-2">
-                            <div>
-                                <button type="submit" class="btn btn-danger ml-3" value='true' name='cancelarNfe'>
-                                <i class="fas fa-ban"></i>
-                                Cancelar Nota
-                                </button>
+                            <div class="row mb-5">
+                                <div>
+                                    <button type="submit" class="btn btn-danger ml-3" value='true' name='cancelarNfe'>
+                                        <i class="fas fa-ban"></i>
+                                        Cancelar Nota
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalCartaCorrecao" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if($nfe->nSeqEvento==0)
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Primeira</b> Carta de Correção</h5>
+                @elseif($nfe->nSeqEvento==1)
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Segunda</b> Carta de Correção</h5>
+                @endif
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{route('nfe.cartaCorrecao')}}" method="post">
+                <div class="modal-body">
+
+                    <input type="hidden" name="chaveNF" value="{{$nfe->chaveNF}}">
+                    <input type="text" name="nSeqEvento" value="{{$nfe->nSeqEvento}}">
+                    <label for="just">Justificativa</label>
+                    <textarea name="just" id="just" class="form-control" cols="20" rows="5"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    @if($nfe->nSeqEvento<=2) 
+                    <button type="submit" class="btn btn-primary">Enviar Correção</button>
+                    @endif
+                </div>
+            </form>
         </div>
     </div>
 </div>

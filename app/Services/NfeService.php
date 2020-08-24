@@ -50,6 +50,15 @@ class NfeService{
             else if($nfe1['natOp'] == "5101"){
                 $ide->natOp = $nfe1['natOp']."- Vendas Dentro do Estado";
             }
+            else if($nfe1['natOp'] == "5902"){
+                $ide->natOp = $nfe1['natOp']."- Retorno De Mercadoria";
+            }
+            else if($nfe1['natOp'] == "5124"){
+                $ide->natOp = $nfe1['natOp']."- Industrialização";
+            }
+            else if($nfe1['natOp'] == "5901"){
+                $ide->natOp = $nfe1['natOp']."- Remessa para Industrialização por Encomenda";
+            }
             else{
                 $ide->natOp = $nfe1['natOp'];
             }
@@ -476,7 +485,6 @@ class NfeService{
         //FUNCOES EXTRAS
         
         public function inutilizaNfe($config){
-            //dd('oi');
 
             try {
                 $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <nfeResultMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeInutilizacao4">
+            <retInutNFe versao="4.00"
+                xmlns="http://www.portalfiscal.inf.br/nfe">
+                <infInut>
+                    <tpAmb>1</tpAmb>
+                    <verAplic>SP_NFE_PL009_V4</verAplic>
+                    <cStat>102</cStat>
+                    <xMotivo>Inutilização de número homologado</xMotivo>
+                    <cUF>35</cUF>
+                    <ano>20</ano>
+                    <CNPJ>04568351000154</CNPJ>
+                    <mod>55</mod>
+                    <serie>1</serie>
+                    <nNFIni>9764</nNFIni>
+                    <nNFFin>9904</nNFFin>
+                    <dhRecbto>2020-08-19T22:32:57-03:00</dhRecbto>
+                    <nProt>135200718747762</nProt>
+                </infInut>
+            </retInutNFe>
+        </nfeResultMsg>
+    </soap:Body>
+</soap:Envelope>

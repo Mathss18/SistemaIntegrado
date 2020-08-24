@@ -54,12 +54,20 @@ class PedidoController extends Controller
     
     public function create()
     {
+        $firma = Auth::user()->firma;
+        $token = hexdec(uniqid());  
+        $pedacoToken = substr($token, -6);
+        $ano = date("y");
+        $mes = date("m");
+        $dia = date("d");
+
+        $codigo = strtoupper($pedacoToken.'-'.$firma.$dia.$mes.$ano);
+        
         $hoje = date('Y-m-d');
         $titulo = 'Gestão de Pedidos';
-        $firma = Auth::user()->firma;
         $funcionarios = new Funcionario;
         $funcionarios = $funcionarios->all();
-        return view('admin.pedido.create-edit',compact('titulo','funcionarios','hoje','firma'));
+        return view('admin.pedido.create-edit',compact('titulo','funcionarios','hoje','firma','codigo'));
     }
 
     

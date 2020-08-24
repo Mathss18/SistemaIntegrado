@@ -378,6 +378,15 @@ class NfeController extends Controller
     }
 
 
+    public function cartaCorrecao(Request $request){
+        $dataFormCorrecao = $request->except([
+            '_token',
+            '_method',
+            'submit'
+        ]);
+        dd($dataFormCorrecao);
+
+    }
     public function autocompleteCodigoProdNfe(Request $request){
 
         $firma = Auth::user()->firma;

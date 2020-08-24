@@ -123,11 +123,15 @@ Route::group(['middleware' => ['auth']],function(){
     Route::post('/admin/nfe/enviarEmail', 'Admin\NfeController@enviarEmail')->name('nfe.enviarEmail')->middleware('auth.tipo:Admin,Secretaria');
 
     Route::get('autocompleteCodigoProdNfe','Admin\NfeController@autocompleteCodigoProdNfe');
-
+    
+    //--Carata Correcao Nfe
+    Route::post('/admin/nfe/correcao','Admin\NfeController@cartaCorrecao')->name('nfe.cartaCorrecao')->middleware('auth.tipo:Admin,Secretaria');
+    
     /* Rotas de Inutilização de NFe
     Route::get('/admin/nfe/inutilizarShow','Admin\NfeController@inutilizarShow')->middleware('auth.tipo:Admin');
     Route::post('/admin/nfe/inutilizar','Admin\NfeController@inutilizar')->name('nfe.inutilizar')->middleware('auth.tipo:Admin');
     */
+
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
 });
 

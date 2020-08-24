@@ -90,11 +90,14 @@
                     <select id="natOp" name="natOp" class="custom-select">
                         <option value="5101">5101 - VENDA DENTRO DO ESTADO</option>
                         <option value="6101">6101 - VENDAS FORA DO ESTADO</option>
-                        <option value="1201">1201 - NOTA ENTRADA</option>
+                        <option value="5902">5902 - RETORNO DE MERCADORIA</option>
+                        <option value="5124">5124 - INDUSTRIALIZAÇÃO</option>
+                        <option value="5901">5901 - REMESSA P/INDUSTRIALIZAÇÃO POR ENCOMENDA</option>
+
                         <option value="2209">2209 - DEVOLUCAO DE MERCADORIA</option>
-                        <option value="5902">5902 - RETORNO</option>
-                        <option value="59025903">5902 / 5903 - RETORNO DE MERCADORIA</option>
+                        <option value="1201">1201 - NOTA ENTRADA</option>
                         <option value="5903">5903 - RETORNO DE MERC RECEBIDA IND NAO APLIC REFER PROCESSO</option>
+                        <option value="5124">5124 - INDUSTRIALIZACAO</option>
                         <option value="5916">5916-RETORNO DE MERC OU BEM RECEBIDO P CONSERTO OU REPARO</option>
                         <option value="1551">COMPRA DE BEM P O ATIVO IMOBILIZADO</option>
                         <option value="1101">COMPRA PARA INDUSTRIALIZACAO OU PROD RURAL</option>
@@ -109,8 +112,6 @@
                         <option value="5201">DEVOLUÇÃO DE MERCADORIA</option>
                         <option value="5413">DEVOLUÇÃO DE MERCADORIA DESTINADA AO USO E CONSUMO ST</option>
                         <option value="6949">DEVOLUÇÃO PARA TROCA</option>
-                        <option value="5124">INDUSTRIALIZACAO</option>
-                        <option value="6124">INDUSTRIALIZAÇÃO</option>
                         <option value="5502">REMESSA COM FIM ESPECIFICO DE EXPORTAÇÃO</option>
                         <option value="5911">REMESSA DE AMOSTRA GRÁTIS</option>
                         <option value="5910">REMESSA DE BRINDES</option>
@@ -119,7 +120,6 @@
                         <option value="5915">REMESSA DE MERCADORIA P/CONSERTO</option>
                         <option value="6915">REMESSA P/CONSERTO FORA DO ESTADO (SAÍDA)</option>
                         <option value="5905">REMESSA P/DEPOSITO FECHADO</option>
-                        <option value="5901">REMESSA P/INDUSTRIALIZAÇÃO POR ENCOMENDA</option>
                         <option value="1949">RETORNO</option>
                         <option value="5906">RETORNO DE DEPOSITO FECHADO</option>
                         <option value="2949">RETORNO DE MERCADORIA NÃO ENTREGUE AO DESTINATÁRIO</option>
