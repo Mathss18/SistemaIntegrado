@@ -102,7 +102,11 @@
                         <div class="input-group-addon ">
                             <i class="fa fa-envelope"></i>
                         </div>
-                        <input required id="OF" name="OF" type="text" class="form-control" value="{{$pedido->OF ?? $codigo }}">
+                        @if($firma == 'FM')
+                        <input required id="OF" name="OF" type="text" class="form-control" value="{{$pedido->OF ?? '$codigo '}}">
+                        @else
+                        <input required id="OF" name="OF" type="text" class="form-control" value="{{$pedido->OF ?? '' }}">
+                        @endif
                     </div>
                 </div>
                 @if(!isset($pedido))

@@ -61,7 +61,9 @@ class PedidoController extends Controller
         $mes = date("m");
         $dia = date("d");
 
-        $codigo = strtoupper($pedacoToken.'-'.$firma.$dia.$mes.$ano);
+        $codigo = DB::table('pedido')->orderBy('ID_pedido', 'desc')->first();
+        $codigo = $codigo->OF+1;
+        //$codigo = strtoupper($pedacoToken.'-'.$firma.$dia.$mes.$ano);
         
         $hoje = date('Y-m-d');
         $titulo = 'Gestão de Pedidos';
