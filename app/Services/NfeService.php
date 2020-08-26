@@ -42,7 +42,7 @@ class NfeService{
             $ide = new stdClass();
 
             $ide->cUF = 35;
-            $ide->nNF = $nNFdb;  //Homologacao = 9909;
+            $ide->nNF = $nNFdb; //99909
             $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
             if($nfe1['natOp'] == "6101"){
                 $ide->natOp = $nfe1['natOp']."- Vendas Fora do Estado";
@@ -182,7 +182,7 @@ class NfeService{
                     $prod->qTrib = $nfe2['quantidade'][$i];
                     $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100),9); // Valor total - %desconto
                     $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
-                    //$prod->vFrete = 0.00;
+                    $prod->vFrete = $nfe1['valorFrete'];
                     //$prod->vSeg = 0.00;
                     //$prod->vDesc =  (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100);
                     //$prod->vOutro = 0.00;
@@ -278,7 +278,7 @@ class NfeService{
                 $icmsTotal->vFCPST = 0.00; //incluso no layout 4.00
                 $icmsTotal->vFCPSTRet = 0.00; //incluso no layout 4.00
                 $icmsTotal->vProd = number_format($nfe3['precoFinal'],2,'.','');
-                $icmsTotal->vFrete = 0.00;
+                $icmsTotal->vFrete = $nfe1['valorFrete'];
                 $icmsTotal->vSeg = 0.00;
                 $icmsTotal->vDesc = 0.00;
                 $icmsTotal->vII = 0.00;
@@ -287,7 +287,7 @@ class NfeService{
                 $icmsTotal->vPIS = 0.00;
                 $icmsTotal->vCOFINS = 0.00;
                 $icmsTotal->vOutro = 0.00;
-                $icmsTotal->vNF = $nfe3['precoFinal'];
+                $icmsTotal->vNF = $nfe3['precoFinal']+$nfe1['valorFrete'];
                 //$icmsTotal->vTotTrib = 0.00;
 
                 $repsIcmsTotal = $nfe->tagICMSTot($icmsTotal);
@@ -328,13 +328,13 @@ class NfeService{
                 //====================TAG FATURA===================
                 $fat = new stdClass();
                 $fat->nFat = $ide->nNF;
-                $fat->vOrig = number_format($nfe2['total'],2,'.','');
+                $fat->vOrig = number_format($nfe2['total']+$nfe1['valorFrete'],2,'.','');
                 $fat->vDesc = number_format($nfe3['desconto'],2,'.','');
                 $fat->vLiq =  $fat->vOrig - $fat->vDesc;
                 //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
                 $respFat = $nfe->tagfat($fat);
                 //====================TAG DUPLICATA===================    
-                $diff = number_format($nfe3['precoFinal']/$nfe1['numParc'],2,'.','');
+                $diff = number_format(($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'],2,'.','');
                 
                 $diff = number_format($fat->vLiq - $diff*$nfe1['numParc'],2);
                 
@@ -345,7 +345,7 @@ class NfeService{
 
                     $dup->nDup = str_pad($i+1, 3, "0", STR_PAD_LEFT);
                     $dup->dVenc = $datas[$i];
-                    $dup->vDup = $nfe3['precoFinal']/$nfe1['numParc'];
+                    $dup->vDup = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'];
                     // IF para adicionar o centavos na ultima parcela se necessario
                     if($i == $nfe1['numParc']-1){
 
@@ -364,7 +364,7 @@ class NfeService{
                 //====================TAG DETALHE PAGAMENTO===================
                 $detPag = new stdClass();
                 $detPag->tPag = '15';
-                $detPag->vPag = $nfe3['precoFinal']; //Obs: deve ser informado o valor pago pelo cliente
+                $detPag->vPag = $nfe3['precoFinal']+$nfe1['valorFrete']; //Obs: deve ser informado o valor pago pelo cliente
                 //$detPag->CNPJ = '12345678901234';
                 //$detPag->tBand = '01';
                 //$detPag->cAut = '3333333';

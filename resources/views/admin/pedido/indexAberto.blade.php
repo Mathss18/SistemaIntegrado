@@ -21,43 +21,43 @@
         $('#tableDT').DataTable({
             "order": [],
             "language": {
-            url: '../../js/traducao.json',
-            decimal: ",",
-        },
+                url: '../../js/traducao.json',
+                decimal: ",",
+            },
         });
 
     });
 </script>
 <script>
     $(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
     });
-});
 </script>
 @stop
 
 @section('content')
 @if (\Session::has('success'))
-    <div class="alert alert-success alert-dismissible fade show">
-        {!! \Session::get('success') !!}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-    </div>
+<div class="alert alert-success alert-dismissible fade show">
+    {!! \Session::get('success') !!}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 @endif
 @if (\Session::has('error'))
-    <div class="alert alert-danger alert-dismissible fade show">
-        {!! \Session::get('error') !!}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-    </div>
+<div class="alert alert-danger alert-dismissible fade show">
+    {!! \Session::get('error') !!}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 @endif
 
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
-        <h6>Gestão de Pedidos</h6>
+        <h6>Gestão de Pedidos <b>ABERTOS</b></h6>
         <a href="{{route('pedido.create')}}" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span>
             Cadastrar Novo Pedido
@@ -93,29 +93,5 @@
         </table>
 
     </div>
-</div>
-
-<!-- Modal Pergunta -->
-<div class="modal fade" id="ModalPergunta" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true" data-target=".bd-example-modal-lg">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 style="color:orange;" class="modal-title" id="TituloModalCentralizadoPergunta">Escolha Uma Opção</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h4>Deseja Editar ou Excluir este Pedido?</h4>
-            </div>
-            <div class="modal-footer">
-                <a ><button type="button" class="btn btn-outline-success">Editar</button></a>
-                <a ><button type="button" class="btn btn-outline-danger">Exluir</button></a>
-            </div>
-            </form>
-        </div>
-
-    </div>
-</div>
 </div>
 @stop
