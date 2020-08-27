@@ -143,6 +143,7 @@ class NfeService{
             //$dest->idEstrangeiro;
 
             $respDest = $nfe->tagdest($dest);
+            
 
             //====================TAG ENDERECO DESTINATARIO===================
             $enderDest = new stdClass();
@@ -182,7 +183,7 @@ class NfeService{
                     $prod->qTrib = $nfe2['quantidade'][$i];
                     $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100),9); // Valor total - %desconto
                     $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
-                    $prod->vFrete = $nfe1['valorFrete'];
+                    //$prod->vFrete = $nfe1['valorFrete'];
                     //$prod->vSeg = 0.00;
                     //$prod->vDesc =  (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100);
                     //$prod->vOutro = 0.00;
@@ -298,7 +299,7 @@ class NfeService{
                 
 
                 $respTransp = $nfe->tagtransp($transp);
-
+                
                 //====================TAG TRANSPORTADORA===================
                 if( $nfe1['nomeTransp'] != null ||  $nfe1['nomeTransp'] != ''){
                     $transportadora = new stdClass();
@@ -312,7 +313,7 @@ class NfeService{
 
                 $respTransportadora = $nfe->tagtransporta($transportadora);
                 }
-
+                
                 //====================TAG VOLUME===================
                 $vol = new stdClass();
                 //$vol->item = 1; //indicativo do numero do volume
@@ -383,9 +384,16 @@ class NfeService{
                 //====================MONTA A NOTA FISCAL ====================
 
                 $erros = $nfe->getErrors();
+                
                 //$chave = $nfe->getChave();
                 $resp = array();
+
+                // UTILIZAR OU A PRIMEIRA OU SEGUNDA OPCAO CASO ERRO XML NOT IS VALID
                 $xml = $nfe->monta();
+                //$xml = $nfe->getXML();
+                //dd($xml);
+
+
                 //=== CODIGO PARA GERAR O CÓDIGO DA NFE
                 $mes = date('m');
                 $ano = date('y');           
@@ -404,6 +412,7 @@ class NfeService{
 
         public function assinar($xml){
             $xmlSigned = $this->tools->signNFe($xml);
+            
             return $xmlSigned;
         }
 
@@ -567,7 +576,57 @@ class NfeService{
                     }
                 }    
             } catch (\Exception $e) {
-                dd('Erro!',$e);
+                dd('Erro!',$e,$e->getMessage());
+            }
+        }
+
+        public function cancelarNfe($config,$chave,$just,$protocolo){
+            try {
+
+                $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+                $certificate = Certificate::readPfx($certificadoDigital, '31083684');
+                $tools = new Tools(json_encode($config), $certificate);
+                $tools->model('55');
+            
+                $chave = $chave;
+                $xJust = $just;
+                $nProt = $protocolo;
+                $mes = date('m');
+                $ano = date('Y');
+            
+                $response = $tools->sefazCancela($chave, $xJust, $nProt);
+            
+                //você pode padronizar os dados de retorno atraves da classe abaixo
+                //de forma a facilitar a extração dos dados do XML
+                //NOTA: mas lembre-se que esse XML muitas vezes será necessário, 
+                //      quando houver a necessidade de protocolos
+                $stdCl = new Standardize($response);
+                //nesse caso $std irá conter uma representação em stdClass do XML
+                $std = $stdCl->toStd();
+                //nesse caso o $arr irá conter uma representação em array do XML
+                $arr = $stdCl->toArray();
+                //nesse caso o $json irá conter uma representação em JSON do XML
+                $json = $stdCl->toJson();
+                
+                //verifique se o evento foi processado
+                if ($std->cStat != 128) {
+                    //houve alguma falha e o evento não foi processado
+                    dd('Erro Ao Cancelar Nota!  Erro numero:',$std->cStat);
+                } else {
+                    $cStat = $std->retEvento->infEvento->cStat;
+                    if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
+                        //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
+                        $xml = Complements::toAuthorize($tools->lastRequest, $response);
+                        file_put_contents('cancelar.xml',$response);
+                        Storage::put('NfeCancelada/'.$mes.'-'.$ano.'/'.$chave.'.xml', $response);
+                        return 1;
+                    } else {
+                        //houve alguma falha no evento 
+                        dd('Erro Ao Cancelar Nota!  Erro numero:',$std->cStat);
+                    }
+                }    
+            } catch (\Exception $e) {
+                dd('Erro!',$e,$e->getMessage());
             }
         }
 

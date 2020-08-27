@@ -438,6 +438,68 @@ class NfeController extends Controller
         
 
     }
+
+    public function cancelar(Request $request){
+        $dataFormCancelar = $request->except([
+            '_token',
+            '_method',
+            'submit'
+        ]);
+        dd($dataFormCancelar);
+        $chave = $dataFormCancelar['chaveNF'];
+        $just = $dataFormCancelar['just'];
+        $protocolo = $dataFormCancelar['protocolo'];
+        $idNfe = $dataFormCancelar['idNfe'];
+        $nfeService = new NfeService([
+            "atualizacao" => "2015-10-02 06:01:21",
+            "tpAmb" => 1,
+            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+            "siglaUF" => "SP",
+            "cnpj" => "04568351000154",
+            "schemes" => "PL_009_V4",
+            "versao" => "4.00",
+            "tokenIBPT" => "AAAAAAA",
+            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+            "CSCid" => "000002",
+            "aProxyConf" => [
+                "proxyIp" => "",
+                "proxyPort" => "",
+                "proxyUser" => "",
+                "proxyPass" => ""
+            ]
+        ]);
+
+        $configu = [
+            "atualizacao" => "2015-10-02 06:01:21",
+            "tpAmb" => 1,
+            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+            "siglaUF" => "SP",
+            "cnpj" => "04568351000154",
+            "schemes" => "PL_009_V4",
+            "versao" => "4.00",
+            "tokenIBPT" => "AAAAAAA",
+            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+            "CSCid" => "000002",
+            "aProxyConf" => [
+                "proxyIp" => "",
+                "proxyPort" => "",
+                "proxyUser" => "",
+                "proxyPass" => ""
+            ]
+        ];
+        
+        $resp = $nfeService->cancelarNfe($configu,$chave,$just,$protocolo);
+        if($resp == 1){
+            return back()->with('success', 'Carta de Correção Protocolada!');
+        }
+        else{
+            return back()->with('error', 'Carta de Correção Rejeitada!');
+        }
+        
+        
+
+    }
+
     public function autocompleteCodigoProdNfe(Request $request){
 
         $firma = Auth::user()->firma;

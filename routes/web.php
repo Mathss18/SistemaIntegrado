@@ -126,6 +126,9 @@ Route::group(['middleware' => ['auth']],function(){
     
     //--Carata Correcao Nfe
     Route::post('/admin/nfe/correcao','Admin\NfeController@cartaCorrecao')->name('nfe.cartaCorrecao')->middleware('auth.tipo:Admin,Secretaria');
+
+    //--Carata Correcao Nfe
+    Route::post('/admin/nfe/cancelar','Admin\NfeController@cancelar')->name('nfe.cancelar')->middleware('auth.tipo:Admin,Secretaria');
     
     /* Rotas de Inutilização de NFe
     Route::get('/admin/nfe/inutilizarShow','Admin\NfeController@inutilizarShow')->middleware('auth.tipo:Admin');

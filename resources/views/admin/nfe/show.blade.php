@@ -81,7 +81,7 @@
 
                             <div class="row mb-5">
                                 <div>
-                                    <button type="button" data-toggle="modal" data-target="#modalCartaCorrecao" class="btn btn-info ml-3" value='true' name='cartaCorrecao1'>
+                                    <button type="button" data-toggle="modal" data-target="#modalCartaCorrecao" class="btn btn-info ml-3">
                                         <i class="fas fa-eraser"></i>
                                         Carta de Correção
                                     </button>
@@ -90,10 +90,19 @@
 
                             <div class="row mb-5">
                                 <div>
-                                    <button type="submit" class="btn btn-danger ml-3" value='true' name='cancelarNfe'>
+                                    <button type="button" class="btn btn-danger ml-3" data-toggle="modal" data-target="#modalCancelar">
                                         <i class="fas fa-ban"></i>
                                         Cancelar Nota
                                     </button>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5">
+                                <div>
+                                    <a type="button" class="btn btn-dark ml-3" href="{{url('storage/'.$nfe->path_nfe.'.xml')}}" target="_blank">
+                                        <i class="fa fa-eye"></i>
+                                        Exibir XML
+                                    </a>
                                 </div>
                             </div>
                     </form>
@@ -146,11 +155,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                @if($nfe->nSeqEvento==0)
-                <h5 class="modal-title" id="exampleModalLongTitle"><b>Primeira</b> Carta de Correção</h5>
-                @elseif($nfe->nSeqEvento==1)
-                <h5 class="modal-title" id="exampleModalLongTitle"><b>Segunda</b> Carta de Correção</h5>
-                @endif
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Cancelar Nfe</b></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -162,10 +167,13 @@
 
                     <input required type="hidden" name="idNfe" value="{{$nfe->ID_nfe}}">
                     <input required type="hidden" name="chaveNF" value="{{$nfe->chaveNF}}">
-                    <input required type="hidden" name="nSeqEvento" value="{{$nfe->nSeqEvento}}">
                     <label for="just">Justificativa</label>
                     <textarea required name="just" id="just" class="form-control" cols="20" rows="5"></textarea>
-
+                    <label for="just">N° Protocolo <a style="font-size: 12px; color: red">*Está no xml da nota, tag: <b style="font-size: 14px;">nProt</b>&nbsp; <a target="_blank" href="https://i.imgur.com/f6YcXGz.png">clique p/ exemplo</a></a></label>
+                    <div class="input-group">
+                        <input required type="text" name="protocolo" class="form-control">
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
