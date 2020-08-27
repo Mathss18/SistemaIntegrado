@@ -524,6 +524,53 @@ class NfeService{
             
         }
 
+        public function corrigirNfe($config,$chaveNf,$just,$nEvento){
+            try {
+
+                $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+                $certificate = Certificate::readPfx($certificadoDigital, '31083684');
+                $tools = new Tools(json_encode($config), $certificate);
+                $tools->model('55');
+            
+                $chave = $chaveNf; //Chave da Nfe 
+                $xCorrecao = $just; //Justificativa da correção
+                $nSeqEvento = $nEvento+1; //Numero do evento, ou seja qual o n° de cartas já feito
+                $response = $tools->sefazCCe($chave, $xCorrecao, $nSeqEvento);
+                $mes = date('m');
+                $ano = date('Y');
+            
+                //você pode padronizar os dados de retorno atraves da classe abaixo
+                //de forma a facilitar a extração dos dados do XML
+                //NOTA: mas lembre-se que esse XML muitas vezes será necessário, 
+                //      quando houver a necessidade de protocolos
+                $stdCl = new Standardize($response);
+                //nesse caso $std irá conter uma representação em stdClass do XML
+                $std = $stdCl->toStd();
+                //nesse caso o $arr irá conter uma representação em array do XML
+                $arr = $stdCl->toArray();
+                //nesse caso o $json irá conter uma representação em JSON do XML
+                $json = $stdCl->toJson();
+                
+                //verifique se o evento foi processado
+                if ($std->cStat != 128) {
+                    dd('Erro Ao Tirar Carta de Correção!  Erro numero:',$std->cStat);
+                } else {
+                    $cStat = $std->retEvento->infEvento->cStat;
+                    if ($cStat == '135' || $cStat == '136') {
+                        //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
+                        $xml = Complements::toAuthorize($tools->lastRequest, $response);
+                        file_put_contents('correcao.xml',$response);
+                        Storage::put('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.xml', $response);
+                        return 1;
+                    } else {
+                        dd('Erro Ao Tirar Carta de Correção!  Erro numero:',$std->cStat);
+                    }
+                }    
+            } catch (\Exception $e) {
+                dd('Erro!',$e);
+            }
+        }
+
     }
 
 

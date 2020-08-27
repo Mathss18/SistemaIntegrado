@@ -355,24 +355,24 @@ class NfeController extends Controller
             ]
         ]);
 
-                $configu = [
-                    "atualizacao" => "2015-10-02 06:01:21",
-                    "tpAmb" => 1,
-                    "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
-                    "siglaUF" => "SP",
-                    "cnpj" => "04568351000154",
-                    "schemes" => "PL_009_V4",
-                    "versao" => "4.00",
-                    "tokenIBPT" => "AAAAAAA",
-                    "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
-                    "CSCid" => "000002",
-                    "aProxyConf" => [
-                        "proxyIp" => "",
-                        "proxyPort" => "",
-                        "proxyUser" => "",
-                        "proxyPass" => ""
-                    ]
-                    ];
+        $configu = [
+            "atualizacao" => "2015-10-02 06:01:21",
+            "tpAmb" => 1,
+            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+            "siglaUF" => "SP",
+            "cnpj" => "04568351000154",
+            "schemes" => "PL_009_V4",
+            "versao" => "4.00",
+            "tokenIBPT" => "AAAAAAA",
+            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+            "CSCid" => "000002",
+            "aProxyConf" => [
+                "proxyIp" => "",
+                "proxyPort" => "",
+                "proxyUser" => "",
+                "proxyPass" => ""
+            ]
+        ];
 
         $nfeService->inutilizaNfe($configu);
     }
@@ -384,7 +384,58 @@ class NfeController extends Controller
             '_method',
             'submit'
         ]);
-        dd($dataFormCorrecao);
+        //dd($dataFormCorrecao);
+        $chave = $dataFormCorrecao['chaveNF'];
+        $just = $dataFormCorrecao['just'];
+        $nSeq = $dataFormCorrecao['nSeqEvento'];
+        $idNfe = $dataFormCorrecao['idNfe'];
+        $nfeService = new NfeService([
+            "atualizacao" => "2015-10-02 06:01:21",
+            "tpAmb" => 1,
+            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+            "siglaUF" => "SP",
+            "cnpj" => "04568351000154",
+            "schemes" => "PL_009_V4",
+            "versao" => "4.00",
+            "tokenIBPT" => "AAAAAAA",
+            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+            "CSCid" => "000002",
+            "aProxyConf" => [
+                "proxyIp" => "",
+                "proxyPort" => "",
+                "proxyUser" => "",
+                "proxyPass" => ""
+            ]
+        ]);
+
+        $configu = [
+            "atualizacao" => "2015-10-02 06:01:21",
+            "tpAmb" => 1,
+            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+            "siglaUF" => "SP",
+            "cnpj" => "04568351000154",
+            "schemes" => "PL_009_V4",
+            "versao" => "4.00",
+            "tokenIBPT" => "AAAAAAA",
+            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+            "CSCid" => "000002",
+            "aProxyConf" => [
+                "proxyIp" => "",
+                "proxyPort" => "",
+                "proxyUser" => "",
+                "proxyPass" => ""
+            ]
+        ];
+
+        $resp = $nfeService->corrigirNfe($configu,$chave,$just,$nSeq);
+        if($resp == 1){
+            DB::table('nfe')->where('ID_nfe', $idNfe)->update(['nSeqEvento' => $nSeq+1]);
+            return back()->with('success', 'Carta de Correção Protocolada!');
+        }
+        else{
+            return back()->with('error', 'Carta de Correção Rejeitada!');
+        }
+        
 
     }
     public function autocompleteCodigoProdNfe(Request $request){

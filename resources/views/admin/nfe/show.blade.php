@@ -104,7 +104,7 @@
 </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Carta Correção-->
 <div class="modal fade" id="modalCartaCorrecao" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -119,12 +119,15 @@
                 </button>
             </div>
             <form action="{{route('nfe.cartaCorrecao')}}" method="post">
+                {!! method_field('POST') !!}
+                {!! csrf_field() !!}
                 <div class="modal-body">
 
-                    <input type="hidden" name="chaveNF" value="{{$nfe->chaveNF}}">
-                    <input type="text" name="nSeqEvento" value="{{$nfe->nSeqEvento}}">
+                    <input required type="hidden" name="idNfe" value="{{$nfe->ID_nfe}}">
+                    <input required type="hidden" name="chaveNF" value="{{$nfe->chaveNF}}">
+                    <input required type="hidden" name="nSeqEvento" value="{{$nfe->nSeqEvento}}">
                     <label for="just">Justificativa</label>
-                    <textarea name="just" id="just" class="form-control" cols="20" rows="5"></textarea>
+                    <textarea required name="just" id="just" class="form-control" cols="20" rows="5"></textarea>
 
                 </div>
                 <div class="modal-footer">
@@ -132,6 +135,41 @@
                     @if($nfe->nSeqEvento<=2) 
                     <button type="submit" class="btn btn-primary">Enviar Correção</button>
                     @endif
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cancelar -->
+<div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if($nfe->nSeqEvento==0)
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Primeira</b> Carta de Correção</h5>
+                @elseif($nfe->nSeqEvento==1)
+                <h5 class="modal-title" id="exampleModalLongTitle"><b>Segunda</b> Carta de Correção</h5>
+                @endif
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{route('nfe.cancelar')}}" method="post">
+                {!! method_field('POST') !!}
+                {!! csrf_field() !!}
+                <div class="modal-body">
+
+                    <input required type="hidden" name="idNfe" value="{{$nfe->ID_nfe}}">
+                    <input required type="hidden" name="chaveNF" value="{{$nfe->chaveNF}}">
+                    <input required type="hidden" name="nSeqEvento" value="{{$nfe->nSeqEvento}}">
+                    <label for="just">Justificativa</label>
+                    <textarea required name="just" id="just" class="form-control" cols="20" rows="5"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Solicitar Cancelamento</button>
                 </div>
             </form>
         </div>
