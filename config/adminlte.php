@@ -281,6 +281,14 @@ return [
                     'text' => 'Pedidos Fechados',
                     'url'  => 'admin/pedido/fechado',
                 ],
+                [
+                    'text' => 'Orçamentos',
+                    'url'  => 'admin/orcamento',
+                ],
+                [
+                    'text' => 'Pedido de Compra',
+                    'url'  => 'admin/pedido_compra',
+                ],
             ]
             
         ],
