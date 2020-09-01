@@ -264,7 +264,7 @@ class NfeController extends Controller
         //dd($path_nfe);
         if($xmlEnviada==null){
             //CASO A NOTA SEJA REJEITADA 
-            return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador.');
+            return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador. '.$xmlEnviada);
         }
         else{
             $path_nfe = $request->session()->get('path_nfe');
@@ -283,6 +283,11 @@ class NfeController extends Controller
         $danfe = $nfeService->gerarDanfe($xml[1]);
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
+
+        DB::table('faturamento')->insert(
+            ['vale' => $nfe1['OF'], 'nfe' => $xml[2],'situacao' => 'Fechado', 'cliente' =>$nfe1['ID_cliente'],'peso' =>$nfe3['pesoLiq'],'valor' => $nfe3['precoFinal']+$nfe1['valorFrete'],
+            'firma' => 'FM']
+        );
 
         return redirect('admin/nfe')->with('success', 'Sucesso, NFe criada! Clique na primeira linha da tabela para exibi-la.');
         
@@ -428,6 +433,8 @@ class NfeController extends Controller
         ];
 
         $resp = $nfeService->corrigirNfe($configu,$chave,$just,$nSeq);
+        $respPdf = $nfeService->gerarCartaCorrecaoPdf($chave);
+        
         if($resp == 1){
             DB::table('nfe')->where('ID_nfe', $idNfe)->update(['nSeqEvento' => $nSeq+1]);
             return back()->with('success', 'Carta de Correção Protocolada!');
@@ -435,6 +442,7 @@ class NfeController extends Controller
         else{
             return back()->with('error', 'Carta de Correção Rejeitada!');
         }
+        
         
 
     }

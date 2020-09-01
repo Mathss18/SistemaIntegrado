@@ -124,10 +124,10 @@ Route::group(['middleware' => ['auth']],function(){
 
     Route::get('autocompleteCodigoProdNfe','Admin\NfeController@autocompleteCodigoProdNfe');
     
-    //--Carata Correcao Nfe
+    //--Carta Correcao Nfe
     Route::post('/admin/nfe/correcao','Admin\NfeController@cartaCorrecao')->name('nfe.cartaCorrecao')->middleware('auth.tipo:Admin,Secretaria');
 
-    //--Carata Correcao Nfe
+    //--Cancelar Nfe
     Route::post('/admin/nfe/cancelar','Admin\NfeController@cancelar')->name('nfe.cancelar')->middleware('auth.tipo:Admin,Secretaria');
     
     /* Rotas de Inutilização de NFe
@@ -136,5 +136,9 @@ Route::group(['middleware' => ['auth']],function(){
     */
 
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
+
+    //Rotas orçamento
+    Route::resource('/admin/orcamento', 'Admin\OrcamentoController')->middleware('auth.tipo:Admin,Secretaria');
+
 });
 

@@ -3,15 +3,16 @@
 
     use DateTime;
     use Exception;
-use Facade\FlareClient\Stacktrace\File;
-use Illuminate\Support\Facades\Storage;
-use NFePHP\NFe\Make;
+    use Facade\FlareClient\Stacktrace\File;
+    use Illuminate\Support\Facades\Storage;
+    use NFePHP\NFe\Make;
     use NFePHP\Common\Certificate;
     use NFePHP\Common\Keys;
     use NFePHP\NFe\Tools;
     use NFePHP\NFe\Common\Standardize;
     use NFePHP\NFe\Complements;
     use NFePHP\DA\NFe\Danfe;
+    use NFePHP\DA\NFe\Daevento;
     use stdClass;
 
 class NfeService{
@@ -384,7 +385,8 @@ class NfeService{
                 //====================MONTA A NOTA FISCAL ====================
 
                 $erros = $nfe->getErrors();
-                
+                //dd($erros);
+
                 //$chave = $nfe->getChave();
                 $resp = array();
 
@@ -411,8 +413,12 @@ class NfeService{
         }
 
         public function assinar($xml){
-            $xmlSigned = $this->tools->signNFe($xml);
-            
+            try {
+                $xmlSigned = $this->tools->signNFe($xml);
+            } 
+            catch (\Exception $e) {
+                dd('Erro: ',$e);
+            }
             return $xmlSigned;
         }
 
@@ -488,6 +494,42 @@ class NfeService{
             } catch (Exception $e) {
                 echo "Ocorreu um erro durante o processamento :" . $e->getMessage();
             }  
+            
+        }
+
+        //GERAR A CARTA DE CORRECAO
+        public function gerarCartaCorrecaoPdf($chave){
+            $mes = date('m');
+            $ano = date('Y');
+            $xml = Storage::get('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.xml');
+            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoFM.jpg"));;
+
+            
+
+            $dadosEmitente = [
+                'razao' => 'FLEXMOL INDUSTRIA E COMERCIO DE MOLAS LTDA ME',
+                'logradouro' => 'RUA JOSE PASSARELA',
+                'numero' => '240',
+                'complemento' => 'chacara',
+                'bairro' => 'JARDIM SAO JORGE',
+                'CEP' => '13402705',
+                'municipio' => 'Piracicaba',
+                'UF' => 'SP',
+                'telefone' => '1934345840',
+                'email' => 'flexmol@flexmol.com.br'
+            ];
+
+            try {
+                $daevento = new Daevento($xml,$dadosEmitente);
+                $daevento->debugMode(false);
+                $daevento->creditsIntegratorFooter('FlexCode - By Matheus Filho');
+                $pdf = $daevento->render($logo);
+                Storage::put('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
+                //header('Content-Type: application/pdf');
+                //echo $pdf;
+            } catch (\Exception $e) {
+                dd('Erro',$e->getMessage());
+            }
             
         }
 
@@ -568,8 +610,8 @@ class NfeService{
                     if ($cStat == '135' || $cStat == '136') {
                         //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
                         $xml = Complements::toAuthorize($tools->lastRequest, $response);
-                        file_put_contents('correcao.xml',$response);
-                        Storage::put('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.xml', $response);
+                        file_put_contents('correcao.xml',$xml);
+                        Storage::put('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xml);
                         return 1;
                     } else {
                         dd('Erro Ao Tirar Carta de Correção!  Erro numero:',$std->cStat);
@@ -617,8 +659,8 @@ class NfeService{
                     if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
                         //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
                         $xml = Complements::toAuthorize($tools->lastRequest, $response);
-                        file_put_contents('cancelar.xml',$response);
-                        Storage::put('NfeCancelada/'.$mes.'-'.$ano.'/'.$chave.'.xml', $response);
+                        file_put_contents('cancelar.xml',$xml);
+                        Storage::put('NfeCancelada/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xml);
                         return 1;
                     } else {
                         //houve alguma falha no evento 
