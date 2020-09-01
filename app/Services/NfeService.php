@@ -304,9 +304,9 @@ class NfeService{
                 //====================TAG TRANSPORTADORA===================
                 if( $nfe1['nomeTransp'] != null ||  $nfe1['nomeTransp'] != ''){
                     $transportadora = new stdClass();
-                    $transportadora->xNome = $nfe1['nomeTransp'];
+                    $transportadora->xNome = $this->tirarAcentos($nfe1['nomeTransp']);
                     $transportadora->IE = $transpo[0]->inscricao_estadual;
-                    $transportadora->xEnder = $transpo[0]->logradouro;
+                    $transportadora->xEnder = $this->tirarAcentos($transpo[0]->logradouro);
                     $transportadora->xMun = $transpo[0]->cidade;
                     $transportadora->UF = $transpo[0]->uf;
                     $transportadora->CNPJ = $nfe1['cpf_cnpjTransp'];//só pode haver um ou CNPJ ou CPF, se um deles é especificado o outro deverá ser null
@@ -392,6 +392,7 @@ class NfeService{
 
                 // UTILIZAR OU A PRIMEIRA OU SEGUNDA OPCAO CASO ERRO XML NOT IS VALID
                 $xml = $nfe->monta();
+                file_put_contents('xmlTemp.xml',$xml);
                 //$xml = $nfe->getXML();
                 //dd($xml);
 
@@ -670,6 +671,10 @@ class NfeService{
             } catch (\Exception $e) {
                 dd('Erro!',$e,$e->getMessage());
             }
+        }
+
+        function tirarAcentos($string){
+            return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/"),explode(" ","a A e E i I o O u U n N"),$string);
         }
 
     }
