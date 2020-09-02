@@ -148,7 +148,7 @@ class NfeService{
 
             //====================TAG ENDERECO DESTINATARIO===================
             $enderDest = new stdClass();
-            $enderDest->xLgr = $cliente[0]->logradouro;
+            $enderDest->xLgr = $this->tirarAcentos($cliente[0]->logradouro);
             $enderDest->nro = $cliente[0]->numero;
             //$enderDest->xCpl;
             $enderDest->xBairro = $cliente[0]->bairro;
@@ -184,7 +184,9 @@ class NfeService{
                     $prod->qTrib = $nfe2['quantidade'][$i];
                     $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100),9); // Valor total - %desconto
                     $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
-                    //$prod->vFrete = $nfe1['valorFrete'];
+                    if($nfe1['valorFrete'] > 0.00){
+                        $prod->vFrete = number_format(($nfe1['valorFrete']/$nfe2['totalQtde']),2,'.','');
+                    }
                     //$prod->vSeg = 0.00;
                     //$prod->vDesc =  (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100);
                     //$prod->vOutro = 0.00;
@@ -335,7 +337,8 @@ class NfeService{
                 $fat->vLiq =  $fat->vOrig - $fat->vDesc;
                 //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
                 $respFat = $nfe->tagfat($fat);
-                //====================TAG DUPLICATA===================    
+                //====================TAG DUPLICATA===================   
+                
                 $diff = number_format(($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'],2,'.','');
                 
                 $diff = number_format($fat->vLiq - $diff*$nfe1['numParc'],2);
@@ -357,6 +360,27 @@ class NfeService{
 
                     
                 }
+                // VALORES DISTINTOS DE DUPLICATA
+                /*
+                    $dup1 = new stdClass();
+                    $dup1->nDup = '001';
+                    $dup1->dVenc = '2020-09-01';
+                    $dup1->vDup = '549.00';
+                    $nfe->tagdup($dup1);
+                   
+                    $dup2 = new stdClass();
+                    $dup2->nDup = '002';
+                    $dup2->dVenc = '2020-10-01';
+                    $dup2->vDup = '750.00';
+                    $nfe->tagdup($dup2);
+
+                    $dup3 = new stdClass();
+                    $dup3->nDup = '003';
+                    $dup3->dVenc = '2020-10-16';
+                    $dup3->vDup = '750.00';
+                    $nfe->tagdup($dup3);
+                    //dd($datas);
+                    */
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();
                 //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
