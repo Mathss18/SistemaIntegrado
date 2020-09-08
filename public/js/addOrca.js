@@ -1,18 +1,19 @@
 $(function () {
 
-    $('#pedidoForm').submit(function (e) {
-        var route = $('#pedidoForm').data('route');
+    $('#orcamentoForm').submit(function (e) {
+        var route = $('#orcamentoForm').data('route');
         var form_data = new FormData(this);
-        var OF = $('#OF').val();
+        var codOrca = $('#cod_orcamento').val();
         var codigo = $('#ttexto1').val();
-        var qtde = $('#quantidade').val();
-        var tipo = $('#tipo option:selected').text();
+        var qtde = $('#qtde_prod').val();
         //Variaveis para zerar
-        var qtdee = document.getElementById('quantidade');
+        var qtdee = document.getElementById('qtde_prod');
         var cdg = document.getElementById('ttexto1');
         var cdg2 = document.getElementById('codigo');
         var path = document.getElementsByClassName('path');
         var iframe = document.getElementById('fotoProduto');
+        var idProdCli = document.getElementById('ID_produto_cliente');
+
         $.ajax({
             type: 'POST',
             url: route,
@@ -26,14 +27,17 @@ $(function () {
                     return val * 1 + 1;
                 });
                 //Adiciona os produtos na tabela de historico
-                var content = "<tr><td>" + OF+ "</td><td>" +codigo+"</td><td>" + qtde + "</td><td>" + tipo + "</td></tr>";
+                var content = "<tr><td>" + codOrca+ "</td><td>" +codigo+"</td><td>" + qtde + "</td></tr>";
                 $("#tblProd").append(content);
                 //Desabilita form
                 $("#ID_cliente").attr('readonly', true);
                 $("#ttexto").attr('readonly', true);
-                $("#OF").attr('readonly', true);
+                $("#cod_orcamento").attr('readonly', true);
                 $("#ID_cliente").attr('readonly', true);
-                $("#data_entrega").attr('readonly', true);
+                $("#data").attr('readonly', true);
+                $("#cond_pagto").attr('readonly', true);
+                $("#prazo_entrega").attr('readonly', true);
+                $("#obs").attr('readonly', true);
 
                 //Zerando valores 
                 qtdee.value = '';
@@ -42,6 +46,7 @@ $(function () {
                 iframe.src = "http://localhost/storage/Desenhos/semImagem2.png";
                 path[0].value = '';
                 path[1].value = '';
+                idProdCli.value = '';
 
             }
         });

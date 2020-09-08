@@ -120,7 +120,7 @@ class Produto_ClienteController extends Controller
 
         $firma = Auth::user()->firma;
         $produto_cliente = 
-        produto_cliente::select(DB::raw('concat(cod_fabricacao) as text, path_imagem as value'))
+        produto_cliente::select(DB::raw('concat(cod_fabricacao) as text, path_imagem as value, ID_produto_cliente as ID_produto_cliente'))
                     ->where("cod_fabricacao","LIKE","%{$request->input('query')}%")->where("firma",$firma)
                     ->get();
         return response()->json($produto_cliente);

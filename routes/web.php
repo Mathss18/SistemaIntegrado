@@ -138,6 +138,8 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas orçamento
+    Route::get('/admin/orcamento/mostrar','Admin\OrcamentoController@mostrar')->name('orcamento.mostrar')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/orcamento/adicionar','Admin\OrcamentoController@adicionar')->name('orcamento.adicionar')->middleware('auth.tipo:Admin,Secretaria');
     Route::resource('/admin/orcamento', 'Admin\OrcamentoController')->middleware('auth.tipo:Admin,Secretaria');
 
 });

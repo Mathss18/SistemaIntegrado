@@ -130,16 +130,19 @@ class NfeController extends Controller
         $produtosNota = array();
         $produtosNota2 = array();
         $quantidades = array();
+        $firma = Auth::user()->firma;
 
-        $pedido = DB::table('pedido as p')->select('p.codigo','p.quantidade')->where('p.OF', $of)->get()->toArray();
+        $pedido = DB::table('pedido as p')->select('p.codigo','p.quantidade')->where('p.OF', $of)->where('p.firma', $firma)->get()->toArray();
         
         // =========== TRAZENDO TODAS AS INFOS DE PRODUTOS ===============
         foreach ($pedido as $key => $value) {
-            $produtoCli = DB::table('produto_cliente as p')->select('p.cod_fabricacao','p.descricao','p.ncm','p.preco_venda')->where('p.cod_fabricacao', $pedido[$key]->codigo)->get()->toArray();
+            $produtoCli = DB::table('produto_cliente as p')->select('p.cod_fabricacao','p.descricao','p.ncm','p.preco_venda')->where('p.cod_fabricacao', $pedido[$key]->codigo)->where('p.firma', $firma)->get()->toArray();
             array_push($produtosNota,$produtoCli);   
         }
+        //DESCOMENTAR PARA VER A LISTA DE PRODUTOS DA OF
+        //dd($produtosNota);
         foreach ($pedido as $key => $value) {
-            $qtde = DB::table('pedido as p')->select('p.codigo','p.quantidade')->where('p.OF', $of)->get()->toArray();
+            $qtde = DB::table('pedido as p')->select('p.codigo','p.quantidade')->where('p.OF', $of)->where('p.firma', $firma)->get()->toArray();
             array_push($quantidades,$qtde[$key]->quantidade);  
         }
         
@@ -236,11 +239,12 @@ class NfeController extends Controller
         $datas = $request->session()->get('datas');
         $transp = $request->session()->get('transp');
         $cliente = $request->session()->get('cliente');
+        $firma = Auth::user()->firma;
         $nfeCad = new nfe();
         $clienteCad= new cliente();
         
         $data = $request->session()->all();
-        $ultimo = DB::table('nfe')->orderBy('ID_nfe', 'desc')->first();
+        $ultimo = DB::table('nfe')->where('firma',$firma)->orderBy('ID_nfe', 'desc')->first();
         $aliquota = DB::table('aliquota')->first();
         
         $nNFdb = $ultimo->nNF+1;

@@ -127,7 +127,7 @@ class NfeService{
 
             //====================TAG DESTINATARIO===================
             $dest = new stdClass();
-            $dest->xNome = $nfe1['nomeCli'];
+            $dest->xNome = $this->tirarAcentos($nfe1['nomeCli']);
             $dest->indIEDest = '1';
             $dest->IE = $nfe1['ieCli'];
             //$dest->ISUF;
@@ -151,9 +151,9 @@ class NfeService{
             $enderDest->xLgr = $this->tirarAcentos($cliente[0]->logradouro);
             $enderDest->nro = $cliente[0]->numero;
             //$enderDest->xCpl;
-            $enderDest->xBairro = $cliente[0]->bairro;
+            $enderDest->xBairro = $this->tirarAcentos($cliente[0]->bairro);
             $enderDest->cMun = $cliente[0]->ibge;
-            $enderDest->xMun = $cliente[0]->cidade;
+            $enderDest->xMun = $this->tirarAcentos($cliente[0]->cidade);
             $enderDest->UF = $cliente[0]->uf;
             $enderDest->CEP = str_replace("-", "", $cliente[0]->cep);
             $enderDest->cPais = '1058';
