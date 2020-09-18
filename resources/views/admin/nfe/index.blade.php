@@ -61,6 +61,11 @@
             <span class="glyphicon glyphicon-plus"></span>
             Emitir Nova NF-e por número da OF
         </a>
+        <a href="{{url('storage/Nfe/UltimoXML/FM/last.txt')}}" target="_blank" class="btn btn-info">
+            <span class="glyphicon glyphicon-plus"></span>
+            ultimo XML
+        </a>
+
 
     </div>
     <div class="card-body">

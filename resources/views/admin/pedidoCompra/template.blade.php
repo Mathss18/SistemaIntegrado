@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Orçamento Flex-Mol</title>
+    <title>Pedido Compra Flex-Mol</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/printable.css') }}">
@@ -37,8 +37,8 @@
                             <h6><b>Endereço:</b> RUA JOSE PASSARELA &nbsp;&nbsp;&nbsp;&nbsp; <b>Número:</b> 240</h6>
                             <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba</h6>
                         </div>
-                        <div class="col-2">
-                            <h4>ORÇAMENTO: N°: <u>{{$ultimoOrca[0]->cod_orcamento}}</u></h4>
+                        <div class="col-3">
+                            <h4>PEDIDO DE COMPRA: N°: <u>{{$ultimoPedidoCompra[0]->cod_pedidoCompra}}</u></h4>
                         </div>
                     </div>
                 </div>
@@ -47,8 +47,8 @@
                 <div class="col-2">
                 </div>
                 <div class="col">
-                    <h6><b>CLIENTE: </b>{{$cliente[0]->nome}} &nbsp;&nbsp;&nbsp;&nbsp;<b>CPF/CNPJ:
-                        </b>{{$cliente[0]->cpf_cnpj}}</h6>
+                    <h6><b>FORNECEDOR: </b>{{$fornecedor[0]->nome}} &nbsp;&nbsp;&nbsp;&nbsp;<b>CPF/CNPJ:
+                        </b>{{$fornecedor[0]->cpf_cnpj}}</h6>
                 </div>
             </div>
             <div class="row">
@@ -70,10 +70,10 @@
                                 <tr>
                                     <td>{{$produto[0]->cod_fabricacao}}</td>
                                     <td>{{$produto[0]->descricao}}</td>
-                                    <td>{{number_format($ultimoOrca[$loop->index]->qtde_prod,2,',','.')}}</td>
+                                    <td>{{number_format($ultimoPedidoCompra[$loop->index]->qtde_prod,2,',','.')}}</td>
                                     <td>{{number_format($produto[0]->preco_venda,4,',','.')}}</td>
-                                    <td>{{number_format($ultimoOrca[$loop->index]->qtde_prod*$produto[0]->preco_venda,4,',','.')}}</td>
-                                    <a style='display:none;'>{{$total += $ultimoOrca[$loop->index]->qtde_prod*$produto[0]->preco_venda}}</a>
+                                    <td>{{number_format($ultimoPedidoCompra[$loop->index]->qtde_prod*$produto[0]->preco_venda,4,',','.')}}</td>
+                                    <a style='display:none;'>{{$total += $ultimoPedidoCompra[$loop->index]->qtde_prod*$produto[0]->preco_venda}}</a>
                                 </tr>
                                 @endforeach
                                 <tr>
@@ -91,33 +91,36 @@
             </div>
 
             <div class="row">
-                @if($ultimoOrca[0]->obs != null)
+                @if($ultimoPedidoCompra[0]->obs != null)
                 <div class="col">
-                    <h6><b>Observações: </b>{{$ultimoOrca[0]->obs}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                    <h6><b>Observações: </b>{{$ultimoPedidoCompra[0]->obs}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
                 </div>
                 @endif
-                @if($ultimoOrca[0]->pedidoCli != null)
+
+                @if($ultimoPedidoCompra[0]->cond_pagto != null)
                 <div class="col">
-                    <h6><b>Pedido Cliente: </b>{{$ultimoOrca[0]->pedidoCli}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                    <h6><b>Condições de Pagamento: </b>{{$ultimoPedidoCompra[0]->cond_pagto}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
                 </div>
                 @endif
+
+                @if($ultimoPedidoCompra[0]->prazo_entrega != null)
                 <div class="col">
-                    <h6><b>Condições de Pagamento: </b>{{$ultimoOrca[0]->cond_pagto}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                    <h6><b>Prazo de entrega: </b>{{$ultimoPedidoCompra[0]->prazo_entrega}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
                 </div>
-                <div class="col">
-                    <h6><b>Prazo de entrega: </b>{{$ultimoOrca[0]->prazo_entrega}} &nbsp;&nbsp;&nbsp;&nbsp;</h6>
-                </div>
+                @endif
+
             </div>
             <br>
             <div class="row">
                 <div class="col-md-8">
-                    <h6>Data: {{$ultimoOrca[0]->data}}</h6>
+                    <h6>Data: {{$ultimoPedidoCompra[0]->data}}</h6>
                 </div>
                 <div class="col">
                     <a>Assinatura: _______________________________</a>
                 </div>
             </div>
         </div>
+
     </div>
 
 

@@ -14,6 +14,7 @@
     use NFePHP\DA\NFe\Danfe;
     use NFePHP\DA\NFe\Daevento;
     use stdClass;
+    use Auth;
 
 class NfeService{
 
@@ -24,7 +25,7 @@ class NfeService{
  
             $this->config = $config;
             $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
-            $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '31083684'));
+            $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '01111972'));
         }
 
         public function gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transpo,$cliente,$nNFdb,$aliquota){
@@ -128,8 +129,24 @@ class NfeService{
             //====================TAG DESTINATARIO===================
             $dest = new stdClass();
             $dest->xNome = $this->tirarAcentos($nfe1['nomeCli']);
-            $dest->indIEDest = '1';
-            $dest->IE = $nfe1['ieCli'];
+                // VERIFICA SE O DEST É ISENTO DE ICMS, OU SEJA SEM INSCRICAO ESTADUAL
+            if(strtoupper($nfe1['ieCli']) == 'ISENTO2'){
+
+                $dest->indIEDest = '2';
+                $dest->IE = null;
+            }
+            else if(strtoupper($nfe1['ieCli']) == 'ISENTO9'){
+                $dest->indIEDest = '9';
+                $dest->IE = null;
+            }
+            else if(strtoupper($nfe1['ieCli']) == 'ISENTO'){
+                $dest->indIEDest = '1';
+                $dest->IE = null;
+            }
+            else{
+                $dest->indIEDest = '1';
+                $dest->IE = $nfe1['ieCli'];
+            }
             //$dest->ISUF;
             //$dest->IM;
             $dest->email = $nfe1['emailCli'];
@@ -185,7 +202,14 @@ class NfeService{
                     $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100),9); // Valor total - %desconto
                     $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
                     if($nfe1['valorFrete'] > 0.00){
-                        $prod->vFrete = number_format(($nfe1['valorFrete']/$nfe2['totalQtde']),2,'.','');
+                        $diffFrete = number_format($nfe1['valorFrete']/$nfe2['totalQtde'],2,'.','');
+                        if($i == $nfe2['totalQtde']-1){
+                            $prod->vFrete = number_format($nfe1['valorFrete'],2,'.','');
+                            //$prod->vFrete = number_format(($nfe1['valorFrete']/$nfe2['totalQtde']),2,'.','');
+                        }
+                        
+                        
+                        
                     }
                     //$prod->vSeg = 0.00;
                     //$prod->vDesc =  (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100);
@@ -414,10 +438,18 @@ class NfeService{
                 //$chave = $nfe->getChave();
                 $resp = array();
 
+                //dd($nfe);
                 // UTILIZAR OU A PRIMEIRA OU SEGUNDA OPCAO CASO ERRO XML NOT IS VALID
                 $xml = $nfe->monta();
-                file_put_contents('xmlTemp.xml',$xml);
                 //$xml = $nfe->getXML();
+
+
+                file_put_contents('xmlTemp.xml',$xml);
+                //dd($xml);
+                $firma = Auth::user()->firma;
+                Storage::put('Nfe/UltimoXML/'.$firma.'/'.'last.txt', $xml);
+                Storage::put('Nfe/UltimoXML/'.$firma.'/'.'last.xml', $xml);
+                
                 //dd($xml);
 
 

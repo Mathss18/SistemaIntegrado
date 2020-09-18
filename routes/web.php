@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/produto_cliente', 'Admin\Produto_ClienteController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas de Produto_Fornecedor
+    Route::get('autocompleteCodigoProdForne','Admin\Produto_FornecedorController@autocompleteCodigoProdForne');
     Route::resource('/admin/produto_fornecedor', 'Admin\Produto_FornecedorController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas NFe
@@ -140,7 +141,14 @@ Route::group(['middleware' => ['auth']],function(){
     //Rotas orçamento
     Route::get('/admin/orcamento/mostrar','Admin\OrcamentoController@mostrar')->name('orcamento.mostrar')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/orcamento/adicionar','Admin\OrcamentoController@adicionar')->name('orcamento.adicionar')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/orcamento/mostrarPronto/{cod_orcamento}','Admin\OrcamentoController@mostrarPronto')->name('orcamento.mostrarPronto')->middleware('auth.tipo:Admin,Secretaria');
     Route::resource('/admin/orcamento', 'Admin\OrcamentoController')->middleware('auth.tipo:Admin,Secretaria');
+
+    //Rotas Pedido de compra
+    Route::get('/admin/pedidoCompra/mostrar','Admin\PedidoCompraController@mostrar')->name('pedidoCompra.mostrar')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/pedidoCompra/adicionar','Admin\PedidoCompraController@adicionar')->name('pedidoCompra.adicionar')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/pedidoCompra/mostrarPronto/{cod_pedidoCompra}','Admin\PedidoCompraController@mostrarPronto')->name('pedidoCompra.mostrarPronto')->middleware('auth.tipo:Admin,Secretaria');
+    Route::resource('/admin/pedidoCompra', 'Admin\PedidoCompraController')->middleware('auth.tipo:Admin,Secretaria');
 
 });
 

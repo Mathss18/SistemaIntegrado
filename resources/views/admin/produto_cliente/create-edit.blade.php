@@ -207,16 +207,27 @@
                     <embed src="{{url('storage/Desenhos/semImagem.png')}}" alt="" style="width: 190px; height: 300px"></embed>
             </div>
             @endif
+            @if(isset($produto))
             <div class="form-group col-md-2" style="position: absolute; top: 400px; right: 113px;" >
                 <label for="path_imagem"></label>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input required name="path_imagem" type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
+                            <input name="path_imagem" type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
                             <label class="custom-file-label" for="myInput"></label>
                         </div>
                     </div>
                 </div>
-
+            @else  
+            <div class="form-group col-md-2" style="position: absolute; top: 400px; right: 113px;" >
+             <label for="path_imagem"></label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input required name="path_imagem" type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
+                        <label class="custom-file-label" for="myInput"></label>
+                    </div>
+                </div>
+            </div>
+            @endif
             <div class="form-group">
                 <button name="submit" type="submit" class="btn btn-primary">Confirmar</button>
             </div>

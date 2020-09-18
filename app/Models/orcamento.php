@@ -13,5 +13,5 @@ class orcamento extends Model
     public $timestamps = false;
 
     protected $fillable = ['cod_orcamento','ID_cliente','ID_produto_cliente ',
-    'qtde_prod','obs','prazo_entrega','cond_pagto','data','path_orcamento'];
+    'qtde_prod','obs','prazo_entrega','cond_pagto','data','path_orcamento','pedidoCli'];
 }

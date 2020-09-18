@@ -114,4 +114,14 @@ class Produto_FornecedorController extends Controller
         //
     }
 
+    public function autocompleteCodigoProdForne(Request $request){
+
+        $firma = Auth::user()->firma;
+        $produto_fornecedor = 
+        produto_fornecedor::select(DB::raw('concat(cod_fabricacao) as text, path_imagem as value, ID_produto_fornecedor as ID_produto_fornecedor'))
+                    ->where("cod_fabricacao","LIKE","%{$request->input('query')}%")->where("firma",$firma)
+                    ->get();
+        return response()->json($produto_fornecedor);
+        }
+
 }

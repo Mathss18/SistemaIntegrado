@@ -90,8 +90,9 @@ class Produto_ClienteController extends Controller
             '_method',
             'submit'
         ]);
-        $dataFormCli['path_imagem'] = Str::kebab($usuario->id.$dataFormCli['path_imagem']->getClientOriginalName());
-        
+        if(isset($dataFormCli['path_imagem'])){
+            $dataFormCli['path_imagem'] = Str::kebab($usuario->id.$dataFormCli['path_imagem']->getClientOriginalName());
+        }
         if($request->hasFile('path_imagem') && $request->file('path_imagem')->isValid()){
             //Storage::delete('file.jpg');
             $upload = $request->path_imagem->storeAs('Desenhos',$dataFormCli['path_imagem']);

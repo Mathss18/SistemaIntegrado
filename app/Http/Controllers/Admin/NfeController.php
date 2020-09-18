@@ -247,6 +247,7 @@ class NfeController extends Controller
         $ultimo = DB::table('nfe')->where('firma',$firma)->orderBy('ID_nfe', 'desc')->first();
         $aliquota = DB::table('aliquota')->first();
         
+        //dd($ultimo);
         $nNFdb = $ultimo->nNF+1;
         
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
@@ -279,7 +280,7 @@ class NfeController extends Controller
             $hoje = date('d/m/Y');
 
             DB::table('nfe')->insert(
-                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente'],'data_abertura' =>$hoje,'path_nfe' => $path_nfe]
+                ['chaveNF' => $xml[1], 'nNF' => $xml[2],'OF' => $nfe1['OF'], 'ID_cliente' =>$nfe1['ID_cliente'],'data_abertura' =>$hoje,'path_nfe' => $path_nfe, 'firma' => $firma]
             );
 
         }

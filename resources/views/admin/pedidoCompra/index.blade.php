@@ -46,10 +46,10 @@
 @endif
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
-        <h6>Gestão de Orçamentos</h6>
-        <a href="{{route('orcamento.create')}}" class="btn btn-success">
+        <h6>Gestão de Pedidos de Compra</h6>
+        <a href="{{route('pedidoCompra.create')}}" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span>
-            Criar Novo Orçamento
+            Criar Novo Pedido
         </a>
 
     </div>
@@ -59,17 +59,17 @@
                 <tr>
                     <th scope="col">Código</th>
                     <th scope="col">Descrição Produto</th>
-                    <th scope="col">Cliente</th>
+                    <th scope="col">Fornecedor</th>
                     <th scope="col">Data</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($orcamentos as $orcamento)
-                <tr class='clickable-row' data-href="{{route('orcamento.mostrarPronto',$orcamento->cod_orcamento)}}">
-                    <td>{{$orcamento->cod_orcamento}}</td>
-                    <td>{{$orcamento->descricao}}</td>
-                    <td>{{$orcamento->nome}}</td>
-                    <td>{{$orcamento->data}}</td>
+                @foreach($pedidosCompra as $pc)
+                <tr class='clickable-row' data-href="{{route('pedidoCompra.mostrarPronto',$pc->cod_pedidoCompra)}}">
+                    <td>{{$pc->cod_pedidoCompra}}</td>
+                    <td>{{$pc->descricao}}</td>
+                    <td>{{$pc->nome}}</td>
+                    <td>{{$pc->data}}</td>
                 </tr>
                 @endforeach
             </tbody>

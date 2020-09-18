@@ -287,7 +287,7 @@ return [
                 ],
                 [
                     'text' => 'Pedido de Compra',
-                    'url'  => 'admin/pedido_compra',
+                    'url'  => 'admin/pedidoCompra',
                 ],
             ]
             
