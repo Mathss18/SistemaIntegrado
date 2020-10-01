@@ -24,7 +24,7 @@ class NfeService{
         public function __construct($config){
  
             $this->config = $config;
-            $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+            $certificadoDigital = file_get_contents('..\app\Services\certMF.pfx');
             $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '01111972'));
         }
 
@@ -368,6 +368,7 @@ class NfeService{
                 $diff = number_format($fat->vLiq - $diff*$nfe1['numParc'],2);
                 
                 for ($i=0; $i < $nfe1['numParc']; $i++) { 
+                    # code...
                 
                     $dup = new stdClass();
 
@@ -383,25 +384,24 @@ class NfeService{
 
                     
                 }
-                
-                // VALORES DISTINTOS DE DUPLICATA (MANUAL)
-                    /*
+                // VALORES DISTINTOS DE DUPLICATA
+                /*
                     $dup1 = new stdClass();
                     $dup1->nDup = '001';
-                    $dup1->dVenc = '2020-09-30';
-                    $dup1->vDup = '1000.00';
+                    $dup1->dVenc = '2020-09-01';
+                    $dup1->vDup = '549.00';
                     $nfe->tagdup($dup1);
                    
                     $dup2 = new stdClass();
                     $dup2->nDup = '002';
-                    $dup2->dVenc = '2020-10-29';
-                    $dup2->vDup = '971.50';
+                    $dup2->dVenc = '2020-10-01';
+                    $dup2->vDup = '750.00';
                     $nfe->tagdup($dup2);
 
                     $dup3 = new stdClass();
                     $dup3->nDup = '003';
-                    $dup3->dVenc = '2020-11-13';
-                    $dup3->vDup = '971.50';
+                    $dup3->dVenc = '2020-10-16';
+                    $dup3->vDup = '750.00';
                     $nfe->tagdup($dup3);
                     //dd($datas);
                     */
@@ -440,13 +440,8 @@ class NfeService{
 
                 //dd($nfe);
                 // UTILIZAR OU A PRIMEIRA OU SEGUNDA OPCAO CASO ERRO XML NOT IS VALID
-                try {
-                    $xml = $nfe->monta();
-                    //$xml = $nfe->getXML();
-                } catch (\Throwable $th) {
-                    dd($th);
-                }
-                
+                $xml = $nfe->monta();
+                //$xml = $nfe->getXML();
 
 
                 file_put_contents('xmlTemp.xml',$xml);

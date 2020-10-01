@@ -111,4 +111,6 @@ class PedidoCompraController extends Controller
         return view('admin.pedidoCompra.template', compact('ultimoPedidoCompra','produtos','fornecedor','total'));
 
     }
+
+    
 }

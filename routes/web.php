@@ -41,6 +41,8 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('autocompletefornecedor','Admin\FornecedorController@AutoCompleteFornecedores');
 
     //Rotas de Pedidos
+    Route::get('/admin/pedido/imprimir', 'Admin\PedidoController@imprimir')->name('pedido.imprimir')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/pedido/aprovar', 'Admin\PedidoController@aprovar')->name('pedido.aprovar')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/pedido/aberto', 'Admin\PedidoController@pedidosAbertos')->name('pedido.aberto')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/pedido/fechado', 'Admin\PedidoController@pedidosFechados')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/pedido/aberto2', 'Admin\PedidoController@message')->name('pedido.aberto2')->middleware('auth.tipo:Admin,Secretaria');

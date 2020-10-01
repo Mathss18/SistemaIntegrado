@@ -36,7 +36,8 @@ class NfeController extends Controller
 
     public function create()
     {
-        //
+        $titulo = 'Gestão de NFe';
+        return view('admin.nfe.create-edit',compact('titulo'));
     }
 
     public function store(Request $request)
@@ -457,7 +458,7 @@ class NfeController extends Controller
             '_method',
             'submit'
         ]);
-        //dd($dataFormCancelar);
+        dd($dataFormCancelar);
         $chave = $dataFormCancelar['chaveNF'];
         $just = $dataFormCancelar['just'];
         $protocolo = $dataFormCancelar['protocolo'];
@@ -513,13 +514,14 @@ class NfeController extends Controller
     }
 
     public function autocompleteCodigoProdNfe(Request $request){
-        
+
         $firma = Auth::user()->firma;
         $produto_cliente = 
         pedido::select(DB::raw('concat(OF) as text, pedido.ID_cliente as ID_cliente, c.nome as nome,c.cpf_cnpj as cpf_cnpj,c.email as email,c.inscricao_estadual as IE,c.uf as ufCli'))->join('cliente as c','c.ID_cliente','=','pedido.ID_cliente')
                     ->where("OF","LIKE","%{$request->input('query')}%")->where("status",'Fechado')->where("firma",$firma)->where('c.ID_Cliente',DB::raw('pedido.ID_cliente'))->groupBy('OF')
                     ->get();
         return response()->json($produto_cliente);
+        
         }
 
     

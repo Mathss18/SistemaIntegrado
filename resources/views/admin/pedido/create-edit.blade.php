@@ -91,6 +91,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-address-card"></i>
                         </div>
+
                         <input required value="{{$cliente['ID_cliente'] ?? '' }}" style="display:none" name="ID_cliente" id="ID_cliente" type="text" class="typeahead form-control " style="margin:0px auto;width:370px;">
                         <input required value="{{$cliente['nome'] ?? '' }}" class="typeahead form-control" id="ttexto" style="margin:0px auto;width:350px;" type="text">
                     </div>
@@ -229,17 +230,27 @@
                 @isset($pedido['path_desenho'])
                 <div class="form-group col-md-1">
                     <label>Visualizar</label>
+
+                    
                     <div class="input-group col">
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalDesenho">Abrir Desenho</button>
-                        @isset($pedido['path_desenho'])
-                        <div class="form-group col-md-1 pt-2">
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalFuncAberto">Quem Falta?</button>
-
-                        </div>
-                        @endisset
                     </div>
+                    
+
+                    <div class="form-group col-md-1 pt-2">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalFuncAberto">Quem Falta?</button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="{{route('pedido.imprimir')}}" class="btn btn-info">
+                            Imprimir
+                        </a>
+                    </div>
+                    
+
                 </div>
                 @endisset
+
 
             </div>
             @if(!isset($pedido))
@@ -250,12 +261,22 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalListaProdutos">Lista de produtos</button>
                 </div>
 
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                     <div>
                         <button name="submit" type="submit" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Produto</button>
                     </div>
                 </div>
-
+                @isset($produtoss)
+                <div class="form-group col-md-5">
+                    <div>
+                        <h6>Códigos dos produtos dessa OF:</h5>
+                            <ul>@foreach($produtoss as $produto)
+                                <li>{{$produto}}</li>
+                                @endforeach
+                            </ul>
+                    </div>
+                </div>
+                @endisset
             </div>
             @endif
             @if(isset($pedido))
@@ -332,7 +353,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table  class="table table-striped table-bordered" style="width:100%">
+                <table class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">OF</th>

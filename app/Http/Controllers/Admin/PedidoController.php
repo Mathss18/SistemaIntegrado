@@ -61,7 +61,7 @@ class PedidoController extends Controller
         $mes = date("m");
         $dia = date("d");
 
-        $codigo = DB::table('pedido')->orderBy('ID_pedido', 'desc')->first();
+        $codigo = DB::table('pedido')->where('firma',$firma)->orderBy('ID_pedido', 'desc')->first();
         $codigo = $codigo->OF+1;
         //$codigo = strtoupper($pedacoToken.'-'.$firma.$dia.$mes.$ano);
         
@@ -72,6 +72,48 @@ class PedidoController extends Controller
         return view('admin.pedido.create-edit',compact('titulo','funcionarios','hoje','firma','codigo'));
     }
 
+    public function aprovar(Request $request)
+    {
+        //PEGANDO O NUMERO DE ORÇAMENTO PARA PEGAR AS INFOS 
+        $string = request()->headers->get('referer');
+        $idOrcamento = explode("/", $string);
+
+        $orcamento = DB::table('orcamento')->where('cod_orcamento',$idOrcamento[6])->get();
+        //dd($orcamento);
+        $idCli = $orcamento[0]->ID_cliente;
+        $cliente = DB::table('cliente')->where('ID_cliente',$idCli)->get()->toArray();
+        //dd($cliente[0]);
+        $produtos = array();
+        $produtoss = array();
+        foreach ($orcamento as $key) {
+            array_push($produtos,$key->ID_produto_cliente);
+        }
+        foreach ($produtos as $key) {
+            $prod = DB::table('produto_cliente')->where('ID_produto_cliente',$key)->get();
+            //dd($prod);
+            array_push($produtoss,$prod[0]->cod_fabricacao);
+        }
+        //dd($produtoss);
+        $firma = Auth::user()->firma;
+        $token = hexdec(uniqid());  
+        $pedacoToken = substr($token, -6);
+        $ano = date("y");
+        $mes = date("m");
+        $dia = date("d");
+
+        $codigo = DB::table('pedido')->orderBy('ID_pedido', 'desc')->first();
+        $codigo = $codigo->OF+1;
+        //$codigo = strtoupper($pedacoToken.'-'.$firma.$dia.$mes.$ano);
+        
+        $hoje = date('Y-m-d');
+        $titulo = 'Gestão de Pedidos';
+        $funcionarios = new Funcionario;
+        $funcionarios = $funcionarios->all();
+        //$cliente = $cliente[0];
+        $cliente = json_decode(json_encode($cliente), true);
+        $cliente = $cliente[0];
+        return view('admin.pedido.create-edit',compact('titulo','funcionarios','hoje','firma','codigo','cliente','produtoss'));
+    }
     
     public function store(Request $request)
     {
@@ -322,5 +364,32 @@ class PedidoController extends Controller
     return response()->json($clientes);
     }
 
+    public function imprimir(Request $request){
+        //PEGANDO O NUMERO DE PEDIDO PARA PEGAR AS INFOS 
+        $string = request()->headers->get('referer');
+        $idPedido = explode("/", $string);
+        //dd($idPedido);
+        $firma = Auth::user()->firma;
+        $pedidoSingle = DB::table('pedido')->where('ID_pedido',$idPedido[5])->where('firma', $firma)->get()->toArray();
+        //dd($pedidoSingle[0]);
+        $OF = $pedidoSingle[0]->OF;
+        $idCli = $pedidoSingle[0]->ID_cliente;
+        $produtos = array();
+        
+        $total = 0;
+
+        $pedidoFull = DB::table('pedido')->where('OF',$OF)->where('firma', $firma)->get()->toArray();
+        $cliente = DB::table('cliente')->where('ID_cliente',$idCli)->get()->toArray();
+        //dd($pedidoFull);
+        foreach ($pedidoFull as $produto) {
+            $produto = DB::table('produto_cliente')->where('cod_fabricacao', $produto->codigo)->where('firma', $firma)->get()->toArray();
+            array_push($produtos,$produto[0]);
+        }
+        //array_pop($produtos);
+        //dd($produtos);
+        
+
+        return view('admin.pedido.template', compact('pedidoFull','cliente','produtos','total'));
+    }
 
 }

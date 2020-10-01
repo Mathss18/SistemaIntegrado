@@ -6,27 +6,37 @@
     <title>Orçamento Flex-Mol</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/printable.css') }}">
 
 </head>
 
 
 <body>
-    
-        <br>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn-info" onClick="window.print()">IMPRIMIR</button>
-                </div>
-            </div>  
+
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <button class="btn btn-info" onClick="window.print()">IMPRIMIR</button>
+            </div>
+            <div class="col-md-2">
+                <input type="checkbox" id="toggle-event" checked data-toggle="toggle" data-on="VENDA" data-off="ORÇAMENTO" data-onstyle="info" data-offstyle="info">
+            </div>
+            <div class="col-md-2">
+                <a href="{{route('pedido.aprovar')}}" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    APROVAR
+                </a>
+            </div>
         </div>
-        <br>
-    
+    </div>
+    <br>
+
 
     <div id="printable" class="corpoOrcamento">
-        <div class="container card-body fundo " style="border: 1px solid black; border-radius: 15px;">
-            <div class="row" style="border-bottom: 1px solid gray;">
+        <div class="container card-body fundo" style="border: 1px solid balck; border-radius: 15px;">
+            <div class="row" style="border-bottom: 1px solid gray; border-radius: 15;">
                 <div class="col-2">
                     <img src="https://i.imgur.com/DErSgKM.jpg" alt="">
                 </div>
@@ -34,27 +44,32 @@
                     <div class="row">
                         <div class="col">
                             <h4>FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME</h4>
-                            <h6><b>Endereço:</b> RUA JOSE PASSARELA &nbsp;&nbsp;&nbsp;&nbsp; <b>Número:</b> 240</h6>
-                            <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba</h6>
+                            <h6><b>Endereço:</b> RUA JOSE PASSARELA &nbsp;&nbsp;&nbsp;&nbsp; <b>Número:</b> 240 &nbsp;&nbsp;&nbsp;&nbsp; <b>Telefone:</b> (19) 3434-5840</h6>
+                            <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp;&nbsp;&nbsp; <b>Email:</b> flexmol@flexmol.com.br</h6>
                         </div>
                         <div class="col-2">
-                            <h4>ORÇAMENTO: N°: <u>{{$ultimoOrca[0]->cod_orcamento}}</u></h4>
+                            <h4><a id='change'>ORÇAMENTO</a>: N°: <u>{{$ultimoOrca[0]->cod_orcamento}}</u></h4>
                         </div>
                     </div>
                 </div>
             </div>
+            <br>
             <div class="row">
-                <div class="col-2">
-                </div>
+                
                 <div class="col">
-                    <h6><b>CLIENTE: </b>{{$cliente[0]->nome}} &nbsp;&nbsp;&nbsp;&nbsp;<b>CPF/CNPJ:
-                        </b>{{$cliente[0]->cpf_cnpj}}</h6>
+                    <h6><b>Cliente: </b>{{$cliente[0]->nome}} &nbsp;&nbsp;&nbsp;&nbsp;<b>Telefone:</b>{{$cliente[0]->telefone}} &nbsp;&nbsp;&nbsp;&nbsp;<b>Email: </b>{{$cliente[0]->email}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col">
+                    <h6><b>Logradouro: </b>{{$cliente[0]->logradouro}} &nbsp;&nbsp;&nbsp;&nbsp;<b>Número:</b> {{$cliente[0]->numero}} &nbsp;&nbsp;&nbsp;&nbsp;<b>Cidade: </b> {{$cliente[0]->cidade}} &nbsp;&nbsp;&nbsp;&nbsp;<b>Bairro: </b> {{$cliente[0]->bairro}}</h6>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="card-body">
-                        <table id="tableDT" class="table" style="width:100%">
+                        <table id="tableDT" style="height: 200px;" class="table" style="width:100%">
                             <thead>
                                 <tr>
                                     <th scope="col">Código</th>
@@ -117,6 +132,12 @@
                     <a>Assinatura: _______________________________</a>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <a style="font-size:12px">Impresso por sistema ERP by Matheus Filho - (19) 98313-6930</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -126,5 +147,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="{{ asset('js/transformarOrca.js') }}"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 </html>

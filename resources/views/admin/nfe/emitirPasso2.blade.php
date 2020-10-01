@@ -40,7 +40,7 @@
                             <tr>
                                 <th scope="col">Código Fabricação</th>
                                 <th scope="col">Descrição do Produto</th>
-                                <th scope="col">Quantiadade</th>
+                                <th scope="col">Quantidade</th>
                                 <th scope="col">Preço</th>
                                 <th scope="col"></th>
                             </tr>

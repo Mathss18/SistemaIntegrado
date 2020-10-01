@@ -33,7 +33,7 @@ $(function () {
                 $("#ttexto").attr('readonly', true);
                 $("#OF").attr('readonly', true);
                 $("#ID_cliente").attr('readonly', true);
-                $("#data_entrega").attr('readonly', true);
+                //$("#data_entrega").attr('readonly', true);
 
                 //Zerando valores 
                 qtdee.value = '';
