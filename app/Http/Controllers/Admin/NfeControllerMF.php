@@ -136,7 +136,7 @@ class NfeController extends Controller
         
         // =========== TRAZENDO TODAS AS INFOS DE PRODUTOS ===============
         foreach ($pedido as $key => $value) {
-            $produtoCli = DB::table('produto_cliente as p')->select('p.cod_fabricacao','p.descricao','p.ncm','p.preco_venda')->where('p.cod_fabricacao', $pedido[$key]->codigo)->where('p.firma', $firma)->get()->toArray();
+            $produtoCli = DB::table('produto_cliente as p')->select('p.cod_fabricacao','p.descricao','p.ncm','p.preco_venda','p.cfop')->where('p.cod_fabricacao', $pedido[$key]->codigo)->where('p.firma', $firma)->get()->toArray();
             array_push($produtosNota,$produtoCli);   
         }
         //DESCOMENTAR PARA VER A LISTA DE PRODUTOS DA OF

@@ -16,7 +16,7 @@
     use stdClass;
     use Auth;
 
-class NfeService{
+class NfeServiceMF{
 
         private $config;
         private $tools;
@@ -84,7 +84,7 @@ class NfeService{
             $ide->tpImp = 1; //Formato de Impressão da DANFE 1-Retrato / 2-Paisagem
             $ide->tpEmis = 1; 
             //$ide->cDV = 0; // Dígito Verificador da Chave de Acesso da NF-e
-            $ide->tpAmb = 1; // Tipo de Ambiente. 1-Producao / 2-Homologacao
+            $ide->tpAmb = 2; // Tipo de Ambiente. 1-Producao / 2-Homologacao
             $ide->finNFe = 1; // Finalidade de emissão da NF-e  1- NF-e normal/ 2-NF-e complementar / 3 – NF-e de ajuste
             $ide->indFinal = 1; // Consumidor Final ou não. 0-Não / 1-Sim
             $ide->indPres = 1; //Presenca do Consumidor na hora da emissao ou não. 0-Não / 1-Sim
@@ -98,31 +98,31 @@ class NfeService{
 
             //====================TAG EMITENTE===================
             $emit = new stdClass();
-            $emit->xNome = 'FLEXMOL INDUSTRIA E COMERCIO DE MOLAS LTDA ME';
+            $emit->xNome = 'METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA M';
             //$emit->xFant;
-            $emit->IE = '535338509117';
+            $emit->IE = '535268096113';
             //$emit->IEST;
             //$emit->IM ;
             //$emit->CNAE;
             $emit->CRT = '1';
-            $emit->CNPJ = '04568351000154'; //indicar apenas um CNPJ ou CPF
+            $emit->CNPJ = '13971196000103'; //indicar apenas um CNPJ ou CPF
             //$emit->CPF;
 
             $respEmit = $nfe->tagemit($emit);
 
             //====================TAG ENDERECO EMITENTE===================
             $enderEmit = new stdClass();
-            $enderEmit->xLgr = 'RUA JOSE PASSARELA';
-            $enderEmit->nro = '240';
+            $enderEmit->xLgr = 'RUA PRINCESA ISABEL';
+            $enderEmit->nro = '70';
             //$enderEmit->xCpl;
-            $enderEmit->xBairro = 'JARDIM SAO JORGE';
+            $enderEmit->xBairro = 'JARDIM PACAEMBU';
             $enderEmit->cMun = '3538709';
             $enderEmit->xMun = 'Piracicaba';
             $enderEmit->UF = 'SP';
-            $enderEmit->CEP = '13402705';
+            $enderEmit->CEP = '13424586';
             $enderEmit->cPais = '1058';
             $enderEmit->xPais = 'Brasil';
-            $enderEmit->fone = '1934345840';
+            $enderEmit->fone = '1934227978';
 
             $respEnderEmit = $nfe->tagenderEmit($enderEmit);
 
@@ -192,12 +192,12 @@ class NfeService{
                     //$prod->cBenef = null; //incluido no layout 4.00
 
                     //$prod->EXTIPI;
-                    $prod->CFOP = $nfe1['natOp'];
-                    $prod->uCom = 'PC'; //Unidade do produto
+                    $prod->CFOP = $nfe2['cfop'][$i];
+                    $prod->uCom = $nfe2['unidade'][$i]; //Unidade do produto
                     $prod->qCom = $nfe2['quantidade'][$i]; //Quantidade do produto
                     $prod->vUnCom = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100),9); // Valor total - %desconto
                     $prod->cEANTrib = 'SEM GTIN';
-                    $prod->uTrib = 'PC';
+                    $prod->uTrib = $nfe2['unidade'][$i];
                     $prod->qTrib = $nfe2['quantidade'][$i];
                     $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento'])/100),9); // Valor total - %desconto
                     $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib),2,'.',''); // Valor do produto = QUANTIDADE X Unidade Tributaria
@@ -240,7 +240,10 @@ class NfeService{
                     $icms = new stdClass();
                     $icms->item = $i+1; //item da NFe
                     $icms->orig = 0;
-                    $icms->CSOSN = '101';
+                    if($nfe1['natOp'] == 5902)
+                        $icms->CSOSN = '400';
+                    else if($nfe1['natOp'] == 5124)
+                        $icms->CSOSN = '900';
                     $icms->pCredSN = $aliquota->aliquota;
                     $icms->vCredICMSSN = $nfe3['precoFinal'] * ($aliquota->aliquota/100);
                     //$icms->modBCST = null;
@@ -270,6 +273,23 @@ class NfeService{
                     //$icms->vICMSSubstituto = null;
 
                     $respIcms = $nfe->tagICMSSN($icms);
+
+                    //====================TAG IPI===================
+                    $std = new stdClass();
+                    $std->item = $i+1; //item da NFe
+                    $std->clEnq = null;
+                    $std->CNPJProd = null;
+                    $std->cSelo = null;
+                    $std->qSelo = null;
+                    $std->cEnq = '999';
+                    $std->CST = '53';
+                    $std->vIPI = 0.00;
+                    $std->vBC = 0.00;
+                    $std->pIPI = 0.00;
+                    $std->qUnid = null;
+                    $std->vUnid = null;
+
+                    $nfe->tagIPI($std);
 
                     //====================TAG PIS===================
                     $pis = new stdClass();
@@ -353,58 +373,61 @@ class NfeService{
 
                 $respVol = $nfe->tagvol($vol);
 
-                //====================TAG FATURA===================
-                $fat = new stdClass();
-                $fat->nFat = $ide->nNF;
-                $fat->vOrig = number_format($nfe2['total']+$nfe1['valorFrete'],2,'.','');
-                $fat->vDesc = number_format($nfe3['desconto'],2,'.','');
-                $fat->vLiq =  $fat->vOrig - $fat->vDesc;
-                //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
-                $respFat = $nfe->tagfat($fat);
-                //====================TAG DUPLICATA===================   
-                
-                $diff = number_format(($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'],2,'.','');
-                
-                $diff = number_format($fat->vLiq - $diff*$nfe1['numParc'],2);
-                
-                for ($i=0; $i < $nfe1['numParc']; $i++) { 
-                    # code...
-                
-                    $dup = new stdClass();
-
-                    $dup->nDup = str_pad($i+1, 3, "0", STR_PAD_LEFT);
-                    $dup->dVenc = $datas[$i];
-                    $dup->vDup = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'];
-                    // IF para adicionar o centavos na ultima parcela se necessario
-                    if($i == $nfe1['numParc']-1){
-
-                        $dup->vDup += $diff;
-                    }
-                    $respDup = $nfe->tagdup($dup);
-
+                //VERIFICA SE HÁ PARCELAS NA NOTA
+                if($nfe1['numParc']>=1){
+                    //====================TAG FATURA===================
+                    $fat = new stdClass();
+                    $fat->nFat = $ide->nNF;
+                    $fat->vOrig = number_format($nfe2['total']+$nfe1['valorFrete'],2,'.','');
+                    $fat->vDesc = number_format($nfe3['desconto'],2,'.','');
+                    $fat->vLiq =  $fat->vOrig - $fat->vDesc;
+                    //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
+                    $respFat = $nfe->tagfat($fat);
+                    //====================TAG DUPLICATA===================   
                     
-                }
-                // VALORES DISTINTOS DE DUPLICATA
-                /*
-                    $dup1 = new stdClass();
-                    $dup1->nDup = '001';
-                    $dup1->dVenc = '2020-09-01';
-                    $dup1->vDup = '549.00';
-                    $nfe->tagdup($dup1);
-                   
-                    $dup2 = new stdClass();
-                    $dup2->nDup = '002';
-                    $dup2->dVenc = '2020-10-01';
-                    $dup2->vDup = '750.00';
-                    $nfe->tagdup($dup2);
+                    $diff = number_format(($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'],2,'.','');
+                    
+                    $diff = number_format($fat->vLiq - $diff*$nfe1['numParc'],2);
+                    
+                    for ($i=0; $i < $nfe1['numParc']; $i++) { 
+                    
+                        $dup = new stdClass();
 
-                    $dup3 = new stdClass();
-                    $dup3->nDup = '003';
-                    $dup3->dVenc = '2020-10-16';
-                    $dup3->vDup = '750.00';
-                    $nfe->tagdup($dup3);
-                    //dd($datas);
-                    */
+                        $dup->nDup = str_pad($i+1, 3, "0", STR_PAD_LEFT);
+                        $dup->dVenc = $datas[$i];
+                        $dup->vDup = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'];
+                        // IF para adicionar o centavos na ultima parcela se necessario
+                        if($i == $nfe1['numParc']-1){
+
+                            $dup->vDup += $diff;
+                        }
+                        $respDup = $nfe->tagdup($dup);
+
+                        
+                    }
+                    
+                    // VALORES DISTINTOS DE DUPLICATA (MANUAL)
+                        /*
+                        $dup1 = new stdClass();
+                        $dup1->nDup = '001';
+                        $dup1->dVenc = '2020-09-30';
+                        $dup1->vDup = '1000.00';
+                        $nfe->tagdup($dup1);
+                    
+                        $dup2 = new stdClass();
+                        $dup2->nDup = '002';
+                        $dup2->dVenc = '2020-10-29';
+                        $dup2->vDup = '971.50';
+                        $nfe->tagdup($dup2);
+
+                        $dup3 = new stdClass();
+                        $dup3->nDup = '003';
+                        $dup3->dVenc = '2020-11-13';
+                        $dup3->vDup = '971.50';
+                        $nfe->tagdup($dup3);
+                        //dd($datas);
+                        */
+                } 
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();
                 //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
@@ -440,8 +463,14 @@ class NfeService{
 
                 //dd($nfe);
                 // UTILIZAR OU A PRIMEIRA OU SEGUNDA OPCAO CASO ERRO XML NOT IS VALID
-                $xml = $nfe->monta();
-                //$xml = $nfe->getXML();
+                try {
+                    $xml = $nfe->monta();
+                    //$xml = $nfe->getXML();
+                    //dd($xml);
+                } catch (\Throwable $th) {
+                    dd($th);
+                }
+                
 
 
                 file_put_contents('xmlTemp.xml',$xml);
@@ -482,6 +511,7 @@ class NfeService{
         public function transmitir($xmlSigned,$chave){
             //Envia o lote
             $resp = $this->tools->sefazEnviaLote([$xmlSigned], 1);
+            $firma = Auth::user()->firma;
 
             $st = new Standardize();
             $std = $st->toStd($resp);
@@ -507,12 +537,12 @@ class NfeService{
                 $ano = date('Y');
                 //header('Content-type: text/xml; charset=UTF-8');
                 //file_put_contents('storage/'.$mes.$ano.'/'.$chave.'.xml',$xmlFinal);
-                Storage::put('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xmlFinal);
+                Storage::put('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xmlFinal);
                 //Storage::putFile('uploadedFile',  new File('/path/to/file'));
                 
-                $path = 'Nfe/'.$mes.'-'.$ano.'/'.$chave;
+                $path = 'Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave;
                 session(['path_nfe' => $path]);
-                $xmlFinal1 = Storage::get('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.xml');
+                $xmlFinal1 = Storage::get('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml');
                 
                 return $xmlFinal1;
             } catch (\Exception $e) {
@@ -524,11 +554,12 @@ class NfeService{
 
         //GERAR A DANFE
         public function gerarDanfe($chave){
+            $firma = Auth::user()->firma;
             $mes = date('m');
             $ano = date('Y');
-            $xml = Storage::get('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.xml');
+            $xml = Storage::get('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml');
             
-            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoFM.jpg"));;
+            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoMF.jpg"));;
 
             try {
                 $danfe = new Danfe($xml);
@@ -542,7 +573,7 @@ class NfeService{
                 /*  $danfe->logoParameters($logo, 'C', false);  */
                 //Gera o PDF
                 $pdf = $danfe->render($logo);
-                Storage::put('Nfe/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
+                Storage::put('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
                 
                
                 //DESCOMENTAR AS DUAS LINHAS ABAIXO PARA MOSTRAR A DANFE
@@ -556,24 +587,25 @@ class NfeService{
 
         //GERAR A CARTA DE CORRECAO
         public function gerarCartaCorrecaoPdf($chave){
+            $firma = Auth::user()->firma;
             $mes = date('m');
             $ano = date('Y');
-            $xml = Storage::get('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.xml');
+            $xml = Storage::get('NfeCartaCorrecao'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml');
             $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoFM.jpg"));;
 
             
 
             $dadosEmitente = [
-                'razao' => 'FLEXMOL INDUSTRIA E COMERCIO DE MOLAS LTDA ME',
-                'logradouro' => 'RUA JOSE PASSARELA',
-                'numero' => '240',
-                'complemento' => 'chacara',
-                'bairro' => 'JARDIM SAO JORGE',
-                'CEP' => '13402705',
+                'razao' => 'METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME',
+                'logradouro' => 'RUA PRINCESA ISABEL',
+                'numero' => '70',
+                'complemento' => 'FIRMA',
+                'bairro' => 'JARDIM PACAEMBU',
+                'CEP' => '13424586',
                 'municipio' => 'Piracicaba',
                 'UF' => 'SP',
-                'telefone' => '1934345840',
-                'email' => 'flexmol@flexmol.com.br'
+                'telefone' => '1934330215',
+                'email' => 'atendimento@metalflex.ind.br'
             ];
 
             try {
@@ -581,7 +613,7 @@ class NfeService{
                 $daevento->debugMode(false);
                 $daevento->creditsIntegratorFooter('FlexCode - By Matheus Filho');
                 $pdf = $daevento->render($logo);
-                Storage::put('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
+                Storage::put('NfeCartaCorrecao'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
                 //header('Content-Type: application/pdf');
                 //echo $pdf;
             } catch (\Exception $e) {
@@ -595,7 +627,7 @@ class NfeService{
         public function inutilizaNfe($config){
 
             try {
-                $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+                $certificadoDigital = file_get_contents('..\app\Services\certMF.pfx');
                 $certificate = Certificate::readPfx($certificadoDigital, '01111972');
                 $tools = new Tools(json_encode($config), $certificate);
             
@@ -635,7 +667,7 @@ class NfeService{
         public function corrigirNfe($config,$chaveNf,$just,$nEvento){
             try {
 
-                $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+                $certificadoDigital = file_get_contents('..\app\Services\certMF.pfx');
                 $certificate = Certificate::readPfx($certificadoDigital, '01111972');
                 $tools = new Tools(json_encode($config), $certificate);
                 $tools->model('55');
@@ -658,7 +690,7 @@ class NfeService{
                 $arr = $stdCl->toArray();
                 //nesse caso o $json irá conter uma representação em JSON do XML
                 $json = $stdCl->toJson();
-                
+                $firma = Auth::user()->firma;
                 //verifique se o evento foi processado
                 if ($std->cStat != 128) {
                     dd('Erro Ao Tirar Carta de Correção!  Erro numero:',$std->cStat);
@@ -667,8 +699,8 @@ class NfeService{
                     if ($cStat == '135' || $cStat == '136') {
                         //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
                         $xml = Complements::toAuthorize($tools->lastRequest, $response);
-                        file_put_contents('correcao.xml',$xml);
-                        Storage::put('NfeCartaCorrecao/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xml);
+                        file_put_contents('correcaoMF.xml',$xml);
+                        Storage::put('NfeCartaCorrecao'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xml);
                         return 1;
                     } else {
                         dd('Erro Ao Tirar Carta de Correção!  Erro numero:',$std->cStat);
@@ -682,7 +714,7 @@ class NfeService{
         public function cancelarNfe($config,$chave,$just,$protocolo){
             try {
 
-                $certificadoDigital = file_get_contents('..\app\Services\certFM.pfx');
+                $certificadoDigital = file_get_contents('..\app\Services\certMF.pfx');
                 $certificate = Certificate::readPfx($certificadoDigital, '01111972');
                 $tools = new Tools(json_encode($config), $certificate);
                 $tools->model('55');
@@ -706,6 +738,7 @@ class NfeService{
                 $arr = $stdCl->toArray();
                 //nesse caso o $json irá conter uma representação em JSON do XML
                 $json = $stdCl->toJson();
+                $firma = Auth::user()->firma;
                 
                 //verifique se o evento foi processado
                 if ($std->cStat != 128) {
@@ -716,8 +749,8 @@ class NfeService{
                     if ($cStat == '101' || $cStat == '135' || $cStat == '155') {
                         //SUCESSO PROTOCOLAR A SOLICITAÇÂO ANTES DE GUARDAR
                         $xml = Complements::toAuthorize($tools->lastRequest, $response);
-                        file_put_contents('cancelar.xml',$xml);
-                        Storage::put('NfeCancelada/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xml);
+                        file_put_contents('cancelarMF.xml',$xml);
+                        Storage::put('NfeCancelada'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml', $xml);
                         return 1;
                     } else {
                         //houve alguma falha no evento 

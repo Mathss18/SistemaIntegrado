@@ -35,7 +35,7 @@
 
 
     <div id="printable" class="corpoOrcamento">
-        <div class="container card-body fundo" style="border: 1px solid balck; border-radius: 15px;">
+        <div class="container card-body fundo"> <!--borda vai aqui -->
             <div class="row" style="border-bottom: 1px solid gray; border-radius: 15;">
                 <div class="col-2">
                     <img src="https://i.imgur.com/DErSgKM.jpg" alt="">

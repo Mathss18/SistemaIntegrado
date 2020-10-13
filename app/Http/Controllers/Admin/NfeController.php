@@ -7,6 +7,7 @@ use App\Models\nfe;
 use App\Models\cliente;
 use App\Models\pedido;
 use App\Services\NfeService;
+use App\Services\NfeServiceMF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NfeMail;
@@ -31,7 +32,8 @@ class NfeController extends Controller
        
         $firma = Auth::user()->firma;
         $nfe = DB::table('nfe as n')->join('cliente as c','n.ID_cliente','=','c.ID_cliente')->select('n.ID_nfe','n.OF','n.nNF', 'n.chaveNF', 'c.nome','n.data_abertura')->where('firma',$firma)->orderBy('ID_nfe', 'desc')->get();
-        return view('admin.nfe.index',compact('nfe'));
+        
+        return view('admin.nfe.index',compact('nfe','firma'));
     }
 
     public function create()
@@ -79,8 +81,14 @@ class NfeController extends Controller
     //=================EMITIR PASSO 1 ==================
     public function emitir1(Request $request)
     {
+        $firma = Auth::user()->firma;
         $nfe = $request->session()->get('nfe1');
-        return view('admin.nfe.emitirPasso1',compact('nfe'));
+
+        if($firma == 'FM')
+            return view('admin.nfe.emitirPasso1',compact('nfe'));
+        else
+            return view('admin.nfemf.emitirPasso1',compact('nfe'));
+        
     }
 
     public function postEmitir1(Request $request)
@@ -92,6 +100,7 @@ class NfeController extends Controller
         ]);
 
         //dd($dataFormNfe);
+        $firma = Auth::user()->firma;
         
         if(empty($request->session()->get('nfe1'))){
             $nfe = new nfe;
@@ -117,8 +126,10 @@ class NfeController extends Controller
         $transp = DB::table('cliente as c')->select('c.logradouro','c.numero','c.cidade','c.uf','c.bairro','c.cep','c.telefone','c.ibge','c.inscricao_estadual')->where('c.ID_cliente', $idTrasnp)->get()->toArray();
         $request->session()->put('transp', $transp);
 
-        return redirect('admin/nfe/emitirPasso2');
-        
+        if($firma == 'FM')
+            return redirect('admin/nfe/emitirPasso2');
+        else
+            return redirect('admin/nfemf/emitirPasso2');
     }
 
     //=================EMITIR PASSO 2 ==================
@@ -135,7 +146,7 @@ class NfeController extends Controller
         
         // =========== TRAZENDO TODAS AS INFOS DE PRODUTOS ===============
         foreach ($pedido as $key => $value) {
-            $produtoCli = DB::table('produto_cliente as p')->select('p.cod_fabricacao','p.descricao','p.ncm','p.preco_venda')->where('p.cod_fabricacao', $pedido[$key]->codigo)->where('p.firma', $firma)->get()->toArray();
+            $produtoCli = DB::table('produto_cliente as p')->select('p.cod_fabricacao','p.descricao','p.ncm','p.preco_venda','p.cfop','p.unidade_saida')->where('p.cod_fabricacao', $pedido[$key]->codigo)->where('p.firma', $firma)->get()->toArray();
             array_push($produtosNota,$produtoCli);   
         }
         //DESCOMENTAR PARA VER A LISTA DE PRODUTOS DA OF
@@ -152,17 +163,21 @@ class NfeController extends Controller
         $produtos = $produtosNota2;
         
 
-        
-        return view('admin.nfe.emitirPasso2',compact('produtos','quantidades'));
-    }
+        if($firma == 'FM')
+            return view('admin.nfe.emitirPasso2',compact('produtos','quantidades','firma'));
+        else
+            return view('admin.nfemf.emitirPasso2',compact('produtos','quantidades','firma'));
+        }
     public function postEmitir2(Request $request)
     {
+        $firma = Auth::user()->firma;
         $dataFormNfe = $request->except([
             '_token',
             '_method',
             'submit'
         ]);
-        
+        //dd($dataFormNfe);
+
         if(empty($request->session()->get('nfe2'))){
             $nfe = new nfe;
             $request->session()->forget('nfe2');
@@ -177,21 +192,29 @@ class NfeController extends Controller
         }
         $nfe2 = $request->session()->get('nfe2');
 
-        return redirect('admin/nfe/emitirPasso3');
+        if($firma == 'FM')
+            return redirect('admin/nfe/emitirPasso3');
+        else
+            return redirect('admin/nfemf/emitirPasso3');
         
     }
 
     //=================EMITIR PASSO 3 ==================
     public function emitir3(Request $request)
     {
+        $firma = Auth::user()->firma;
         $nfe3 = $request->session()->get('nfe3');
         $nfe2 = $request->session()->get('nfe2');
         $nfe1 = $request->session()->get('nfe1');
         
-        return view('admin.nfe.emitirPasso3',compact('nfe3','nfe2','nfe1'));
-    }
+        if($firma == 'FM')
+            return view('admin.nfe.emitirPasso3',compact('nfe3','nfe2','nfe1'));
+        else   
+            return view('admin.nfemf.emitirPasso3',compact('nfe3','nfe2','nfe1')); 
+    }   
     public function postEmitir3(Request $request)
     {
+        $firma = Auth::user()->firma;
         $dataFormNfe = $request->except([
             '_token',
             '_method',
@@ -213,24 +236,46 @@ class NfeController extends Controller
 
         // ============== GERANDO A NOTA \o/ =====================
 
-        $nfeService = new NfeService([
-            "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 1,
-            "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
-            "siglaUF" => "SP",
-            "cnpj" => "04568351000154",
-            "schemes" => "PL_009_V4",
-            "versao" => "4.00",
-            "tokenIBPT" => "AAAAAAA",
-            "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
-            "CSCid" => "000002",
-            "aProxyConf" => [
-                "proxyIp" => "",
-                "proxyPort" => "",
-                "proxyUser" => "",
-                "proxyPass" => ""
-            ]
-        ]);
+        if($firma=='FM'){
+            $nfeService = new NfeService([
+                "atualizacao" => "2015-10-02 06:01:21",
+                "tpAmb" => 1,
+                "razaosocial" => "FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME",
+                "siglaUF" => "SP",
+                "cnpj" => "04568351000154",
+                "schemes" => "PL_009_V4",
+                "versao" => "4.00",
+                "tokenIBPT" => "AAAAAAA",
+                "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+                "CSCid" => "000002",
+                "aProxyConf" => [
+                    "proxyIp" => "",
+                    "proxyPort" => "",
+                    "proxyUser" => "",
+                    "proxyPass" => ""
+                ]
+            ]);
+        }
+        else{
+            $nfeService = new NfeServiceMF([
+                "atualizacao" => "2015-10-02 06:01:21",
+                "tpAmb" => 2,
+                "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
+                "siglaUF" => "SP",
+                "cnpj" => "13971196000103",
+                "schemes" => "PL_009_V4",
+                "versao" => "4.00",
+                "tokenIBPT" => "AAAAAAA",
+                "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+                "CSCid" => "000002",
+                "aProxyConf" => [
+                    "proxyIp" => "",
+                    "proxyPort" => "",
+                    "proxyUser" => "",
+                    "proxyPass" => ""
+                ]
+            ]);
+        }
 
         $nfe1 = $request->session()->get('nfe1');
         $nfe2 = $request->session()->get('nfe2');
@@ -243,14 +288,20 @@ class NfeController extends Controller
         $clienteCad= new cliente();
         
         $data = $request->session()->all();
-        $ultimo = DB::table('nfe')->where('firma',$firma)->orderBy('ID_nfe', 'desc')->first();
-        $aliquota = DB::table('aliquota')->first();
-        
-        //dd($ultimo);
-        $nNFdb = $ultimo->nNF+1;
-        
+
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
         //dd($data);
+
+        
+        $ultimo = DB::table('nfe')->where('firma',$firma)->orderBy('ID_nfe', 'desc')->first();
+        if($firma == 'FM')
+            $aliquota = DB::table('aliquota')->first();
+        else
+            $aliquota = DB::table('aliquota')->orderBy('ID_aliquota','desc')->first();
+        
+        //dd($aliquota);
+        $nNFdb = $ultimo->nNF+1;
+        
         
         $xml = $nfeService->gerarNfe($nfe1,$nfe2,$nfe3,$datas,$transp,$cliente,$nNFdb,$aliquota);
         //dd($xml[0]);

@@ -57,20 +57,13 @@
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
         <h6>Gestão de NF-e</h6>
-        @if($firma == 'FM')
         <a href="{{route('nfe.emitirPasso1')}}" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span>
             Emitir Nova NF-e por número da OF
         </a>
-        @elseif($firma == 'MF')
-        <a href="{{route('nfemf.emitirPasso1')}}" class="btn btn-success">
-            <span class="glyphicon glyphicon-plus"></span>
-            Emitir Nova NF-e por número da OF
-        </a>
-        @endif
         <a href="{{url('storage/Nfe/UltimoXML/FM/last.txt')}}" target="_blank" class="btn btn-info">
             <span class="glyphicon glyphicon-plus"></span>
-            Último XML
+            ultimo XML
         </a>
 
 
