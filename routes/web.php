@@ -163,5 +163,12 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('/admin/pedidoCompra/mostrarPronto/{cod_pedidoCompra}','Admin\PedidoCompraController@mostrarPronto')->name('pedidoCompra.mostrarPronto')->middleware('auth.tipo:Admin,Secretaria');
     Route::resource('/admin/pedidoCompra', 'Admin\PedidoCompraController')->middleware('auth.tipo:Admin,Secretaria');
 
+
+    //Rotas Money
+    Route::get('/admin/money/carregarEventos','Admin\MoneyController@carregarEventos')->name('money.carregarEventos')->middleware('auth.tipo:Admin,Secretaria');
+    Route::put('/admin/money/atualizarEvento','Admin\MoneyController@atualizarEvento')->name('money.atualizarEvento')->middleware('auth.tipo:Admin,Secretaria');
+    Route::resource('/admin/money', 'Admin\MoneyController')->middleware('auth.tipo:Admin,Secretaria');
+
+
 });
 
