@@ -8,11 +8,11 @@ class evento extends Model
 {
     protected $table = "evento";
 
-    protected $primaryKey = 'ID_evento';
+    protected $primaryKey = 'id';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'ID_evento','id','start','end','title','color','description','firma'
+        'id','start','end','title','color','description','firma','ID_cliente','favorecido','ID_fornecedor'
     ];
 }

@@ -24,5 +24,5 @@ $(document).ready(function(){
         $(this).data("seletectedId", datum.value);
         $('#ID_fornecedor').val(datum.value);
         console.log(datum.value);
-    });                        
+    });    
 });

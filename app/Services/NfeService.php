@@ -240,9 +240,17 @@ class NfeService{
                     $icms = new stdClass();
                     $icms->item = $i+1; //item da NFe
                     $icms->orig = 0;
-                    $icms->CSOSN = '101';
-                    $icms->pCredSN = $aliquota->aliquota;
-                    $icms->vCredICMSSN = $nfe3['precoFinal'] * ($aliquota->aliquota/100);
+                    //VERIFICA SE TEM IE OU NÃO
+                    if(strtoupper($nfe1['ieCli']) == 'ISENTO2' || strtoupper($nfe1['ieCli']) == 'ISENTO9'){
+                        $icms->CSOSN = '102';
+                        $icms->pCredSN = $aliquota->aliquota;
+                        $icms->vCredICMSSN = 0.00;
+                    }
+                    else{
+                        $icms->CSOSN = '101';
+                        $icms->pCredSN = $aliquota->aliquota;
+                        $icms->vCredICMSSN = $nfe3['precoFinal'] * ($aliquota->aliquota/100);
+                    }
                     //$icms->modBCST = null;
                     //$icms->pMVAST = null;
                     //$icms->pRedBCST = null;

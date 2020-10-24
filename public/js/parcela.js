@@ -58,7 +58,24 @@ function addDays(date, days) {
             processData: false,
             contentType: false,
             success: function (Response) {
-                alert('Parcelas adicionadas com sucesso!')
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Parcelas adicionadas com sucesso!'
+                  })
+                  $('#modalParcelas').modal('hide');
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
 
             }
         });

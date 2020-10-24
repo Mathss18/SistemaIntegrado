@@ -41,7 +41,6 @@
         var path = document.getElementById('codigo').value;
         var fileInput = document.getElementById('file');
         fileInput.setAttribute('value', path)
-        console.log('oi');
 
     });
 </script>
