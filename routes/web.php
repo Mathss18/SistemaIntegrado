@@ -88,6 +88,9 @@ Route::group(['middleware' => ['auth']],function(){
     Route::get('/admin/funcionarioPedido/relatorio', 'Admin\FuncionarioPedidoController@relatorio')->middleware('auth.tipo:Admin,Secretaria,Almoxarifado,Qualidade,Producao');
     Route::resource('/admin/funcionarioPedido', 'Admin\FuncionarioPedidoController');
 
+    //Rotas de Funcionario
+    Route::get('autocompletefuncionarios','Admin\FuncionarioController@AutoCompleteFunc');
+
     //Rotas de Rastreabilidade
     Route::post('/admin/rastreabilidade/cadastrarLacres', 'Admin\RastreabilidadeController@cadastrarLacres')->middleware('auth.tipo:Admin,Qualidade');
     Route::post('/admin/rastreabilidade/armazenarInfoSeccion', 'Admin\RastreabilidadeController@armazenarInfoSeccion')->middleware('auth.tipo:Admin,Qualidade');
@@ -124,14 +127,14 @@ Route::group(['middleware' => ['auth']],function(){
     Route::post('/admin/nfe/postEmitirPasso3', 'Admin\NfeController@postEmitir3')->name('nfe.postEmitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
 
     //--NFe form passo 1 MF
-    Route::get('/admin/nfemf/emitirPasso1', 'Admin\NfeController@emitir1')->name('nfemf.emitirPasso1')->middleware('auth.tipo:Admin,Secretaria');
-    Route::post('/admin/nfemf/postEmitirPasso1', 'Admin\NfeController@postEmitir1')->name('nfemf.postEmitirPasso1')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/nfemf/emitirPasso1', 'Admin\NfeControllerMF@emitir1')->name('nfemf.emitirPasso1')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfemf/postEmitirPasso1', 'Admin\NfeControllerMF@postEmitir1')->name('nfemf.postEmitirPasso1')->middleware('auth.tipo:Admin,Secretaria');
     //--NFe form passo 2 MF
-    Route::get('/admin/nfemf/emitirPasso2', 'Admin\NfeController@emitir2')->name('nfemf.emitirPasso2')->middleware('auth.tipo:Admin,Secretaria');
-    Route::post('/admin/nfemf/postEmitirPasso2', 'Admin\NfeController@postEmitir2')->name('nfemf.postEmitirPasso2')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/nfemf/emitirPasso2', 'Admin\NfeControllerMF@emitir2')->name('nfemf.emitirPasso2')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfemf/postEmitirPasso2', 'Admin\NfeControllerMF@postEmitir2')->name('nfemf.postEmitirPasso2')->middleware('auth.tipo:Admin,Secretaria');
     //--NFe form passo 3 MF
-    Route::get('/admin/nfemf/emitirPasso3', 'Admin\NfeController@emitir3')->name('nfemf.emitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
-    Route::post('/admin/nfemf/postEmitirPasso3', 'Admin\NfeController@postEmitir3')->name('nfemf.postEmitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/nfemf/emitirPasso3', 'Admin\NfeControllerMF@emitir3')->name('nfemf.emitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfemf/postEmitirPasso3', 'Admin\NfeControllerMF@postEmitir3')->name('nfemf.postEmitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
 
     //--NFe mail
     Route::post('/admin/nfe/enviarEmail', 'Admin\NfeController@enviarEmail')->name('nfe.enviarEmail')->middleware('auth.tipo:Admin,Secretaria');

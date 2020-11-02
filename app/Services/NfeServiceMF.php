@@ -559,7 +559,7 @@ class NfeServiceMF{
             $ano = date('Y');
             $xml = Storage::get('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml');
             
-            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoMF.jpg"));;
+            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoMF.jpg"));
 
             try {
                 $danfe = new Danfe($xml);
@@ -591,7 +591,7 @@ class NfeServiceMF{
             $mes = date('m');
             $ano = date('Y');
             $xml = Storage::get('NfeCartaCorrecao'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml');
-            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoFM.jpg"));;
+            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoMF.jpg"));
 
             
 

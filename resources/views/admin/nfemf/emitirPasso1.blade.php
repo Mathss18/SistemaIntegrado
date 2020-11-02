@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <form class="form-horizontal" method='POST' action="{{route('nfe.postEmitirPasso1')}}">
+    <form class="form-horizontal" method='POST' action="{{route('nfemf.postEmitirPasso1')}}">
         {!! method_field('POST') !!}
         {!! csrf_field() !!}
         <div class="row">
@@ -220,7 +220,7 @@
             <div class="form-group col-md-2">
                 <label for="numParc">N° de Parcelas</label>
                 <div class="input-group">
-                    <input required id="numParc" name="numParc" type="number" min="1" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
+                    <input id="numParc" name="numParc" type="number" min="1" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="btnParcela" data-toggle="modal" data-target="#modalParcelas"><i class="fas fa-pen"></i></button>
                     </div>
@@ -256,6 +256,7 @@
                         <option value='Dinheiro'>Dinheiro</option>
                         <option value='Credito'>Cartão de Crédito</option>
                         <option value='Debito'>Cartão de Débito</option>
+                        <option value='SemPgto'>Sem Pagamento</option>
                         <option value='Outros'>Outros</option>
                     </select>
                 </div>

@@ -15,11 +15,8 @@
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
-@if($firma == 'FM')
-    <script src="{{ asset('js/totalProdutosNfe.js') }}"></script>
-@else
-    <script src="{{ asset('js/totalProdutosNfeMf.js') }}"></script>
-@endif
+<script src="{{ asset('js/totalProdutosNfeMf.js') }}"></script>
+
 @stop
 <!------ Include the above in your HEAD tag ---------->
 @section('content')
@@ -34,7 +31,7 @@
         </div>
     </div>
 
-    <form class="form-horizontal" method='POST' action="{{route('nfe.postEmitirPasso2')}}">
+    <form class="form-horizontal" method='POST' action="{{route('nfemf.postEmitirPasso2')}}">
         {!! method_field('POST') !!}
         {!! csrf_field() !!}
             <div class="row">
@@ -56,11 +53,11 @@
                             @foreach($produtos as $produto)
                             <tr id="{{$loop->index+1}}">
                                 <td><input type="hidden" name="codFabriProd[]" value='{{$produto->cod_fabricacao}}' type="text">{{$produto->cod_fabricacao}}</td>
-                                <td style="width:400px"><input class="form-control" name="descricaoProd[]" value ='{{$produto->descricao}}' type="text"></td>
-                                <td style="width:100px"><input class="form-control" type="number" name="cfop[]" value ='{{$produto->cfop}}'  type="text"></td>
+                                <td style="width:370px"><input class="form-control" name="descricaoProd[]" value ='{{$produto->descricao}}' type="text"></td>
+                                <td style="width:100px"><input class="form-control" type="text" name="cfop[]" value ='{{$produto->cfop}}'  type="text"></td>
                                 <td style="width:100px"><input class="form-control" type="text" name="unidade[]" value ='{{$produto->unidade_saida}}'  type="text"></td>
-                                <td><input style="display: none;" type="number" name="quantidade[]" value ='{{$quantidades[$loop->index]}}' class="qtde" type="text">{{$quantidades[$loop->index]}}</td>
-                                <td><input style="display: none;" type="number" name="precoProd[]" value ='{{$produto->preco_venda}}' class="preco" type="text">{{$produto->preco_venda}}</td>
+                                <td><input class="form-control" step='1.00' type="number" name="quantidade[]" value ='{{$quantidades[$loop->index]}}' class="qtde" type="text"></td>
+                                <td><input class="form-control" type="number" name="precoProd[]" value ='{{$produto->preco_venda}}' class="preco" type="text"></td>
                                 <td style="display: none;" ><input type="hidden" name="ncm[]" value ='{{$produto->ncm}}' type="text">{{$produto->ncm}}</td>
                                 <td><a onclick="deletaRow(this);" href="#"><i class="fas fa-trash"></i></a></td>
                             </tr>
@@ -80,7 +77,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <a href="{{route('nfe.emitirPasso1')}}" class="btn btn-secondary">Voltar Passo 1</a>
+                <a href="{{route('nfemf.emitirPasso1')}}" class="btn btn-secondary">Voltar Passo 1</a>
                 <button name="submit" type="submit" class="btn btn-primary">Próximo</button>
             </div>
 

@@ -7,7 +7,7 @@
 <link href="{{asset('assets/fullcalendar/lib/main.css')}}" rel='stylesheet' />
 <link href="{{asset('assets/fullcalendar/css/style.css')}}" rel='stylesheet' />
 <link rel="stylesheet" href="{{ asset('css/dropdown.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -69,7 +69,8 @@
 <script src="{{asset('assets/fullcalendar/lib/locales/pt-br.js')}}"></script>
 <script src="{{ asset('js/dropdownFornecedorMoney.js') }}"></script>
 <script src="{{ asset('js/dropdown.js') }}"></script>
-
+<script src="{{ asset('js/dropdownFunc.js') }}"></script>
+<script src="{{ asset('js/dropdownTranspMoney.js') }}"></script>
 
 
 </html>

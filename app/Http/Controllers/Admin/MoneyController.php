@@ -14,11 +14,12 @@ class MoneyController extends Controller
 
     public function index()
     {
-        $favorecidos = array();
-        $fornecedores = DB::table('fornecedor')->select('*')->get();
-        $clientes = DB::table('cliente')->select('*')->get();
-        //dd($fornecedores);
-        return view('admin.money.calendario',compact('clientes'));
+
+
+        $bancos = DB::table('banco')->select('*')->get();
+        $funcionarios = DB::table('funcionario')->select('*')->where('money','sim')->get();
+
+        return view('admin.money.calendario',compact('bancos','funcionarios'));
     }
 
     public function create()
@@ -53,7 +54,9 @@ class MoneyController extends Controller
 
     public function carregarEventos(Request $request){
 
-        $returnedColumns = ['id', 'title', 'start', 'end', 'color', 'description','ID_cliente','favorecido','ID_fornecedor'];
+        $returnedColumns = ['id', 'title', 'start', 'end', 'color', 'description','ID_cliente',
+        'favorecido','ID_fornecedor','tipoFav','ID_banco','ID_funcionario','ID_transportadora','valor','numero'
+    ];
 
         $start = (!empty($request->start)) ? ($request->start) : ('');
         $end = (!empty($request->end)) ? ($request->end) : ('');

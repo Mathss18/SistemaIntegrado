@@ -297,7 +297,7 @@ return [
             'icon' => 'fas fa-fw fa-balance-scale-left',
             'submenu' => [
                 [
-                    'text' => 'Emitir NFe: OF',
+                    'text' => 'Emitir NFe',
                     'url'  => 'admin/nfe',
                 ],
             ]

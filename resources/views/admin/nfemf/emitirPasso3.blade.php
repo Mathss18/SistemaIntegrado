@@ -21,6 +21,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
 <script src="{{ asset('js/descontoNfe.js') }}"></script>
+<script>
+    function frase(){
+        $('#infoAdc').html("");
+        $('#infoAdc').html("Mercadoria de sua propriedade que retorna ao seu local de origem referente a sua nota fiscal numero: ");
+    }
+</script>
 
 @stop
 <!------ Include the above in your HEAD tag ---------->
@@ -36,21 +42,21 @@
         </div>
     </div>
 
-    <form class="form-horizontal" id="myForm" method='POST' action="{{route('nfe.postEmitirPasso3')}}">
+    <form class="form-horizontal" id="myForm" method='POST' action="{{route('nfemf.postEmitirPasso3')}}">
         {!! method_field('POST') !!}
         {!! csrf_field() !!}
         <div class="row">
             <div class="form-group col-md-2">
                 <label for="especie">Especie</label>
                 <div class="input-group">
-                    <input required id="especie" name="especie" type="text" class="form-control" value="{{$nfe3['especie'] ?? '' }}">
+                    <input required id="especie" value="VOLUME" name="especie" type="text" class="form-control" value="{{$nfe3['especie'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="qtdeComp">Quantidade</label>
                 <div class="input-group">
-                    <input required required id="qtdeComp" name="qtdeComp" type="number" min="1" class="form-control" value="{{$nfe3['qtdeComp'] ?? '' }}">
+                    <input required value="0" id="qtdeComp" name="qtdeComp" type="number" min="0" class="form-control" value="{{$nfe3['qtdeComp'] ?? '' }}">
                 </div>
             </div>
 
@@ -84,21 +90,21 @@
             <div class="form-group col-md-2">
                 <label for="pesoBruto">Peso Bruto</label>
                 <div class="input-group">
-                    <input required id="pesoBruto" name="pesoBruto" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['pesoBruto'] ?? '' }}">
+                    <input  id="pesoBruto" name="pesoBruto" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['pesoBruto'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="pesoLiq">Peso Liquido</label>
                 <div class="input-group">
-                    <input required id="pesoLiq" name="pesoLiq" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['pesoLiq'] ?? '' }}">
+                    <input  id="pesoLiq" name="pesoLiq" type="number" min="0" step="0.01" class="form-control" value="{{$nfe3['pesoLiq'] ?? '' }}">
                 </div>
             </div>
 
             <div class="form-group col-md-2">
                 <label for="unidade">Unidade Padrão</label>
                 <div class="input-group">
-                    <input required id="unidade" name="unidade" type="text" class="form-control" value="{{$nfe3['unidade'] ?? '' }}">
+                    <input required id="unidade" value="PC" name="unidade" type="text" class="form-control" value="{{$nfe3['unidade'] ?? '' }}">
                 </div>
             </div>
 
@@ -121,6 +127,12 @@
                 <label for="infoAdc">Informações Adicionais</label>
                 <div class="input-group">
                     <textarea  id="infoAdc" name="infoAdc" type="textarea" class="form-control" value="{{$nfe3['infoAdc'] ?? '' }}"></textarea>
+                </div>
+            </div>
+            <div class="form-group col-md-1">
+                <label>&nbsp;</label>
+                <div class="input-group">
+                    <button type="button" onclick="frase()" class="btn btn-dark">Frase</button>
                 </div>
             </div>
         </div>
@@ -182,8 +194,8 @@
             </div>
         </div>
         <div class="form-group">
-            <a href="{{route('nfe.emitirPasso1')}}" class="btn btn-secondary">Voltar Passo 1</a>
-            <a href="{{route('nfe.emitirPasso2')}}" class="btn btn-secondary">Voltar Passo 2</a>
+            <a href="{{route('nfemf.emitirPasso1')}}" class="btn btn-secondary">Voltar Passo 1</a>
+            <a href="{{route('nfemf.emitirPasso2')}}" class="btn btn-secondary">Voltar Passo 2</a>
             <button name="submit" type="submit" class="btn btn-success">Finalizar</button>
         </div>
 

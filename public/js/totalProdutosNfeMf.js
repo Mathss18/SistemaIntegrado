@@ -1,3 +1,8 @@
+$(function () {
+    $("input[type='number']").on('input', function() {
+        somarTotalPreco();
+    });
+})
 function somarTotalPreco() {
     var tbody = document.getElementById("tableDT");
     var total = 0;
@@ -24,6 +29,7 @@ function somarTotalPreco() {
 
     inputTotal.value = totalProd;
     inputTotalQtde.innerHTML = 'PRODUTOS: ' +totalProd;
+    console.log(totalProd);
     
 }
 
@@ -36,3 +42,4 @@ function deletaRow(obj){
 }
 
 somarTotalPreco();
+

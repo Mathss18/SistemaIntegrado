@@ -13766,7 +13766,7 @@ var FullCalendar = (function (exports) {
         var event = props.event;
         var url = event.url;
         var anchorAttrs = url ? { href: url } : {};
-        return (createElement("a", __assign({}, anchorAttrs), event.title));
+        return (createElement("a", __assign({}, anchorAttrs), event.extendedProps.favorecido));
     }
     function buildTimeContent(seg, timeFormat, context) {
         var options = context.options;
