@@ -14,7 +14,8 @@ class OrcamentoController extends Controller
     public function index()
     {
         $orcamentos = new orcamento();
-        $orcamentos = DB::table('orcamento as o')->join('cliente as c', 'o.ID_cliente', '=', 'c.ID_cliente')->join('produto_cliente as pc', 'o.ID_produto_cliente', '=', 'pc.ID_produto_cliente')->select('o.ID_orcamento', 'o.cod_orcamento', 'c.nome', 'pc.descricao', 'o.data')->groupBy('o.cod_orcamento')->orderBy('cod_orcamento', 'desc')->get();
+        $firma = Auth::user()->firma;
+        $orcamentos = DB::table('orcamento as o')->join('cliente as c', 'o.ID_cliente', '=', 'c.ID_cliente')->join('produto_cliente as pc', 'o.ID_produto_cliente', '=', 'pc.ID_produto_cliente')->select('o.ID_orcamento', 'o.cod_orcamento', 'c.nome', 'pc.descricao', 'o.data')->where('o.firma',$firma)->groupBy('o.cod_orcamento')->orderBy('cod_orcamento', 'desc')->get();
         
         //DEIXANDO A DATA NO FORMATO PT-BR (somente view)
         foreach ($orcamentos as $orca) {

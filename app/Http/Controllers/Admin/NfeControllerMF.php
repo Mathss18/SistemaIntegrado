@@ -151,10 +151,12 @@ class NfeControllerMF extends Controller
         }
         //dd($produtosNota2);
         $produtos = $produtosNota2;
-        
+
+        //Manda os dados da parte 1 para pegar o CFOP
+        $nfe1 = $request->session()->get('nfe1');
 
         
-        return view('admin.nfemf.emitirPasso2',compact('produtos','quantidades'));
+        return view('admin.nfemf.emitirPasso2',compact('produtos','quantidades','nfe1'));
     }
     public function postEmitir2(Request $request)
     {
@@ -216,7 +218,7 @@ class NfeControllerMF extends Controller
 
         $nfeService = new NfeServiceMF([
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -245,7 +247,8 @@ class NfeControllerMF extends Controller
         
         $data = $request->session()->all();
         $ultimo = DB::table('nfe')->where('firma',$firma)->orderBy('ID_nfe', 'desc')->first();
-        $aliquota = DB::table('aliquota')->first();
+        //PEGA A ALIQUOTA DA MF
+        $aliquota = $aliquota = DB::table('aliquota')->orderBy('ID_aliquota','desc')->first();
         
         //dd($ultimo);
         $nNFdb = $ultimo->nNF+1;
@@ -289,11 +292,12 @@ class NfeControllerMF extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
+        /*
         DB::table('faturamento')->insert(
             ['vale' => $nfe1['OF'], 'nfe' => $xml[2],'situacao' => 'Fechado', 'cliente' =>$nfe1['ID_cliente'],'peso' =>$nfe3['pesoLiq'],'valor' => $nfe3['precoFinal']+$nfe1['valorFrete'],
             'firma' => 'MF', 'status' => 'Pendente']
         );
-
+        */
         return redirect('admin/nfe')->with('success', 'Sucesso, NFe criada! Clique na primeira linha da tabela para exibi-la.');
         
     
@@ -348,7 +352,7 @@ class NfeControllerMF extends Controller
 
         $nfeService = new NfeServiceMF([
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -367,7 +371,7 @@ class NfeControllerMF extends Controller
 
         $configu = [
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -401,7 +405,7 @@ class NfeControllerMF extends Controller
         $idNfe = $dataFormCorrecao['idNfe'];
         $nfeService = new NfeServiceMF([
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -420,7 +424,7 @@ class NfeControllerMF extends Controller
 
         $configu = [
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -458,14 +462,14 @@ class NfeControllerMF extends Controller
             '_method',
             'submit'
         ]);
-        dd($dataFormCancelar);
+        //dd($dataFormCancelar);
         $chave = $dataFormCancelar['chaveNF'];
         $just = $dataFormCancelar['just'];
         $protocolo = $dataFormCancelar['protocolo'];
         $idNfe = $dataFormCancelar['idNfe'];
         $nfeService = new NfeServiceMF([
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -484,7 +488,7 @@ class NfeControllerMF extends Controller
 
         $configu = [
             "atualizacao" => "2015-10-02 06:01:21",
-            "tpAmb" => 2,
+            "tpAmb" => 1,
             "razaosocial" => "METALFLEX INDUSTRIA E COMERCIO DE MOLAS LTDA ME",
             "siglaUF" => "SP",
             "cnpj" => "13971196000103",
@@ -518,7 +522,7 @@ class NfeControllerMF extends Controller
         $firma = Auth::user()->firma;
         $produto_cliente = 
         pedido::select(DB::raw('concat(OF) as text, pedido.ID_cliente as ID_cliente, c.nome as nome,c.cpf_cnpj as cpf_cnpj,c.email as email,c.inscricao_estadual as IE,c.uf as ufCli'))->join('cliente as c','c.ID_cliente','=','pedido.ID_cliente')
-                    ->where("OF","LIKE","%{$request->input('query')}%")->where("status",'Fechado')->where("firma",$firma)->where('c.ID_Cliente',DB::raw('pedido.ID_cliente'))->groupBy('OF')
+                    ->where("OF","LIKE","%{$request->input('query')}%")/*->where("status",'Fechado')*/->where("firma",$firma)->where('c.ID_Cliente',DB::raw('pedido.ID_cliente'))->groupBy('OF')
                     ->get();
         return response()->json($produto_cliente);
         

@@ -135,7 +135,7 @@ Route::group(['middleware' => ['auth']],function(){
     //--NFe form passo 3 MF
     Route::get('/admin/nfemf/emitirPasso3', 'Admin\NfeControllerMF@emitir3')->name('nfemf.emitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/nfemf/postEmitirPasso3', 'Admin\NfeControllerMF@postEmitir3')->name('nfemf.postEmitirPasso3')->middleware('auth.tipo:Admin,Secretaria');
-
+    
     //--NFe mail
     Route::post('/admin/nfe/enviarEmail', 'Admin\NfeController@enviarEmail')->name('nfe.enviarEmail')->middleware('auth.tipo:Admin,Secretaria');
 
@@ -143,9 +143,11 @@ Route::group(['middleware' => ['auth']],function(){
     
     //--Carta Correcao Nfe
     Route::post('/admin/nfe/correcao','Admin\NfeController@cartaCorrecao')->name('nfe.cartaCorrecao')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfemf/correcao','Admin\NfeControllerMF@cartaCorrecao')->name('nfemf.cartaCorrecao')->middleware('auth.tipo:Admin,Secretaria');
 
     //--Cancelar Nfe
     Route::post('/admin/nfe/cancelar','Admin\NfeController@cancelar')->name('nfe.cancelar')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/nfemf/cancelar','Admin\NfeControllerMF@cancelar')->name('nfemf.cancelar')->middleware('auth.tipo:Admin,Secretaria');
     
     /* Rotas de Inutilização de NFe
     Route::get('/admin/nfe/inutilizarShow','Admin\NfeController@inutilizarShow')->middleware('auth.tipo:Admin');
@@ -153,7 +155,8 @@ Route::group(['middleware' => ['auth']],function(){
     */
 
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
-
+    Route::resource('/admin/nfemf', 'Admin\NfeControllerMF')->middleware('auth.tipo:Admin,Secretaria');
+    
     //Rotas orçamento
     Route::get('/admin/orcamento/mostrar','Admin\OrcamentoController@mostrar')->name('orcamento.mostrar')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/orcamento/adicionar','Admin\OrcamentoController@adicionar')->name('orcamento.adicionar')->middleware('auth.tipo:Admin,Secretaria');

@@ -63,7 +63,7 @@
         <div class="col-md-4">
             <hr>
         </div>
-        <div class="col-auto">Informações de Orçamento<h4 style="color: red">NÃO UTILIZAR AINDA - TESTE</h4></div>
+        <div class="col-auto">Informações de Orçamento</div>
         <div class="col">
             <hr>
         </div>

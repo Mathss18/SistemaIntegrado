@@ -61,6 +61,9 @@ class NfeServiceMF{
             else if($nfe1['natOp'] == "5901"){
                 $ide->natOp = $nfe1['natOp']."- Remessa para Industrialização por Encomenda";
             }
+            else if($nfe1['natOp'] == "5921"){
+                $ide->natOp = $nfe1['natOp']."- Retorno de Embalagem";
+            }
             else{
                 $ide->natOp = $nfe1['natOp'];
             }
@@ -84,8 +87,8 @@ class NfeServiceMF{
             $ide->tpImp = 1; //Formato de Impressão da DANFE 1-Retrato / 2-Paisagem
             $ide->tpEmis = 1; 
             //$ide->cDV = 0; // Dígito Verificador da Chave de Acesso da NF-e
-            $ide->tpAmb = 2; // Tipo de Ambiente. 1-Producao / 2-Homologacao
-            $ide->finNFe = 1; // Finalidade de emissão da NF-e  1- NF-e normal/ 2-NF-e complementar / 3 – NF-e de ajuste
+            $ide->tpAmb = 1; // Tipo de Ambiente. 1-Producao / 2-Homologacao
+            $ide->finNFe = $nfe1['finNFe']; // Finalidade de emissão da NF-e  1- NF-e normal/ 2-NF-e complementar / 3 – NF-e de ajuste
             $ide->indFinal = 1; // Consumidor Final ou não. 0-Não / 1-Sim
             $ide->indPres = 1; //Presenca do Consumidor na hora da emissao ou não. 0-Não / 1-Sim
             $ide->procEmi = 0;
@@ -244,6 +247,10 @@ class NfeServiceMF{
                         $icms->CSOSN = '400';
                     else if($nfe1['natOp'] == 5124)
                         $icms->CSOSN = '900';
+                    else if($nfe1['natOp'] == 5921)
+                        $icms->CSOSN = '900';
+                    else
+                        $icms->CSOSN = '101';
                     $icms->pCredSN = $aliquota->aliquota;
                     $icms->vCredICMSSN = $nfe3['precoFinal'] * ($aliquota->aliquota/100);
                     //$icms->modBCST = null;
@@ -275,22 +282,23 @@ class NfeServiceMF{
                     $respIcms = $nfe->tagICMSSN($icms);
 
                     //====================TAG IPI===================
-                    $std = new stdClass();
-                    $std->item = $i+1; //item da NFe
-                    $std->clEnq = null;
-                    $std->CNPJProd = null;
-                    $std->cSelo = null;
-                    $std->qSelo = null;
-                    $std->cEnq = '999';
-                    $std->CST = '53';
-                    $std->vIPI = 0.00;
-                    $std->vBC = 0.00;
-                    $std->pIPI = 0.00;
-                    $std->qUnid = null;
-                    $std->vUnid = null;
+                    if($nfe1['natOp'] == 5902){
+                        $std = new stdClass();
+                        $std->item = $i+1; //item da NFe
+                        $std->clEnq = null;
+                        $std->CNPJProd = null;
+                        $std->cSelo = null;
+                        $std->qSelo = null;
+                        $std->cEnq = '999';
+                        $std->CST = '53';
+                        $std->vIPI = 0.00;
+                        $std->vBC = 0.00;
+                        $std->pIPI = 0.00;
+                        $std->qUnid = null;
+                        $std->vUnid = null;
 
-                    $nfe->tagIPI($std);
-
+                        $nfe->tagIPI($std);
+                    }
                     //====================TAG PIS===================
                     $pis = new stdClass();
                     $pis->item = $i+1; //item da NFe
@@ -429,26 +437,64 @@ class NfeServiceMF{
                         */
                 } 
                 //====================TAG PAGAMENTO===================
-                $pag = new stdClass();
-                //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
+                if($nfe1['natOp'] == 5124){
+                    $pag = new stdClass();
+                    //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
 
-                $respPag = $nfe->tagpag($pag);
+                    $respPag = $nfe->tagpag($pag);
 
-                //====================TAG DETALHE PAGAMENTO===================
-                $detPag = new stdClass();
-                $detPag->tPag = '15';
-                $detPag->vPag = $nfe3['precoFinal']+$nfe1['valorFrete']; //Obs: deve ser informado o valor pago pelo cliente
-                //$detPag->CNPJ = '12345678901234';
-                //$detPag->tBand = '01';
-                //$detPag->cAut = '3333333';
-                //$detPag->tpIntegra = 1; //incluso na NT 2015/002
-                //$detPag->indPag = '0'; //0= Pagamento à Vista 1= Pagamento à Prazo
+                    //====================TAG DETALHE PAGAMENTO===================
+                    $detPag = new stdClass();
+                    $detPag->tPag = '15';
+                    $detPag->vPag = $nfe3['precoFinal']+$nfe1['valorFrete']; //Obs: deve ser informado o valor pago pelo cliente
+                    //$detPag->CNPJ = '12345678901234';
+                    //$detPag->tBand = '01';
+                    //$detPag->cAut = '3333333';
+                    //$detPag->tpIntegra = 1; //incluso na NT 2015/002
+                    //$detPag->indPag = '0'; //0= Pagamento à Vista 1= Pagamento à Prazo
 
-                $respDetPag = $nfe->tagdetPag($detPag);
+                    $respDetPag = $nfe->tagdetPag($detPag);
+                }
+                else if($nfe1['natOp'] == 5921){
+                    $pag = new stdClass();
+                    //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
 
+                    $respPag = $nfe->tagpag($pag);
+
+                    //====================TAG DETALHE PAGAMENTO===================
+                    $detPag = new stdClass();
+                    $detPag->tPag = '90';
+                    $detPag->vPag = 0.0; //Obs: deve ser informado o valor pago pelo cliente
+                    //$detPag->CNPJ = '12345678901234';
+                    //$detPag->tBand = '01';
+                    //$detPag->cAut = '3333333';
+                    //$detPag->tpIntegra = 1; //incluso na NT 2015/002
+                    //$detPag->indPag = '0'; //0= Pagamento à Vista 1= Pagamento à Prazo
+
+                    $respDetPag = $nfe->tagdetPag($detPag);
+                }
+                else{
+                    $pag = new stdClass();
+                    //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
+
+                    $respPag = $nfe->tagpag($pag);
+
+                    //====================TAG DETALHE PAGAMENTO===================
+                    $detPag = new stdClass();
+                    $detPag->tPag = '99';
+                    $detPag->vPag = $nfe3['precoFinal']+$nfe1['valorFrete']; //Obs: deve ser informado o valor pago pelo cliente
+                    //$detPag->CNPJ = '12345678901234';
+                    //$detPag->tBand = '01';
+                    //$detPag->cAut = '3333333';
+                    //$detPag->tpIntegra = 1; //incluso na NT 2015/002
+                    //$detPag->indPag = '0'; //0= Pagamento à Vista 1= Pagamento à Prazo
+
+                    $respDetPag = $nfe->tagdetPag($detPag);
+                }
                 //====================INFO ADICIONAL===================
                 $stdInfo = new stdClass();
                 $stdInfo->infAdFisco = $nfe3['infoAdc']." --- DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL, CONFORME LEI COMPLEMENTAR 123/2006 II - NAO GERA DIREITO A CREDITO FISCAL DE IPI. III - PERMITE O APROVEITAMENTO DO CREDITO DE ICMS NO VALOR DE R$ ".$icms->vCredICMSSN." CORRESPONDENTE A ALIQUOTA DE ".$aliquota->aliquota.", NOS TERMOS DO ART. 23 DA LC 123/2006";
+                //dd($nfe3['infoAdc']);
                 //$std->infCpl = 'informacoes complementares';
 
                 $nfe->taginfAdic($stdInfo);
@@ -743,7 +789,7 @@ class NfeServiceMF{
                 //verifique se o evento foi processado
                 if ($std->cStat != 128) {
                     //houve alguma falha e o evento não foi processado
-                    dd('Erro Ao Cancelar Nota!  Erro numero:',$std->cStat);
+                    dd('Erro Ao Cancelar Nota MF!  Erro numero:',$std->cStat);
                 } else {
                     $cStat = $std->retEvento->infEvento->cStat;
                     if ($cStat == '101' || $cStat == '135' || $cStat == '155') {

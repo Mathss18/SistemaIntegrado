@@ -54,7 +54,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
-        <h6>Gestão de NF-e</h6>
+        <h6>Gestão de NF-e Metal-Flex</h6>
 
 
     </div>
@@ -127,7 +127,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{route('nfe.cartaCorrecao')}}" method="post">
+            <form action="{{route('nfemf.cartaCorrecao')}}" method="post">
                 {!! method_field('POST') !!}
                 {!! csrf_field() !!}
                 <div class="modal-body">
@@ -160,7 +160,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{route('nfe.cancelar')}}" method="post">
+            <form action="{{route('nfemf.cancelar')}}" method="post">
                 {!! method_field('POST') !!}
                 {!! csrf_field() !!}
                 <div class="modal-body">

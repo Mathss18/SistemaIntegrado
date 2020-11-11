@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Auth;
 
 class NfeMail extends Mailable
 {
@@ -48,22 +49,41 @@ class NfeMail extends Mailable
 
     public function enviarEmailProprio()
     {
+        $firma = Auth::user()->firma;
+        if($firma == 'FM'){
+            Mail::send('admin.nfe.mail', ['cliente' => $this->cliente, 'nfe' => $this->nfe], function ($m) {
+                //Configurando path dos arquivos para enviar os paths são absolutos
+                $path_xml = storage_path('app\public\\');
+                $path_xml = storage_path('app\public\\');
+                $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
+                $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
+                $xml = $path_xml . $this->nfe['path_nfe'] . '.xml';
+                $pdf = $path_xml . $this->nfe['path_nfe'] . '.pdf';
 
-        Mail::send('admin.nfe.mail', ['cliente' => $this->cliente, 'nfe' => $this->nfe], function ($m) {
-            //Configurando path dos arquivos para enviar os paths são absolutos
-            $path_xml = storage_path('app\public\\');
-            $path_xml = storage_path('app\public\\');
-            $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
-            $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
-            $xml = $path_xml . $this->nfe['path_nfe'] . '.xml';
-            $pdf = $path_xml . $this->nfe['path_nfe'] . '.pdf';
+                $m->from('flexmol@flexmol.com.br', 'Flex-Mol, Nota Fiscal Eletrônica');
+                $m->attach($xml);
+                $m->attach($pdf);
+                $m->to('flexmol@flexmol.com.br', $this->cliente['nome'])->subject('NFe chave: '.$this->nfe['chaveNF']);
+            
+            });
+        }
+        else{
+            Mail::send('admin.nfe.mail', ['cliente' => $this->cliente, 'nfe' => $this->nfe], function ($m) {
+                //Configurando path dos arquivos para enviar os paths são absolutos
+                $path_xml = storage_path('app\public\\');
+                $path_xml = storage_path('app\public\\');
+                $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
+                $this->nfe['path_nfe'] = str_replace("/", "\\", $this->nfe['path_nfe']);
+                $xml = $path_xml . $this->nfe['path_nfe'] . '.xml';
+                $pdf = $path_xml . $this->nfe['path_nfe'] . '.pdf';
 
-            $m->from('flexmol@flexmol.com.br', 'Flex-Mol, Nota Fiscal Eletrônica');
-            $m->attach($xml);
-            $m->attach($pdf);
-            $m->to('flexmol@flexmol.com.br', $this->cliente['nome'])->subject('NFe chave: '.$this->nfe['chaveNF']);
-        
-        });
+                $m->from('flexmol@flexmol.com.br', 'Flex-Mol, Nota Fiscal Eletrônica');
+                $m->attach($xml);
+                $m->attach($pdf);
+                $m->to('atendimento@metalflex.ind.br', $this->cliente['nome'])->subject('NFe chave: '.$this->nfe['chaveNF']);
+            
+            });
+        }
        
     }
 }

@@ -339,7 +339,7 @@ class NfeController extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
-        dd('faturamento FM');
+        
         DB::table('faturamento')->insert(
             ['vale' => $nfe1['OF'], 'nfe' => $xml[2],'situacao' => 'Fechado', 'cliente' =>$nfe1['ID_cliente'],'peso' =>$nfe3['pesoLiq'],'valor' => $nfe3['precoFinal']+$nfe1['valorFrete'],
             'firma' => 'FM', 'status' => 'Pago']
@@ -569,7 +569,7 @@ class NfeController extends Controller
         $firma = Auth::user()->firma;
         $produto_cliente = 
         pedido::select(DB::raw('concat(OF) as text, pedido.ID_cliente as ID_cliente, c.nome as nome,c.cpf_cnpj as cpf_cnpj,c.email as email,c.inscricao_estadual as IE,c.uf as ufCli'))->join('cliente as c','c.ID_cliente','=','pedido.ID_cliente')
-                    ->where("OF","LIKE","%{$request->input('query')}%")->where("status",'Fechado')->where("firma",$firma)->where('c.ID_Cliente',DB::raw('pedido.ID_cliente'))->groupBy('OF')
+                    ->where("OF","LIKE","%{$request->input('query')}%")/*->where("status",'Fechado')*/->where("firma",$firma)->where('c.ID_Cliente',DB::raw('pedido.ID_cliente'))->groupBy('OF')
                     ->get();
         return response()->json($produto_cliente);
         }

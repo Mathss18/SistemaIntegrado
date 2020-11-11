@@ -62,16 +62,21 @@
             <span class="glyphicon glyphicon-plus"></span>
             Emitir Nova NF-e por número da OF
         </a>
+        <a href="{{url('storage/Nfe/UltimoXML/FM/last.txt')}}" target="_blank" class="btn btn-info">
+            <span class="glyphicon glyphicon-plus"></span>
+            Último XML
+        </a>
         @elseif($firma == 'MF')
         <a href="{{route('nfemf.emitirPasso1')}}" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span>
             Emitir Nova NF-e por número da OF
         </a>
-        @endif
-        <a href="{{url('storage/Nfe/UltimoXML/FM/last.txt')}}" target="_blank" class="btn btn-info">
+        <a href="{{url('storage/Nfe/UltimoXML/MF/last.txt')}}" target="_blank" class="btn btn-info">
             <span class="glyphicon glyphicon-plus"></span>
             Último XML
         </a>
+        @endif
+        
 
 
     </div>
@@ -88,7 +93,11 @@
             </thead>
             <tbody>
             @foreach($nfe as $nf)
+                @if($firma=='FM')
                 <tr class='clickable-row' data-href="{{route('nfe.edit',$nf->ID_nfe)}}">
+                @else
+                <tr class='clickable-row' data-href="{{route('nfemf.edit',$nf->ID_nfe)}}">
+                @endif
                     <td>{{$nf->nNF}}</td>
                     <td>{{$nf->OF}}</td>
                     <td>{{$nf->chaveNF}}</td>

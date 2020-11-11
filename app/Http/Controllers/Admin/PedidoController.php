@@ -380,7 +380,8 @@ class PedidoController extends Controller
 
         $pedidoFull = DB::table('pedido')->where('OF',$OF)->where('firma', $firma)->get()->toArray();
         $cliente = DB::table('cliente')->where('ID_cliente',$idCli)->get()->toArray();
-        //dd($pedidoFull);
+
+        //dd($pedidoFull[0]);
         foreach ($pedidoFull as $produto) {
             $produto = DB::table('produto_cliente')->where('cod_fabricacao', $produto->codigo)->where('firma', $firma)->get()->toArray();
             array_push($produtos,$produto[0]);
@@ -388,8 +389,12 @@ class PedidoController extends Controller
         //array_pop($produtos);
         //dd($produtos);
         
+        $dataHoje = date("d/m/Y");
 
-        return view('admin.pedido.template', compact('pedidoFull','cliente','produtos','total'));
+        if($pedidoFull[0]->codigo != 'sem codigo')
+            return view('admin.pedido.template', compact('pedidoFull','cliente','produtos','total'));
+        else    
+            return view('admin.pedido.templateGenerico', compact('pedidoFull','cliente','produtos','total','dataHoje'));
     }
 
 }

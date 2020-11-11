@@ -13,9 +13,10 @@ class PedidoCompraController extends Controller
 
     public function index()
     {
+        $firma = Auth::user()->firma;
         $pedidosCompra = new pedidoCompra();
         $pedidosCompra = DB::table('pedidocompra as p')->join('fornecedor as f', 'p.ID_fornecedor', '=', 'f.ID_fornecedor')->join('produto_fornecedor as pf', 'p.ID_produto_fornecedor', '=', 'pf.ID_produto_fornecedor')
-        ->select('p.ID_pedidoCompra', 'p.cod_pedidoCompra', 'f.nome', 'pf.descricao', 'p.data')->groupBy('p.cod_pedidoCompra')->orderBy('cod_pedidoCompra', 'desc')->get();
+        ->select('p.ID_pedidoCompra', 'p.cod_pedidoCompra', 'f.nome', 'pf.descricao', 'p.data')->where('p.firma',$firma)->groupBy('p.cod_pedidoCompra')->orderBy('cod_pedidoCompra', 'desc')->get();
         
         //DEIXANDO A DATA NO FORMATO PT-BR (somente view)
         foreach ($pedidosCompra as $pedido) {
