@@ -392,9 +392,9 @@ class PedidoController extends Controller
         $dataHoje = date("d/m/Y");
 
         if($pedidoFull[0]->codigo != 'sem codigo')
-            return view('admin.pedido.template', compact('pedidoFull','cliente','produtos','total'));
+            return view('admin.pedido.template', compact('pedidoFull','cliente','produtos','total','firma'));
         else    
-            return view('admin.pedido.templateGenerico', compact('pedidoFull','cliente','produtos','total','dataHoje'));
+            return view('admin.pedido.templateGenerico', compact('pedidoFull','cliente','produtos','total','dataHoje','firma'));
     }
 
 }
