@@ -55,7 +55,8 @@ class MoneyController extends Controller
     public function carregarEventos(Request $request){
 
         $returnedColumns = ['id', 'title', 'start', 'end', 'color', 'description','ID_cliente',
-        'favorecido','ID_fornecedor','tipoFav','ID_banco','ID_funcionario','ID_transportadora','valor','numero'
+        'favorecido','ID_fornecedor','tipoFav','ID_banco','ID_funcionario','ID_transportadora','valor','numero',
+        'situacao'
     ];
 
         $start = (!empty($request->start)) ? ($request->start) : ('');
@@ -70,8 +71,34 @@ class MoneyController extends Controller
 
     public function atualizarEvento(Request $request){
         $event = evento::where('id',$request->id)->first();
+        //EVENTO ANTES DA MODIFICACAO
+        $oldEvent = evento::where('id',$request->id)->first();
+        file_put_contents('atualizarEvt.json',$event);
         $event->fill($request->all());
+        
+        //EVENTO DEPOIS DA MODIFICACAO
+        $newEvent = $event; 
+
+        //Verificar se o evento foi registrado 
+        if(($oldEvent->situacao =='on' & $newEvent->situacao =='off') && $newEvent->tipoFav == 'cliente'){
+            $event->color = '#025509';
+            $event->title = '- Registrado';
+        }
+        else if(($oldEvent->situacao =='off' & $newEvent->situacao =='on') && $newEvent->tipoFav == 'cliente'){
+            $event->color = '#8cf19f';
+            $event->title = '- Aberto';
+        }
+        else if(($oldEvent->situacao =='on' & $newEvent->situacao =='off') && $newEvent->tipoFav != 'cliente'){
+            $event->color = '#85110f';
+            $event->title = '- Registrado';
+        }
+        else if(($oldEvent->situacao =='off' & $newEvent->situacao =='on') && $newEvent->tipoFav != 'cliente'){
+            $event->color = '#f1948c';
+            $event->title = '- Aberto';
+        }
+
         $event->save();
+        file_put_contents('atualizarEvt1.json',$event);
         
         return response()->json(true);
     }

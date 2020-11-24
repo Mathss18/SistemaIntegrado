@@ -39,7 +39,10 @@ class Produto_FornecedorController extends Controller
             '_method',
             'submit'
         ]);
-        $dataFormCli['path_imagem'] = Str::kebab($usuario->id.$dataFormCli['path_imagem']->getClientOriginalName());
+
+        //DESCOMENTAR CASO FOR UTILIZAR FOTO
+        //$dataFormCli['path_imagem'] = Str::kebab($usuario->id.$dataFormCli['path_imagem']->getClientOriginalName());
+        
         
         if($request->hasFile('path_imagem') && $request->file('path_imagem')->isValid()){
             //Storage::delete('file.jpg');
@@ -88,7 +91,8 @@ class Produto_FornecedorController extends Controller
             '_method',
             'submit'
         ]);
-        $dataFormCli['path_imagem'] = Str::kebab($usuario->id.$dataFormCli['path_imagem']->getClientOriginalName());
+        //DESCOMENTAR CASO FOR UTILIZAR FOTO
+        //$dataFormCli['path_imagem'] = Str::kebab($usuario->id.$dataFormCli['path_imagem']->getClientOriginalName());
         
         if($request->hasFile('path_imagem') && $request->file('path_imagem')->isValid()){
             //Storage::delete('file.jpg');
@@ -118,8 +122,8 @@ class Produto_FornecedorController extends Controller
 
         $firma = Auth::user()->firma;
         $produto_fornecedor = 
-        produto_fornecedor::select(DB::raw('concat(cod_fabricacao) as text, path_imagem as value, ID_produto_fornecedor as ID_produto_fornecedor'))
-                    ->where("cod_fabricacao","LIKE","%{$request->input('query')}%")->where("firma",$firma)
+        produto_fornecedor::select(DB::raw('concat(descricao) as text, path_imagem as value, ID_produto_fornecedor as ID_produto_fornecedor'))
+                    ->where("descricao","LIKE","%{$request->input('query')}%")->where("firma",$firma)
                     ->get();
         return response()->json($produto_fornecedor);
         }

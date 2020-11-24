@@ -154,6 +154,9 @@ Route::group(['middleware' => ['auth']],function(){
     Route::post('/admin/nfe/inutilizar','Admin\NfeController@inutilizar')->name('nfe.inutilizar')->middleware('auth.tipo:Admin');
     */
 
+    //Danfe Avulsa
+    Route::get('/admin/nfe/gerarDanfeAvulsa','Admin\NfeControllerMF@gerarDanfeAvulsa')->name('nfe.gerarDanfeAvulsa')->middleware('auth.tipo:Admin,Secretaria');
+
     Route::resource('/admin/nfe', 'Admin\NfeController')->middleware('auth.tipo:Admin,Secretaria');
     Route::resource('/admin/nfemf', 'Admin\NfeControllerMF')->middleware('auth.tipo:Admin,Secretaria');
     

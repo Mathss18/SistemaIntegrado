@@ -56,10 +56,10 @@ class NfeServiceMF{
                 $ide->natOp = $nfe1['natOp']."- Retorno De Mercadoria";
             }
             else if($nfe1['natOp'] == "5124"){
-                $ide->natOp = $nfe1['natOp']."- Industrialização";
+                $ide->natOp = $nfe1['natOp']."- Industrializacao";
             }
             else if($nfe1['natOp'] == "5901"){
-                $ide->natOp = $nfe1['natOp']."- Remessa para Industrialização por Encomenda";
+                $ide->natOp = $nfe1['natOp']."- Remessa para Industrializacao por Encomenda";
             }
             else if($nfe1['natOp'] == "5921"){
                 $ide->natOp = $nfe1['natOp']."- Retorno de Embalagem";
@@ -132,6 +132,7 @@ class NfeServiceMF{
             //====================TAG DESTINATARIO===================
             $dest = new stdClass();
             $dest->xNome = $this->tirarAcentos($nfe1['nomeCli']);
+            //dd($dest->xNome);
                 // VERIFICA SE O DEST É ISENTO DE ICMS, OU SEJA SEM INSCRICAO ESTADUAL
             if(strtoupper($nfe1['ieCli']) == 'ISENTO2'){
 
@@ -590,6 +591,8 @@ class NfeServiceMF{
                 session(['path_nfe' => $path]);
                 $xmlFinal1 = Storage::get('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.xml');
                 
+                $firma = Auth::user()->firma;
+                Storage::put('Nfe/UltimoXMLT/'.$firma.'/'.'lastTransmit.xml', $xmlFinal1);
                 return $xmlFinal1;
             } catch (\Exception $e) {
                 echo "Erro Protocolo: " . $e->getMessage();
@@ -620,6 +623,40 @@ class NfeServiceMF{
                 //Gera o PDF
                 $pdf = $danfe->render($logo);
                 Storage::put('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
+                
+               
+                //DESCOMENTAR AS DUAS LINHAS ABAIXO PARA MOSTRAR A DANFE
+                //header('Content-Type: application/pdf');
+                //echo $pdf;
+            } catch (Exception $e) {
+                echo "Ocorreu um erro durante o processamento :" . $e->getMessage();
+            }  
+            
+        }
+
+        public function gerarDanfeAvulsa(){
+            $firma = Auth::user()->firma;
+            $mes = date('m');
+            $ano = date('Y');
+            $xml = Storage::get('Nfe/UltimoXMLT/'.$firma.'/'.'lastTransmit.xml',);
+            
+            $logo = 'data://text/plain;base64,'. base64_encode(file_get_contents("logoMF.jpg"));
+
+            try {
+                $danfe = new Danfe($xml);
+                $danfe->debugMode(false);
+                $danfe->creditsIntegratorFooter('FlexCode - By Matheus Filho');
+                // Caso queira mudar a configuracao padrao de impressao
+                /*  $this->printParameters( $orientacao = '', $papel = 'A4', $margSup = 2, $margEsq = 2 ); */
+                //Informe o numero DPEC
+                /*  $danfe->depecNumber('123456789'); */
+                //Configura a posicao da logo
+                /*  $danfe->logoParameters($logo, 'C', false);  */
+                //Gera o PDF
+                $pdf = $danfe->render($logo);
+                header('Content-Type: application/pdf');
+                echo $pdf;
+                //Storage::put('Nfe'.$firma.'/'.$mes.'-'.$ano.'/'.$chave.'.pdf', $pdf);
                 
                
                 //DESCOMENTAR AS DUAS LINHAS ABAIXO PARA MOSTRAR A DANFE

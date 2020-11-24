@@ -127,7 +127,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">R$</span>
                   </div>
-                  <input id="valor" type="number" step="0.01" class="form-control" placeholder="Valor">
+                  <input id="valor" type="number" step="0.01" class="form-control" placeholder="Valor" required>
                 </div>
 
               </div>
@@ -152,6 +152,13 @@
               </div>
             </div>
 
+            <div class="form-group row">
+              <label for="description" class="col-sm-2 col-form-label">Situação</label>
+              <div class="col-sm-10">
+                <input type="checkbox" id="situacao" onchange="showState()" checked data-toggle="toggle" data-on="Pendente" data-off="Registrado" data-onstyle="danger" data-offstyle="success" data-width="380">
+              </div>
+            </div>
+
           </div>
       </div>
       <div class="modal-footer">
@@ -162,3 +169,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  function showState(){
+    if($('#situacao').val()=='on'){
+      $('#situacao').val('off')
+    }
+    else{
+      $('#situacao').val('on')
+    }
+  }
+</script>

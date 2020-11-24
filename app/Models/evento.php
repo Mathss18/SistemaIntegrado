@@ -13,6 +13,6 @@ class evento extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id','start','end','title','color','description','firma','ID_cliente','favorecido','ID_fornecedor','tipoFav','ID_banco','ID_funcionario','ID_transportadora','valor','numero'
+        'id','start','end','title','color','description','firma','ID_cliente','favorecido','ID_fornecedor','tipoFav','ID_banco','ID_funcionario','ID_transportadora','valor','numero','situacao'
     ];
 }

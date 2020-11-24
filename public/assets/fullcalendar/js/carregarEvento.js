@@ -97,7 +97,11 @@ $(function () {
             let tipoCliForne = $('#tipoCliForne').val();
             let valor = $('#valor').val();
             let numero = $('#numero').val();
-            console.log(valor+' '+numero);
+            let situacao = $('#situacao').val();
+
+            let corEntrada = '#8cf19f';
+            let corSaida = '#f1948c'
+            //console.log(situacao.val());
             //break;
         //============= VARIAVEIS DIFERENTES AOS 2 TIPOS DE TRANSAÇÃO ==============
             let ID_cliente = '';
@@ -113,43 +117,42 @@ $(function () {
             if(tipoCliForne == 'fornecedor'){
                 favorecido = $("#ttexto1").val();
                 ID_fornecedor = $("#ID_fornecedor").val();
-                color = '#d44235';
+                color = corSaida;
                 tipoFav = 'fornecedor';
 
             }
             else if(tipoCliForne == 'transportadora'){
                 favorecido = $("#ttexto2").val();
                 ID_transportadora = $("#ID_transportadora").val();
-                color = '#d44235';
+                color = corSaida;
                 tipoFav = 'transportadora';
 
             }
             else if(tipoCliForne == 'funcionario'){
                 favorecido = $("#ttexto3").val();
                 ID_funcionario = $("#ID_funcionario").val();
-                color = '#d44235';
+                color = corSaida;
                 tipoFav = 'funcionario';
 
             }
             else if(tipoCliForne == 'imposto'){
                 favorecido = $("#ttexto4").val();
-                color = '#d44235';
+                color = corSaida;
                 tipoFav = 'imposto';
 
             }
             else if(tipoCliForne == 'investimento'){
                 favorecido = $("#ttexto5").val();
-                color = '#d44235';
+                color = corSaida;
                 tipoFav = 'investimento';
 
             }
             else if(tipoCliForne == 'cliente'){
                 favorecido = $("#ttexto").val();
                 ID_cliente = $("#ID_cliente").val();
-                color = '#16a23a';
+                color = corEntrada;
                 tipoFav = 'cliente';
             }
-
             let newEvent = {
                 title: title,
                 start: start,
@@ -165,7 +168,8 @@ $(function () {
                 favorecido: favorecido,
                 ID_banco: ID_banco,
                 valor: valor,
-                numero: numero
+                numero: numero,
+                situacao: situacao
                 
             };
 
@@ -176,7 +180,7 @@ $(function () {
 
                 $('#modalCalendario').modal('hide');
                 $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();s
+                $('.modal-backdrop').remove();
             }
             else{
                 route = routeEventsAtualizar();
@@ -297,5 +301,7 @@ function resetarForm(form){
     $( "#ttexto5" ).prop( "disabled", true );
 
     $( "#categoria" ).prop( "disabled", false );
+
+    $('#situacao').bootstrapToggle('on');
 
 }

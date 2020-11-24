@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let ID_banco = element.event.extendedProps.ID_banco;
             let valor = element.event.extendedProps.valor;
             let numero = element.event.extendedProps.numero;
+            let situacao = element.event.extendedProps.situacao;
 
             //=======PEGA O TIPO DE FAVORECIDO E COLOCA DENTO DO INPUT 'tipoClieForne'==========
             $('#tipoCliForne').val(tipoFav);
@@ -173,6 +174,8 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#description").val(description);
             $("#valor").val(valor);
             $("#numero").val(numero);
+            $("#situacao").bootstrapToggle(situacao);
+            $("#situacao").val(situacao);
             $('#banco>option[value='+ID_banco+']').attr("selected", true);
 
         },

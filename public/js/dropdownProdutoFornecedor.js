@@ -20,6 +20,7 @@ $(document).ready(function(){
         displayKey: "text",
         source: codigo.ttAdapter()
     }).bind("typeahead:selected", function(obj, datum, name) {
+        console.log(datum);
         $(this).data("seletectedId", datum.value);
         $('#codigo').val(datum.value);
         var teste = document.getElementById('fotoProduto').src;

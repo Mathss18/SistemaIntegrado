@@ -31,10 +31,12 @@
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
         <h6>Gestão de Produtos</h6>
+        <!--
         <a href="{{route('estoque.create')}}" class="btn btn-success">
             <span class="glyphicon glyphicon-plus"></span>
             Cadastrar Novo Produto
         </a>
+        -->
 
     </div>
     <div class="card-body">

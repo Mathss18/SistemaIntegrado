@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <link href="{{asset('assets/fullcalendar/lib/main.css')}}" rel='stylesheet' />
 <link href="{{asset('assets/fullcalendar/css/style.css')}}" rel='stylesheet' />
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/dropdown.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -63,6 +64,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script src="{{asset('assets/fullcalendar/lib/main.js')}}"></script>
 <script src="{{asset('assets/fullcalendar/js/carregarEvento.js')}}"></script>
 <script src="{{asset('assets/fullcalendar/js/script.js')}}"></script>

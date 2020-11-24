@@ -137,7 +137,7 @@
                 <label for="path_imagem"></label>
                     <div class="input-group">
                         <div class="custom-file">
-                            <input required name="path_imagem" type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
+                            <input name="path_imagem" type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
                             <label class="custom-file-label" for="myInput"></label>
                         </div>
                     </div>
