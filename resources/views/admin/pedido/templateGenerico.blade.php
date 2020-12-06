@@ -40,7 +40,7 @@
                             <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp;&nbsp;&nbsp; <b>Email:</b> flexmol@flexmol.com.br</h6>
                         </div>
                         <div class="col-2">
-                            <h4>Venda número: <u>{{$pedidoFull[0]->OF}}</u></h4>
+                            <h4>Venda: <u>{{$pedidoFull[0]->OF}}</u></h4>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                             <h6><b>Bairro:</b> JARDIM PACAEMBU &nbsp;&nbsp;<b>Email:</b> atendimento@metalflex.ind.br</h6>
                         </div>
                         <div class="col-2">
-                            <h4>Venda número: <u>{{$pedidoFull[0]->OF}}</u></h4>
+                            <h4>Venda: <u>{{$pedidoFull[0]->OF}}</u></h4>
                         </div>
                     </div>
                 </div>
@@ -120,11 +120,20 @@
             <!--  Rodape   -->
 
             <div class="row">
-                <div class="col-md-8">
-                    <h6>Data: {{$dataHoje}}</h6>
+                <div class="col-md-7">
+                    <h6 contenteditable>Observação:&nbsp;</h6>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>Data de hoje: {{$dataHoje}}</h6>
                 </div>
                 <div class="col">
-                    <a>Assinatura: _______________________________</a>
+                    <h6 contenteditable>Data de Vencimento:&nbsp;</h6>
+                </div>
+                <div class="col">
+                    <a>Assinatura: ____________________________________</a>
                 </div>
             </div>
             <!-- Fim Rodape   -->
@@ -150,7 +159,7 @@
                             <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp;&nbsp;&nbsp; <b>Email:</b> flexmol@flexmol.com.br</h6>
                         </div>
                         <div class="col-2">
-                            <h4>Venda número: <u>{{$pedidoFull[0]->OF}}</u></h4>
+                            <h4>Venda: <u>{{$pedidoFull[0]->OF}}</u></h4>
                         </div>
                     </div>
                 </div>
@@ -168,7 +177,7 @@
                             <h6><b>Bairro:</b> JARDIM PACAEMBU &nbsp;&nbsp;<b>Email:</b> atendimento@metalflex.ind.br</h6>
                         </div>
                         <div class="col-2">
-                            <h4>Venda número: <u>{{$pedidoFull[0]->OF}}</u></h4>
+                            <h4>Venda: <u>{{$pedidoFull[0]->OF}}</u></h4>
                         </div>
                     </div>
                 </div>
@@ -228,13 +237,21 @@
                 </div>
             </div>
             <!--  Rodape   -->
-
             <div class="row">
-                <div class="col-md-8">
-                    <h6>Data: {{$dataHoje}}</h6>
+                <div class="col-md-7">
+                    <h6 contenteditable>Observação:&nbsp;</h6>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>Data de hoje: {{$dataHoje}}</h6>
                 </div>
                 <div class="col">
-                    <a>Assinatura: _______________________________</a>
+                    <h6 contenteditable>Data de Vencimento:&nbsp;</h6>
+                </div>
+                <div class="col">
+                    <a>Assinatura: ____________________________________</a>
                 </div>
             </div>
             <!-- Fim Rodape   -->

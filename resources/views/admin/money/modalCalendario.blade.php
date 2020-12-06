@@ -172,11 +172,16 @@
 
 <script>
   function showState(){
+    console.log('entrei');
+    console.log($('#situacao').val());
     if($('#situacao').val()=='on'){
       $('#situacao').val('off')
     }
     else{
       $('#situacao').val('on')
     }
+    
   }
+  
+  
 </script>

@@ -396,26 +396,38 @@ class NfeService{
                 
                 
                 // VALORES DISTINTOS DE DUPLICATA (MANUAL)
-                /* 
+                /*
                     $dup1 = new stdClass();
                     $dup1->nDup = '001';
-                    $dup1->dVenc = '2020-11-13';
-                    $dup1->vDup = '1000.00';
+                    $dup1->dVenc = '2020-12-02';
+                    $dup1->vDup = '746.66';
                     $nfe->tagdup($dup1);
                    
                     $dup2 = new stdClass();
                     $dup2->nDup = '002';
-                    $dup2->dVenc = '2020-12-13';
-                    $dup2->vDup = '1133.50';
+                    $dup2->dVenc = '2021-01-01';
+                    $dup2->vDup = '2333.33';
                     $nfe->tagdup($dup2);
 
                     $dup3 = new stdClass();
                     $dup3->nDup = '003';
-                    $dup3->dVenc = '2020-12-28';
-                    $dup3->vDup = '1133.50';
+                    $dup3->dVenc = '2021-01-16';
+                    $dup3->vDup = '2333.33';
                     $nfe->tagdup($dup3);
+
+                    $dup4 = new stdClass();
+                    $dup4->nDup = '004';
+                    $dup4->dVenc = '2021-01-31';
+                    $dup4->vDup = '2333.33';
+                    $nfe->tagdup($dup4);
+
+                    $dup5 = new stdClass();
+                    $dup5->nDup = '005';
+                    $dup5->dVenc = '2021-02-15';
+                    $dup5->vDup = '2333.35';
+                    $nfe->tagdup($dup5);
                     //dd($datas);
-                */  
+                 */
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();
                 //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)

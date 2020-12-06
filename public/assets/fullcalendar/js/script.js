@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#numero").val(numero);
             $("#situacao").bootstrapToggle(situacao);
             $("#situacao").val(situacao);
+            console.log('Atual '+situacao);
             $('#banco>option[value='+ID_banco+']').attr("selected", true);
 
         },
@@ -263,4 +264,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     calendar.render();
 
+
+    
 });
+
+

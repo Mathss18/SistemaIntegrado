@@ -175,10 +175,14 @@ Route::group(['middleware' => ['auth']],function(){
 
     //Rotas Money
     Route::get('/admin/money/carregarEventos','Admin\MoneyController@carregarEventos')->name('money.carregarEventos')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/money/mostrarBanco/{ID_banco}','Admin\MoneyController@mostrarBanco')->name('money.mostrarBanco')->middleware('auth.tipo:Admin,Secretaria');
     Route::put('/admin/money/atualizarEvento','Admin\MoneyController@atualizarEvento')->name('money.atualizarEvento')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/money/inserirEvento','Admin\MoneyController@inserirEvento')->name('money.inserirEvento')->middleware('auth.tipo:Admin,Secretaria');
     Route::delete('/admin/money/excluirEvento','Admin\MoneyController@excluirEvento')->name('money.excluirEvento')->middleware('auth.tipo:Admin,Secretaria');
     Route::resource('/admin/money', 'Admin\MoneyController')->middleware('auth.tipo:Admin,Secretaria');
+
+    //Rotas Banco
+    Route::resource('/admin/banco', 'Admin\BancoController')->middleware('auth.tipo:Admin,Secretaria');
 
 
 });

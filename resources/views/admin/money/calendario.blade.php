@@ -9,19 +9,21 @@
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/dropdown.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     @include('admin.money.modalCalendario')
+    @include('admin.money.modalBancos')
 
   <div id='wrap'>
 
     <div id='external-events'>
-      <h4>Draggable Events</h4>
+      <h4>Opções Extras</h4>
 
       <div id='external-events-list'>
-        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-          <div class='fc-event-main'>My Event 1</div>
+        <div>
+          <div><div><button class="btn btn-danger" data-toggle="modal" data-target="#modalBancos">Bancos</button></div></div>
         </div>
         <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
           <div class='fc-event-main'>My Event 2</div>
@@ -35,12 +37,12 @@
         <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
           <div class='fc-event-main'>My Event 5</div>
         </div>
+        <div>
+          @foreach($bancos as $banco)
+          <div><p>Saldo {{$banco->nome}}: {{$banco->saldo}}</p></div>
+          @endforeach
+        </div>
       </div>
-
-      <p>
-        <input type='checkbox' id='drop-remove' />
-        <label for='drop-remove'>remove after drop</label>
-      </p>
     </div>
 
     <div id='calendar-wrap'>
@@ -65,6 +67,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
 <script src="{{asset('assets/fullcalendar/lib/main.js')}}"></script>
 <script src="{{asset('assets/fullcalendar/js/carregarEvento.js')}}"></script>
 <script src="{{asset('assets/fullcalendar/js/script.js')}}"></script>

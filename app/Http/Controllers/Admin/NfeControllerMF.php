@@ -272,6 +272,7 @@ class NfeControllerMF extends Controller
         //dd($path_nfe);
         if($xmlEnviada==null){
             //CASO A NOTA SEJA REJEITADA 
+            dd('Nota fiscal com erro: '.$xmlEnviada);
             return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador. '.$xmlEnviada);
         }
         else{
@@ -292,12 +293,12 @@ class NfeControllerMF extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
-        /*
+        
         DB::table('faturamento')->insert(
             ['vale' => $nfe1['OF'], 'nfe' => $xml[2],'situacao' => 'Fechado', 'cliente' =>$nfe1['ID_cliente'],'peso' =>$nfe3['pesoLiq'],'valor' => $nfe3['precoFinal']+$nfe1['valorFrete'],
             'firma' => 'MF', 'status' => 'Pendente']
         );
-        */
+        
         return redirect('admin/nfe')->with('success', 'Sucesso, NFe criada! Clique na primeira linha da tabela para exibi-la.');
         
     
