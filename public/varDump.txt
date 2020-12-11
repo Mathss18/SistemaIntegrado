@@ -1,1 +1,1 @@
-{"title":"title","start":"2020-12-04","end":null,"color":"#8cf19f","description":"nada","firma":"FM","ID_cliente":"58","ID_fornecedor":null,"ID_funcionario":null,"ID_transportadora":null,"tipoFav":"cliente","favorecido":"MATHEUS","ID_banco":"1","valor":"1","numero":"1","situacao":"on"}
+{"title":"- Registrado","start":"2020-12-08","end":null,"color":"#8cf19f","description":null,"firma":"FM","ID_cliente":"58","ID_fornecedor":null,"ID_funcionario":null,"ID_transportadora":null,"tipoFav":"cliente","favorecido":"MATHEUS","ID_banco":"1","valor":"10","numero":null,"situacao":"on"}

@@ -132,9 +132,9 @@ class MoneyController extends Controller
                 
             } 
             else {
-                file_put_contents('dump.json', 'SITUAÇÃO 4');
+                file_put_contents('dump.json', 'SITUAÇÃO 444');
                 $newBanco = banco::where('ID_banco', $newEvent->ID_banco)->first();
-                $newBanco->saldo = $newBanco->saldo - $newEvent->valor;
+                $newBanco->saldo = $newBanco->saldo - $oldEvent->valor;
                 $newBanco->save();
             }
         }
@@ -200,9 +200,9 @@ class MoneyController extends Controller
                 
             } 
             else {
-                file_put_contents('dump.json', 'SITUAÇÃO 4');
+                file_put_contents('dump.json', 'SITUAÇÃO 44');
                 $newBanco = banco::where('ID_banco', $newEvent->ID_banco)->first();
-                $newBanco->saldo = $newBanco->saldo + $newEvent->valor;
+                $newBanco->saldo = $newBanco->saldo + $oldEvent->valor;
                 $newBanco->save();
             }
         } 
@@ -280,7 +280,44 @@ class MoneyController extends Controller
     public function mostrarBanco($idBanco)
     {
         $banco = banco::where('ID_banco', $idBanco)->first();
-        $eventos = DB::table('evento')->select('*')->where('ID_banco',$idBanco)->get();
-        return view('admin.money.bancoEvent',compact('eventos','banco'));
+        $eventos = DB::table('evento')->select('*')->where('ID_banco',$idBanco)->where('situacao','off')->orderBy('start','desc')->get();
+        $saldoBanco = $banco->saldo;
+        $i = 0;
+        $lastEvt = null;
+        foreach ($eventos as $evento) {
+            if($i!=0){
+                if($lastEvt->tipoFav != 'cliente'){
+                    $evento->saldo = $lastEvt->saldo + $lastEvt->valor;
+                    $evento->saldo = number_format($evento->saldo,2,'.','');
+                }
+                else{
+                    $evento->saldo = $lastEvt->saldo - $lastEvt->valor;
+                    $evento->saldo = number_format($evento->saldo,2,'.','');
+                }
+            }
+            else{
+                $evento->saldo = $saldoBanco;
+                
+            }
+            if($evento->tipoFav != 'cliente'){
+                $evento->corFonte = 'red';
+            }
+            else{
+                $evento->corFonte = 'green';
+            }
+            $lastEvt = $evento;
+            $i++;
+
+            //Altera a data para formato PT-BR
+            $evento->dataFormat = date('d/m/Y', strtotime($evento->start));
+            
+            
+        }
+        $bancos = DB::table('banco')->select('*')->get();
+        
+            
+        
+
+        return view('admin.money.bancoEvent',compact('eventos','banco','bancos'));
     }
 }

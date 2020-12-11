@@ -221,7 +221,12 @@ function sendEvent(route, data_, type) {
         dataType: 'json',
         success: function (json) {
             if (json) {
-                objCalendar.refetchEvents();
+                try {
+                    objCalendar.refetchEvents();
+                } catch (error) {
+                    location.reload();
+                }
+                
                 const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -241,7 +246,12 @@ function sendEvent(route, data_, type) {
 
         },
         error: function () {
-            objCalendar.refetchEvents();
+            try {
+                objCalendar.refetchEvents();
+            } catch (error) {
+                location.reload();
+            }
+            
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',

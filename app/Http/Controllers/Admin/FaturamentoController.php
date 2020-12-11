@@ -85,7 +85,12 @@ class FaturamentoController extends Controller
             $firma = Auth::user()->firma;
 
             //VERIFICA DE QUAL FIRMA VAI SER O FATURAMENTO
-                $faturamentos = DB::table('faturamento as f')->join('cliente as c','f.cliente','=','c.ID_cliente')->select('f.ID_faturamento','f.vale','f.nfe', 'f.situacao','f.status', 'c.nome', 'f.peso','f.valor','c.ID_Cliente')->where('f.firma','LIKE',$firma)->where('f.data', '>=', $dataInicio)->where('f.data', '<=', $dataFim)->get();
+                $faturamentos = DB::table('faturamento as f')->join('cliente as c','f.cliente','=','c.ID_cliente')
+                ->select('f.ID_faturamento','f.vale','f.nfe', 'f.situacao','f.status', 'c.nome', 'f.peso','f.valor','c.ID_Cliente')
+                ->where('f.firma','LIKE',$firma)
+                ->where('f.data', '>=', $dataInicio)
+                ->where('f.data', '<=', $dataFim)
+                ->get();
                 return view('admin.faturamento.faturamento',compact('faturamentos','firma'));
             
             

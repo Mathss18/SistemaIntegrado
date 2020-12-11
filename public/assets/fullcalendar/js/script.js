@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 arg.draggedEl.parentNode.removeChild(arg.draggedEl);
             }
         },
+        windowResize: function(arg) {
+            objCalendar.refetchEvents();
+        },
         eventDrop: function(element){
             let startDate = moment(element.event.start).format("YYYY-MM-DD");
             let endDate = moment(element.event.end).format("YYYY-MM-DD");
@@ -81,8 +84,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let title = element.event.title;
             let start = moment(element.event.start).format("DD/MM/YYYY");
             let description = element.event.extendedProps.description;
-            let ID_cliente = element.event.extendedProps.ID_cliente;
-            let ID_fornecedor = element.event.extendedProps.ID_fornecedor;
             let favorecido = element.event.extendedProps.favorecido;
             let tipoFav = element.event.extendedProps.tipoFav;
             let ID_banco = element.event.extendedProps.ID_banco;
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     $( "#inputsModal" ).show();
                     $( "#categoria" ).prop( "disabled", true );
                     $('#tipoCliForne').attr('value','fornecedor');
-                    $("#ID_fornecedor").val(ID_fornecedor);
+                    
                     $("#ttexto1").val(favorecido);
                     $("#categoria").val(tipoFav);
                   break;
