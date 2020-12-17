@@ -524,6 +524,7 @@ class NfeServiceMF
         array_push($resp, $xml);
         array_push($resp, $chave);
         array_push($resp, $ide->nNF);
+        array_push($resp, $ide->natOp);
         // DECOMENTAR PARA VER SE A CHAVE É IGUAL A NOTA 
         //dd($chave,$nfe->getChave());
 

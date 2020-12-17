@@ -393,7 +393,7 @@ class PedidoController extends Controller
 
         if($pedidoFull[0]->codigo != 'sem codigo')
             if($firma == 'FM')
-                return view('admin.pedido.template', compact('pedidoFull','cliente','produtos','total','firma'));
+                return view('admin.pedido.templateGenerico', compact('pedidoFull','cliente','produtos','total','firma','dataHoje'));
             else
                 return view('admin.pedido.templateGenerico', compact('pedidoFull','cliente','produtos','total','dataHoje','firma'));
         else

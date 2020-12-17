@@ -341,9 +341,49 @@ class NfeController extends Controller
 
         
         DB::table('faturamento')->insert(
-            ['vale' => $nfe1['OF'], 'nfe' => $xml[2],'situacao' => 'Fechado', 'cliente' =>$nfe1['ID_cliente'],'peso' =>$nfe3['pesoLiq'],'valor' => $nfe3['precoFinal']+$nfe1['valorFrete'],
-            'firma' => 'FM', 'status' => 'Pago']
+        [   'vale' => $nfe1['OF'],
+            'nfe' => $xml[2],
+            'situacao' => 'Fechado',
+            'cliente' =>$nfe1['ID_cliente'],
+            'peso' =>$nfe3['pesoLiq'],
+            'valor' => $nfe3['precoFinal']+$nfe1['valorFrete'],
+            'firma' => 'FM',
+            'status' => 'Pago'
+        ]
         );
+
+        //================== ADICIONANDO EVENTO MONEY ===============================
+
+        $valorOriginal = number_format($nfe2['total']+$nfe1['valorFrete'],2,'.','');
+        $valorDesconto = number_format($nfe3['desconto'],2,'.','');
+        $valorLiquido = $valorOriginal - $valorDesconto;
+
+        $diff = number_format(($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'],2,'.','');
+        $diff = number_format($valorLiquido - $diff*$nfe1['numParc'],2);
+
+        for ($i = 0; $i < $nfe1['numParc']; $i++){
+            $valor = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'];
+
+            if($i == $nfe1['numParc']-1){
+
+                $valor += $diff;
+            }
+            DB::table('evento')->insert(
+            [
+                'title' =>'- Aberto', 
+                'start' => $datas[$i],
+                'color' => '#8cf19f', 
+                'valor' =>$valor,
+                'ID_cliente' =>$nfe1['ID_cliente'],
+                'favorecido' => $nfe1['nomeCli'],
+                'tipoFav' => 'cliente',
+                'situacao' => 'on',
+                'ID_banco' => 2,
+                'firma' => 'FM',
+                'description' => 'NFe: '.$xml[2].' - '.$i
+            ]
+            );
+        }
 
         return redirect('admin/nfe')->with('success', 'Sucesso, NFe criada! Clique na primeira linha da tabela para exibi-la.');
         

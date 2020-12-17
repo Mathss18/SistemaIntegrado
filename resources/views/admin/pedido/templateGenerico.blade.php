@@ -88,6 +88,7 @@
                         <table id="tableDT" class="table" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th scope="col">Código</th>
                                     <th scope="col">Descrição</th>
                                     <th scope="col">Qtde</th>
                                     <th scope="col">Valor</th>
@@ -98,6 +99,7 @@
                                 @foreach($produtos as $produto)
 
                                 <tr>
+                                    <td>{{$produto->cod_fabricacao}}</td>
                                     <td contenteditable='true'>{{$produto->descricao}}</td>
                                     <td class="editable" contenteditable='true'>{{number_format($pedidoFull[$loop->index]->quantidade,2,'.',',')}}</td>
                                     <td class="editable" contenteditable='true'>{{number_format($produto->preco_venda,2,'.',',')}}</td>
@@ -207,6 +209,7 @@
                         <table id="tableDT" class="table" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th scope="col">Código</th>
                                     <th scope="col">Descrição</th>
                                     <th scope="col">Qtde</th>
                                     <th scope="col">Valor</th>
@@ -217,6 +220,7 @@
                                 @foreach($produtos as $produto)
 
                                 <tr>
+                                    <td>{{$produto->cod_fabricacao}}</td>
                                     <td contenteditable='true'>{{$produto->descricao}}</td>
                                     <td class="editable1" contenteditable='true'>{{number_format($pedidoFull[$loop->index]->quantidade,2,'.',',')}}</td>
                                     <td class="editable1" contenteditable='true'>{{number_format($produto->preco_venda,2,'.',',')}}</td>

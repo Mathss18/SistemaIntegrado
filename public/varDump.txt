@@ -1,1 +1,1 @@
-{"title":"- Registrado","start":"2020-12-08","end":null,"color":"#8cf19f","description":null,"firma":"FM","ID_cliente":"58","ID_fornecedor":null,"ID_funcionario":null,"ID_transportadora":null,"tipoFav":"cliente","favorecido":"MATHEUS","ID_banco":"1","valor":"10","numero":null,"situacao":"on"}
+{"title":"- Aberto","start":"2020-12-16","end":null,"color":"#8cf19f","description":null,"firma":"FM","ID_cliente":null,"ID_fornecedor":null,"ID_funcionario":null,"ID_transportadora":null,"tipoFav":"cliente","favorecido":null,"ID_banco":"1","valor":null,"numero":null,"situacao":"on"}
