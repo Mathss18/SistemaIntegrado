@@ -223,7 +223,7 @@
             <div class="form-group col-md-2">
                 <label for="numParc">N° de Parcelas</label>
                 <div class="input-group">
-                    <input required id="numParc" name="numParc" type="number" min="1" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
+                    <input id="numParc" name="numParc" type="number" min="1" class="form-control" value="{{$nfe['numParc'] ?? '' }}">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="btnParcela" data-toggle="modal" data-target="#modalParcelas"><i class="fas fa-pen"></i></button>
                     </div>

@@ -67,8 +67,14 @@
 @endif
 <div><i class="fas fa-arrow-circle-left"></i>&nbsp;<a href="{{route('money.index')}}">Voltar ao Caléndario</a></div>
 <div class="card shadow mb-4">
-    <div class="card-header d-flex" style="justify-content: center; align-items: center;">
-        <div><a style="font-size: 26px; color: black; text-align: center; font-weight: bolder; font-family: monospace">{{$banco->nome}}</a></div>
+    <div class="card-header d-flex" style="justify-content: left; align-items: left;">
+        <div class="row">
+            <img src="{{asset($banco->logo)}}" alt="aa" class="mr-2" width="100px" height="100px" style="opacity: 80%;">
+            <div class="col">
+                <div><a style="font-size: 26px; color: black; text-align: center; font-weight: bolder; font-family: monospace">{{$banco->nome}}</a></div>
+                <div><a style="font-size: 20px; color: black; text-align: center; font-weight: lighter; font-family: monospace">Saldo R$: {{number_format($banco->saldo,2,',','.')}}</a></div>
+            </div>
+        </div>
     </div>
     
     <div class="card-body">

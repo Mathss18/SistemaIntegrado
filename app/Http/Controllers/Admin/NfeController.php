@@ -362,7 +362,7 @@ class NfeController extends Controller
         $diff = number_format($valorLiquido - $diff*$nfe1['numParc'],2);
 
         for ($i = 0; $i < $nfe1['numParc']; $i++){
-            $valor = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'];
+            $valor = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc']; 
 
             if($i == $nfe1['numParc']-1){
 
@@ -380,7 +380,7 @@ class NfeController extends Controller
                 'situacao' => 'on',
                 'ID_banco' => 2,
                 'firma' => 'FM',
-                'description' => 'NFe: '.$xml[2].' - '.$i
+                'description' => 'NFe: '.$xml[2].' - '.($i+1)
             ]
             );
         }

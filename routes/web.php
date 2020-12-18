@@ -167,6 +167,7 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/orcamento', 'Admin\OrcamentoController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas Pedido de compra
+    Route::post('/admin/pedidoCompra/aprovar','Admin\PedidoCompraController@aprovar')->name('pedidoCompra.aprovar')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/pedidoCompra/mostrar','Admin\PedidoCompraController@mostrar')->name('pedidoCompra.mostrar')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/pedidoCompra/adicionar','Admin\PedidoCompraController@adicionar')->name('pedidoCompra.adicionar')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/pedidoCompra/mostrarPronto/{cod_pedidoCompra}','Admin\PedidoCompraController@mostrarPronto')->name('pedidoCompra.mostrarPronto')->middleware('auth.tipo:Admin,Secretaria');

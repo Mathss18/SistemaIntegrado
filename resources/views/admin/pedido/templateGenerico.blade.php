@@ -103,7 +103,7 @@
                                     <td contenteditable='true'>{{$produto->descricao}}</td>
                                     <td class="editable" contenteditable='true'>{{number_format($pedidoFull[$loop->index]->quantidade,2,'.',',')}}</td>
                                     <td class="editable" contenteditable='true'>{{number_format($produto->preco_venda,2,'.',',')}}</td>
-                                    <td class='total'>{{number_format($pedidoFull[$loop->index]->quantidade*$produto->preco_venda,2,'.',',')}}</td>
+                                    <td class='total' contenteditable>{{number_format($pedidoFull[$loop->index]->quantidade*$produto->preco_venda,4,'.',',')}}</td>
                                     <a style='display:none;'>{{$total += $pedidoFull[$loop->index]->quantidade*$produto->preco_venda}}</a>
                                 </tr>
                                 @endforeach
@@ -291,6 +291,8 @@
         var tableLength = linhas.length / 2;
         var aux = 0;
         var totalAux = 0.00;
+
+        console.log(totais);
 
         for (var i = 0; i < tableLength; i++) {
             totais[i].innerHTML = linhas[i + aux].innerHTML * linhas[i + 1 + aux].innerHTML

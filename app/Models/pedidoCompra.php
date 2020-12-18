@@ -13,5 +13,5 @@ class pedidoCompra extends Model
     public $timestamps = false;
 
     protected $fillable = ['cod_pedidoCompra','ID_fornecedor','ID_produto_ID_fornecedor',
-    'qtde_prod','obs','prazo_entrega','cond_pagto','data','path_pedidoCompra'];
+    'qtde_prod','obs','prazo_entrega','cond_pagto','data','path_pedidoCompra','status'];
 }
