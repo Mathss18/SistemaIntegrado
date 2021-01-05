@@ -26,10 +26,15 @@ $(document).ready(function() {
         //Coloca as Infos no Modal de SAIDA
         var idExcluir = document.getElementById("iptIDDel");
         var precoExcluir = document.getElementById("iptDocDel");
+        var qtdeExcluir = document.getElementById("iptQtdeDel");
         var nomeExcluir = document.getElementById("TituloModalCentralizadoDel");
         idExcluir.value = data[0];
         precoExcluir.value = data[1];
+        //Setando o maximo valor para retirar como TUDO que há no estoque, para evitar estoque negativo
+        qtdeExcluir.max = data[3];
+        qtdeExcluir.placeholder = 'Máximo: '+data[3];
         nomeExcluir.innerHTML = '<b>Saída: </b>' + data[2];
+        console.log(precoExcluir);
   
 
     } );

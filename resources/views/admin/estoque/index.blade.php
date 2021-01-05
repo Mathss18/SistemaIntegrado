@@ -31,33 +31,35 @@
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-end">
         <h6>Gestão de Produtos</h6>
-        <!--
-        <a href="{{route('estoque.create')}}" class="btn btn-success">
-            <span class="glyphicon glyphicon-plus"></span>
-            Cadastrar Novo Produto
-        </a>
-        -->
+        <form action="{{route('estoque.desfazer')}}" method="post">
+            {!! method_field('POST') !!}
+            {!! csrf_field() !!}
+            <button type="submit" class="btn btn-danger">Desfazer Último Lançamento</button>
+        </form>
+        
+        
 
     </div>
     <div class="card-body">
         <table id="tableDT" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th scope="col" style="display:none">ID</th>
+                    <th scope="col">ID</th>
                     <th scope="col" style="display:none">Preço</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Quantidade</th>
-                    <th scope="col">Utilização</th>
+                    <th scope="col">Grupo</th>
                 </tr>
             </thead>
             <tbody>
+            
                 @foreach($estoques as $estoque)
                 <tr data-toggle="modal" data-target="#ModalPergunta">
-                    <td style="display:none">{{$estoque->ID_produto}}</td>
+                    <td>{{$estoque->ID_produto_fornecedor}}</td>
                     <td style="display:none">{{$estoque->valor_unitario}}</td>
-                    <td>{{$estoque->nome}}</td>
+                    <td>{{$estoque->descricao}}</td>
                     <td>{{$estoque->qtde}}</td>
-                    <td>{{$estoque->utilizacao}}</td>
+                    <td>{{$estoque->grupo}}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -157,7 +159,7 @@
                             <option value="TRATAMENTO E.T.E">TRATAMENTO E.T.E</option>
                             <option value="ALCALINO">ALCALINO</option>
                             @endif
-                            <option value="MATERIAL P/ MOLA">MATERIAL P/ MOLA</option>
+                            <option readonly value="Arame">Arame</option>
                     </select>
                     </label>
                     </div>

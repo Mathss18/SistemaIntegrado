@@ -77,19 +77,22 @@
                             <i class="fa fa-envelope"></i>
                         </div>
                         <select required id="banho" name="banho" class="custom-select">
-                            <option value="COBRE 1">COBRE 1</option>
-                            <option value="COBRE 2">COBRE 2</option>
-                            <option value="NIQUEL 1">NIQUEL 1</option>
-                            <option value="NIQUEL 2">NIQUEL 2</option>
-                            <option value="CROMO">CROMO</option>
-                            <option value="FOSFATO">FOSFATO</option>
-                            <option value="ROTATIVO 1">ROTATIVO 1</option>
-                            <option value="ROTATIVO 2">ROTATIVO 2</option>
-                            <option value="ROTATIVO 3">ROTATIVO 3</option>
-                            <option value="PARADO">PARADO</option>
-                            <option value="TRATAMENTO E.T.E">TRATAMENTO E.T.E</option>
-                            <option value="ALCALINO">ALCALINO</option>
-                            <option value="MATERIAL P/ MOLA">MATERIAL P/ MOLA</option>
+                            @if($firma=='MF')
+                                <option value="COBRE 1">COBRE 1</option>
+                                <option value="COBRE 2">COBRE 2</option>
+                                <option value="NIQUEL 1">NIQUEL 1</option>
+                                <option value="NIQUEL 2">NIQUEL 2</option>
+                                <option value="CROMO">CROMO</option>
+                                <option value="FOSFATO">FOSFATO</option>
+                                <option value="ROTATIVO 1">ROTATIVO 1</option>
+                                <option value="ROTATIVO 2">ROTATIVO 2</option>
+                                <option value="ROTATIVO 3">ROTATIVO 3</option>
+                                <option value="PARADO">PARADO</option>
+                                <option value="TRATAMENTO E.T.E">TRATAMENTO E.T.E</option>
+                                <option value="ALCALINO">ALCALINO</option>
+                            @else
+                                <option value="Arame">ARAME</option>
+                            @endif
                     </select>
                     </div>
                 </div>

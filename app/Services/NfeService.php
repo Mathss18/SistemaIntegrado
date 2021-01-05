@@ -360,7 +360,8 @@ class NfeService{
                 $vol->pesoB = $nfe3['pesoBruto'];
 
                 $respVol = $nfe->tagvol($vol);
-
+                 //VERIFICA SE HÁ PARCELAS NA NOTA
+            if ($nfe1['numParc'] >= 1) {
                 //====================TAG FATURA===================
                 $fat = new stdClass();
                 $fat->nFat = $ide->nNF;
@@ -386,8 +387,9 @@ class NfeService{
                     $dup->vDup = ($nfe3['precoFinal']+$nfe1['valorFrete'])/$nfe1['numParc'];
                     // IF para adicionar o centavos na ultima parcela se necessario
                     if($i == $nfe1['numParc']-1){
-
+                        
                         $dup->vDup += $diff;
+                        
                     }
                     $respDup = $nfe->tagdup($dup);
 
@@ -399,22 +401,22 @@ class NfeService{
                 /*
                     $dup1 = new stdClass();
                     $dup1->nDup = '001';
-                    $dup1->dVenc = '2020-12-02';
-                    $dup1->vDup = '746.66';
+                    $dup1->dVenc = '2020-12-18';
+                    $dup1->vDup = 12000.00;
                     $nfe->tagdup($dup1);
                    
                     $dup2 = new stdClass();
                     $dup2->nDup = '002';
-                    $dup2->dVenc = '2021-01-01';
-                    $dup2->vDup = '2333.33';
+                    $dup2->dVenc = '2021-01-18';
+                    $dup2->vDup = 5932.46;
                     $nfe->tagdup($dup2);
 
                     $dup3 = new stdClass();
                     $dup3->nDup = '003';
-                    $dup3->dVenc = '2021-01-16';
-                    $dup3->vDup = '2333.33';
+                    $dup3->dVenc = '2021-02-18';
+                    $dup3->vDup = 5932.46;
                     $nfe->tagdup($dup3);
-
+                    
                     $dup4 = new stdClass();
                     $dup4->nDup = '004';
                     $dup4->dVenc = '2021-01-31';
@@ -427,7 +429,8 @@ class NfeService{
                     $dup5->vDup = '2333.35';
                     $nfe->tagdup($dup5);
                     //dd($datas);
-                 */
+                    */
+            }
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();
                 //$std->vTroco = null; //incluso no layout 4.00, obrigatório informar para NFCe (65)
@@ -762,6 +765,3 @@ class NfeService{
         }
 
     }
-
-
-?>

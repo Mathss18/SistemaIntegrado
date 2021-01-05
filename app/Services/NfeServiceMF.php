@@ -50,6 +50,7 @@ class NfeServiceMF
         $ide->cUF = 35;
         $ide->nNF = $nNFdb; //99909
         $ide->cNF =  STR_PAD($ide->nNF + 1, '0', 8, STR_PAD_LEFT); //rand(11111111,99999999);
+        $cfopRetorno = $nfe1['natOp'];
         if ($nfe1['natOp'] == "6101") {
             $ide->natOp = $nfe1['natOp'] . "- Vendas Fora do Estado";
         } else if ($nfe1['natOp'] == "5101") {
@@ -384,6 +385,7 @@ class NfeServiceMF
             $respFat = $nfe->tagfat($fat);
             //====================TAG DUPLICATA===================   
 
+            /*
             $diff = number_format(($nfe3['precoFinal'] + $nfe1['valorFrete']) / $nfe1['numParc'], 2, '.', '');
 
             $diff = number_format($fat->vLiq - $diff * $nfe1['numParc'], 2);
@@ -402,28 +404,28 @@ class NfeServiceMF
                 }
                 $respDup = $nfe->tagdup($dup);
             }
-
+            */
             // VALORES DISTINTOS DE DUPLICATA (MANUAL)
             /*
                         $dup1 = new stdClass();
                         $dup1->nDup = '001';
-                        $dup1->dVenc = '2020-11-26';
-                        $dup1->vDup = '814.00';
+                        $dup1->dVenc = '2021-01-05';
+                        $dup1->vDup = '930.00';
                         $nfe->tagdup($dup1);
                     
                         $dup2 = new stdClass();
                         $dup2->nDup = '002';
-                        $dup2->dVenc = '2020-12-26';
-                        $dup2->vDup = '813.69';
+                        $dup2->dVenc = '2021-02-05';
+                        $dup2->vDup = '942.12';
                         $nfe->tagdup($dup2);
 
                         $dup3 = new stdClass();
                         $dup3->nDup = '003';
-                        $dup3->dVenc = '2021-01-25';
-                        $dup3->vDup = '813.69';
+                        $dup3->dVenc = '2021-03-05';
+                        $dup3->vDup = '942.13';
                         $nfe->tagdup($dup3);
                         //dd($datas);
-                        */
+            */
         }
         //====================TAG PAGAMENTO===================
         if ($nfe1['natOp'] == 5124) {
@@ -524,7 +526,7 @@ class NfeServiceMF
         array_push($resp, $xml);
         array_push($resp, $chave);
         array_push($resp, $ide->nNF);
-        array_push($resp, $ide->natOp);
+        array_push($resp, $cfopRetorno);
         // DECOMENTAR PARA VER SE A CHAVE É IGUAL A NOTA 
         //dd($chave,$nfe->getChave());
 

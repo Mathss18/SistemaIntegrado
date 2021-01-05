@@ -54,7 +54,7 @@
                 <tbody>
                     @foreach($dados as $dado)
                     <tr>
-                        <td>{{$dado->nome}}</td>
+                        <td>{{$dado->descricao}}</td>
                         <td>{{$dado->quantidade_gasta}}</td>
                         <td>{{$dado->valor_unitario}}</td>
                         <td>{{$dado->data_saida}}</td>

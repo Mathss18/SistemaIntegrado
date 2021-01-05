@@ -287,14 +287,14 @@ class NfeControllerMF extends Controller
         //DESCOMENTAR ESSA LINHA PARA VER A DANFE NA TELA e ir no metodo gerarDanfe()
         //dd($danfe);
 
-        if ($xml[3] == '5124' || $xml[3] == '6101' || $xml[3] == '5101') {
+        if ($xml[3] == '5124' | $xml[3] == '6101' | $xml[3] == '5101') {
             DB::table('faturamento')->insert(
                 [
                     'vale' => $nfe1['OF'], 'nfe' => $xml[2], 'situacao' => 'Fechado', 'cliente' => $nfe1['ID_cliente'], 'peso' => $nfe3['pesoLiq'], 'valor' => $nfe3['precoFinal'] + $nfe1['valorFrete'],
                     'firma' => 'MF', 'status' => 'Pendente'
                 ]
             );
-
+        }
 
             //================== ADICIONANDO EVENTO MONEY ===============================
 
@@ -328,8 +328,8 @@ class NfeControllerMF extends Controller
                     ]
                 );
             }
-        }
-
+        
+        file_put_contents('DumpVarXml.json', $xml);
         return redirect('admin/nfe')->with('success', 'Sucesso, NFe criada! Clique na primeira linha da tabela para exibi-la.');
     }
 

@@ -100,6 +100,7 @@
                         <select required id="grupo" name="grupo" class="form-control" value="{{$produto->grupo ?? '' }}">
                             <option value="EPI">EPI</option>
                             <option value="Produto_Quimico">Produto Quimico</option>
+                            <option value="Arame">Arame</option>
                             <option value="Outros">Outros</option>
                         </select>
                     </div>

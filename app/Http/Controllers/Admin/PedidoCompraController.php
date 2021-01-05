@@ -119,7 +119,7 @@ class PedidoCompraController extends Controller
         ]);
         //dd($dataFormCliOrca);
         $firma = Auth::user()->firma;
-        DB::table('pedidoCompra')->insert(
+        $lastId = DB::table('pedidoCompra')->insertGetId(
             [
                 'cod_pedidoCompra' => $dataFormCliPedidoCompra['cod_pedidoCompra'], 'ID_fornecedor' =>  $dataFormCliPedidoCompra['ID_fornecedor'],
                 'ID_produto_fornecedor' => $dataFormCliPedidoCompra['ID_produto_fornecedor'],
@@ -131,8 +131,8 @@ class PedidoCompraController extends Controller
 
         );
 
-
-        return response()->json(['message' => 'Funfou'], 200);
+        
+        return response()->json(['message' => 'Funfou','lastId' => $lastId], 200);
     }
 
 
@@ -160,6 +160,6 @@ class PedidoCompraController extends Controller
         //DESCOMENTAR PARA VER PRODUTOS DO ORCAMENTO
         //dd($produtos);
 
-        return view('admin.pedidoCompra.template', compact('ultimoPedidoCompra', 'produtos', 'fornecedor', 'total'));
+        return view('admin.pedidoCompra.template', compact('ultimoPedidoCompra', 'produtos', 'fornecedor', 'total','firma'));
     }
 }

@@ -22,11 +22,11 @@ class EstoqueController extends Controller
         $firma = Auth::user()->firma;
         $estoques = collect();
         if($firma == 'FM'){
-            $estoques = DB::table('estoque as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->select('p.ID_produto','p.nome', 'e.qtde', 'p.utilizacao', 'e.valor_unitario')->where('p.utilizacao','=','MATERIAL P/ MOLA')->get();
+            $estoques = DB::table('estoque as e')->join('produto_fornecedor as p','p.ID_produto_fornecedor','=','e.ID_produtoForne')->select('p.ID_produto_fornecedor','p.descricao', 'e.qtde', 'p.grupo', 'e.valor_unitario')->where('p.firma','FM')->get();
             return view('admin.estoque.index',compact('titulo','estoques','firma'));
         }
         else{
-            $estoques = DB::table('estoque as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->select('p.ID_produto','p.nome', 'e.qtde', 'p.utilizacao', 'e.valor_unitario')->where('p.utilizacao','<>','MATERIAL P/ MOLA')->get();
+            $estoques = DB::table('estoque as e')->join('produto_fornecedor as p','p.ID_produto_fornecedor','=','e.ID_produtoForne')->select('p.ID_produto_fornecedor','p.descricao', 'e.qtde', 'p.grupo', 'e.valor_unitario')->where('p.firma','MF')->get();
             return view('admin.estoque.index',compact('titulo','estoques','firma'));
         }
     }
@@ -88,12 +88,21 @@ class EstoqueController extends Controller
         //
     }
 
+    public function desfazer(){
+        $firma = Auth::user()->firma;
+        $ultimo = DB::table('saida_produto')->where('firma',$firma)->orderBy('ID_saida', 'desc')->first();
+        DB::table('saida_produto')->where('ID_saida', $ultimo->ID_saida)->delete();
+        return redirect('admin/estoque')->with('success', 'Saída DESFEITA Com Sucesso!');
+    }
+
     public function relatorioEntrada(){
-        return view('admin.estoque.relatorioEntrada');
+        $firma = Auth::user()->firma;
+        return view('admin.estoque.relatorioEntrada',compact('firma'));
     }
 
     public function relatorioSaida(){
-        return view('admin.estoque.relatorioSaida');
+        $firma = Auth::user()->firma;
+        return view('admin.estoque.relatorioSaida',compact('firma'));
     }
 
     public function gerarRelatorioEntrada(Request $request){
@@ -113,7 +122,7 @@ class EstoqueController extends Controller
         $data_fim_reform = date('d/m/Y', strtotime($data_fim));
         $totalGasto = 0;
         
-        $dados = DB::table('entrada_produto as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->join('estoque as a','a.ID_produto','=','p.ID_produto')->select('p.nome',DB::raw('sum(e.qtde) as quantidade_adiquirida'),'a.valor_unitario', 'e.data_entrada')->where('data_entrada','>=', $data_inico)->where('data_entrada','<=', $data_fim)->groupBy('e.data_entrada')->orderBy('p.nome', 'ASC')->get();
+        $dados = DB::table('entrada_produto as e')->join('produto_fornecedor as p','p.ID_produto_fornecedor','=','e.ID_produto')->join('estoque as a','a.ID_produtoForne','=','p.ID_produto_fornecedor')->select('p.descricao',DB::raw('sum(e.qtde) as quantidade_adiquirida'),'a.valor_unitario', 'e.data_entrada')->where('data_entrada','>=', $data_inico)->where('data_entrada','<=', $data_fim)->groupBy('e.data_entrada')->orderBy('p.descricao', 'ASC')->get();
         // Transforma data Americana em data Brasileira
         foreach ($dados as $dado) {
             $dado->data_entrada = date('d/m/Y H:i:s', strtotime($dado->data_entrada));
@@ -145,7 +154,7 @@ class EstoqueController extends Controller
         $totalGasto = 0;
 
         //Criando a Query para fazer o relátorio
-        $dados = DB::table('saida_produto as e')->join('produto as p','p.ID_produto','=','e.ID_produto')->join('estoque as a','a.ID_produto','=','p.ID_produto')->select('p.nome',DB::raw('sum(e.qtde) as quantidade_gasta'),'a.valor_unitario', 'e.data_saida')->where('data_saida','>=', $data_inico)->where('data_saida','<=', $data_fim)->where('banho','LIKE', $banho)->groupBy('e.data_saida')->orderBy('p.nome', 'ASC')->get();
+        $dados = DB::table('saida_produto as e')->join('produto_fornecedor as p','p.ID_produto_fornecedor','=','e.ID_produto')->join('estoque as a','a.ID_produtoForne','=','p.ID_produto_fornecedor')->select('p.descricao',DB::raw('sum(e.qtde) as quantidade_gasta'),'a.valor_unitario', 'e.data_saida')->where('data_saida','>=', $data_inico)->where('data_saida','<=', $data_fim)->where('e.banho','LIKE', $banho)->groupBy('e.data_saida')->orderBy('p.descricao', 'ASC')->get();
         
         // Transforma data Americana em data Brasileira
         foreach ($dados as $dado) {

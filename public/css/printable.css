@@ -15,6 +15,10 @@
     div{
         page-break-inside: avoid;
     }
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
   }
 
 .fundo

@@ -34,8 +34,7 @@
     $(document).ready(function() {
         var path = document.getElementById('codigo').value;
         var fileInput = document.getElementById('file');
-        fileInput.setAttribute('value', path)
-        console.log('oi');
+        fileInput.setAttribute('value', path);
 
     });
 </script>
@@ -94,7 +93,7 @@
                         @if($firma == 'FM')
                         <input required readonly id="cod_pedidoCompra" name="cod_pedidoCompra" type="text" class="form-control" value="{{$pedido->OF ?? $codigoPedidoCompra->cod_pedidoCompra+1}}">
                         @else
-                        <input required readonly id="cod_pedidoCompra" name="cod_pedidoCompra" type="text" class="form-control" value="{{$pedido->OF ?? $codigoPedidoCompra->cod_pedidoCompra+1}}">
+                        <input required  id="cod_pedidoCompra" name="cod_pedidoCompra" type="text" class="form-control" value="{{$pedido->OF ?? $codigoPedidoCompra->cod_pedidoCompra+1}}">
                         @endif
                     </div>
                 </div>
@@ -158,12 +157,12 @@
             <div class="row">
 
 
-                <div class="form-group col-md-2">
-                    <label for="codigo">Código</label>
+                <div class="form-group col-md-3">
+                    <label for="codigo">Nome do Produto</label>
                     <div class="input-group">
-                        <input value="{{$pedido['path_desenho'] ?? '' }}" style="display:none" name="path_desenho" id="codigo" type="text" class="typeahead form-control path" style="margin:0px auto;width:370px;">
+                        <input value="{{$pedido['path_desenho'] ?? '' }}" style="display:none" name="path_desenho" id="codigo" type="text" class="typeahead form-control path" style="margin:0px auto;width:300px;">
                         <input id="ID_produto_fornecedor" name="ID_produto_fornecedor" style="display:none" type="text"  class="form-control" value="{{$pedido->ID_produto_fornecedor  ?? '' }}">
-                        <input value="{{$pedido->codigo ?? '' }}" class="typeahead form-control" name="codigo" id="ttexto1" style="margin:0px auto;width:150px;" type="text">
+                        <input value="{{$pedido->codigo ?? '' }}" class="typeahead form-control" name="codigo" id="ttexto1" style="margin:0px auto;width:250px;" type="text">
                     </div>
                 </div>
 
@@ -172,7 +171,7 @@
                     <input min="0" required id="qtde_prod" name="qtde_prod" type="number" min="0" step="any" class="form-control" value="{{$pedido->quantidade ?? '' }}">
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="obs">Observações</label>
                     <div class="input-group">
                         <textarea name="obs" id="obs" cols="80" rows="2"></textarea>

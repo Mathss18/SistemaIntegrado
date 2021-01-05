@@ -30,7 +30,9 @@
 
     <div id="printable" class="corpoOrcamento">
         <div class="container card-body fundo " style="border: 1px solid black; border-radius: 15px;">
-            <div class="row" style="border-bottom: 1px solid gray;">
+
+        @if($firma == 'FM')
+            <div class="row" style="border-bottom: 1px solid gray; border-radius: 15;">
                 <div class="col-2">
                     <img src="https://i.imgur.com/DErSgKM.jpg" alt="">
                 </div>
@@ -38,20 +40,46 @@
                     <div class="row">
                         <div class="col">
                             <h4>FLEXMOL - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME</h4>
-                            <h6><b>Endereço:</b> RUA JOSE PASSARELA &nbsp;&nbsp;&nbsp;&nbsp; <b>Número:</b> 240</h6>
-                            <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba</h6>
+                            <h6><b>Endereço:</b> RUA JOSE PASSARELA &nbsp;&nbsp;&nbsp;&nbsp; <b>Número:</b> 240 &nbsp;&nbsp;&nbsp;&nbsp; <b>Telefone:</b> (19) 3434-5840</h6>
+                            <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp;&nbsp;&nbsp; <b>Email:</b> flexmol@flexmol.com.br</h6>
                         </div>
                         <div class="col-3">
                             <h4>PEDIDO DE COMPRA: <u>{{$ultimoPedidoCompra[0]->cod_pedidoCompra}}</u></h4>
                         </div>
                         @if($ultimoPedidoCompra[0]->status == 'Aprovado')
-                        <div class="ml-3" style="z-index: 10; position: absolute; right: 50%; top:50%; left:10%">
+                        <div class="ml-3" style="z-index: 10; position: absolute; right: 50%; top:50%; left:10%; opacity: 75%;">
                             <img src="{{asset('seloAprovado2.png')}}" alt="">
                         </div>
                         @endif
                     </div>
                 </div>
             </div>
+            @else
+            <div class="row" style="border-bottom: 1px solid gray; border-radius: 15;">
+                <div class="col-3">
+                    <img src="https://i.imgur.com/WsHypqu.jpg" alt="">
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col">
+                            <h4>METAL FLEX - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME</h4>
+                            <h6><b>Rua:</b> RUA PRINCESA ISABEL, 70 &nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp; <b>Telefone:</b> (19)3422-7978</h6>
+                            <h6><b>Bairro:</b> JARDIM PACAEMBU &nbsp;&nbsp;<b>Email:</b> atendimento@metalflex.ind.br</h6>
+                        </div>
+                        <div class="col-3">
+                            <h4>PEDIDO DE COMPRA: <u>{{$ultimoPedidoCompra[0]->cod_pedidoCompra}}</u></h4>
+                        </div>
+                        @if($ultimoPedidoCompra[0]->status == 'Aprovado')
+                        <div class="ml-3" style="z-index: 10; position: absolute; right: 50%; top:50%; left:10%; opacity: 75%;">
+                            <img src="{{asset('seloAprovado2.png')}}" alt="">
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
+
+
             <div class="row">
                 <div class="col-2">
                 </div>
@@ -66,23 +94,27 @@
                         <table id="tableDT" class="table" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Código</th>
                                     <th scope="col">Descrição</th>
                                     <th scope="col">Qtde</th>
                                     <th scope="col">Valor</th>
                                     <th scope="col">Total</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($produtos as $produto)
-
                                 <tr>
+                                    <td>{{$produto[0]->ID_produto_fornecedor}}</td>
                                     <td>{{$produto[0]->cod_fabricacao}}</td>
                                     <td>{{$produto[0]->descricao}}</td>
                                     <td contenteditable class="editable">{{number_format($ultimoPedidoCompra[$loop->index]->qtde_prod,2,'.','')}}</td>
                                     <td contenteditable class="editable">{{number_format($produto[0]->preco_venda,2,'.',',')}}</td>
-                                    <td class="total">{{number_format($ultimoPedidoCompra[$loop->index]->qtde_prod*$produto[0]->preco_venda,2,',','.')}}</td>
+                                    <td contenteditable class="total">{{number_format($ultimoPedidoCompra[$loop->index]->qtde_prod*$produto[0]->preco_venda,2,',','.')}}</td>
+                                    <td><a class="no-print" onclick="deletaRow(this);" href="#"><i class="fas fa-trash"></i></a></td>
                                     <a style='display:none;'>{{$total += $ultimoPedidoCompra[$loop->index]->qtde_prod*$produto[0]->preco_venda}}</a>
+                                    
                                 </tr>
                                 @endforeach
                                 <tr>
@@ -243,15 +275,13 @@
             aux++;
         }
     }
-    /*
-    function valorFinal() {
-        total = document.getElementById('totalFinal').innerHTML
-        valor = document.getElementById('valor')
-        console.log(valor);
-        valor.value = total;
-
+    function deletaRow(obj){
+    var row = obj.parentNode.parentNode.remove();
+    
+    var linhas = document.getElementsByClassName('editable');
+    console.log(row);
+    calculaTotal(linhas);
     }
-    */
 </script>
 
 </html>

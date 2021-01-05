@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/pedido', 'Admin\PedidoController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas de Estoque
+    Route::post('/admin/estoque/desfazer', 'Admin\EstoqueController@desfazer')->name('estoque.desfazer')->middleware('auth.tipo:Admin,Almoxarifado,Secretaria');
+
     Route::post('/admin/estoque/gerarRelatorioEntrada', 'Admin\EstoqueController@gerarRelatorioEntrada')->middleware('auth.tipo:Admin,Almoxarifado,Secretaria');
     Route::get('/admin/estoque/relatorioEntrada', 'Admin\EstoqueController@relatorioEntrada')->middleware('auth.tipo:Admin,Almoxarifado,Secretaria');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\saida_produto;
 use Illuminate\Http\Request;
+use Auth;
 
 class Saida_ProdutoController extends Controller
 {
@@ -32,6 +33,8 @@ class Saida_ProdutoController extends Controller
         ]);
 
         //dd($dataFormCli);
+        $firma = Auth::user()->firma;
+        $dataFormCli['firma'] = $firma;
         $saida_produto->create($dataFormCli);
         return redirect('admin/estoque')->with('success', 'Saída Realizada Com Sucesso!');
     }

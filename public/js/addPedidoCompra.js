@@ -3,7 +3,7 @@ $(function () {
     $('#pedidoCompraForm').submit(function (e) {
         var route = $('#pedidoCompraForm').data('route');
         var form_data = new FormData(this);
-        var codOrca = $('#cod_pedidoCompr').val();
+        var codOrca = $('#cod_pedidoCompra').val();
         var codigo = $('#ttexto1').val();
         var qtde = $('#qtde_prod').val();
         //Variaveis para zerar
@@ -20,8 +20,9 @@ $(function () {
             data: form_data,
             processData: false,
             contentType: false,
-            success: function (Response) {
+            success: function (response) {
                 alert('Produto Adicionado!')
+            
                 //Conta a qtde de produtos
                 $('#contadorProd').html(function (i, val) {
                     return val * 1 + 1;
