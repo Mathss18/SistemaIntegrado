@@ -68,7 +68,7 @@ class PedidoController extends Controller
         $hoje = date('Y-m-d');
         $titulo = 'Gestão de Pedidos';
         $funcionarios = new Funcionario;
-        $funcionarios = $funcionarios->all();
+        $funcionarios = DB::table('funcionario')->where('funcPedido', 'sim')->get();
         return view('admin.pedido.create-edit',compact('titulo','funcionarios','hoje','firma','codigo'));
     }
 

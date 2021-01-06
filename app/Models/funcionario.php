@@ -12,7 +12,7 @@ class Funcionario extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['nome','perfil'
+    protected $fillable = ['nome','perfil','funcPedido','nivel','money'
 
     ];
 }

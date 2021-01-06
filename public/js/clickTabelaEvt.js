@@ -190,3 +190,77 @@ function showState(){
     $('valor').prop( "enabled", true );
     
   }
+
+function abrirModalPergunta(){
+        Swal.fire({
+            title: 'Qual o tipo da transação?',
+            icon: 'question',
+            showDenyButton: true,
+            showCancelButton: true,
+            cancelButtonText: `Sair`,
+            confirmButtonText: `Conta a Receber`,
+            denyButtonText: `Conta a Pagar`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                //RESETA MODAL
+                resetarForm("#formEvt");
+                //DEIXA VISIVEL INPUTS MODAL
+                $("#inputsModal" ).show();
+                //DEIXA INPUT DO BANCO PADRAO
+                $("#banco>option[value="+banco['ID_banco']+"]").attr("selected", true);
+                //COLOCANDO DATA DE HOJE NO INPUT DATA
+                inicio = document.getElementById("start");
+                var data=new Date()
+                var dataFormat = moment(data).format("DD/MM/YYYY");
+                inicio.value = dataFormat;
+                //ABRE MODAL
+                $("#modalCalendario").modal('show');
+                $("#modalCalendario #tituloModalCalendar").text('Adicionar Evento');
+                $("#modalCalendario button.deleteEvent").css('display','none');
+                //HABILITA OS INPUTS CLIENTE
+                $( "#clienteModal" ).show();
+                $( "#ID_cliente" ).prop( "disabled", false );
+                $( "#ttexto" ).prop( "disabled", false );
+                //SELECIONA CATEGORIA CLIENTE E DESABILITA AS OUTRAS
+                $("#categoria").val('cliente');
+                $('#categoria option:not(:selected)').attr('disabled', true);
+                $('#optionCli').attr('disabled', false);
+                //TIPO FAV = CLI
+                $('#tipoCliForne').attr('value','cliente');
+
+                $( "#categoria" ).prop( "disabled", true );
+      
+                //let start = moment(element.start).format("DD/MM/YYYY");
+                //$("#start").val(start);
+
+            } else if (result.isDenied) {
+                //RESETA MODAL
+                resetarForm("#formEvt");
+                //DEIXA INPUT DO BANCO PADRAO
+                $("#banco>option[value="+banco['ID_banco']+"]").attr("selected", true);
+                //COLOCANDO DATA DE HOJE NO INPUT DATA
+                inicio = document.getElementById("start");
+                var data=new Date()
+                var dataFormat = moment(data).format("DD/MM/YYYY");
+                inicio.value = dataFormat;
+                //ABRE MODAL
+                $("#modalCalendario").modal('show');
+                $("#modalCalendario #tituloModalCalendar").text('Adicionar Evento');
+                $("#modalCalendario button.deleteEvent").css('display','none');
+
+                //DESABILITA CATEGORIA CLIENTE 
+                $('#optionCli').attr('disabled', true);
+
+                //TIPO FAV = Forne
+                $('#tipoCliForne').attr('value','fornecedor');
+           
+                let start = moment(element.start).format("DD/MM/YYYY");
+                $("#start").val(start);
+    
+                calendar.unselect();
+            }
+          })
+        
+    
+}

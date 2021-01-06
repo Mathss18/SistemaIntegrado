@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade " id="modalCalendario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered ">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="tituloModalCalendar">Alterar Evento</h5>
@@ -102,7 +102,7 @@
 
 
             <div class="form-group row">
-              <label for="start" class="col-sm-2 col-form-label">Inicio</label>
+              <label for="start" class="col-sm-2 col-form-label">Data</label>
               <div class="col-sm-10">
                 <input type="text" name="start" class="date form-control" id="start">
               </div>

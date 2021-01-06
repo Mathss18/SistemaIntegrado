@@ -113,6 +113,7 @@ $(function () {
         let valor = $('#valor').val();
         let numero = $('#numero').val();
         let situacao = $('#situacao').val();
+        let dataBaixa = $('#dataBaixa').val();
 
         let corEntrada = '#8cf19f';
         let corSaida = '#f1948c'
@@ -169,7 +170,7 @@ $(function () {
             tipoFav = 'cliente';
         }
         let newEvent = {
-            title: title,
+            title: '⠀',
             start: start,
             end: end,
             color: color,
@@ -184,7 +185,8 @@ $(function () {
             ID_banco: ID_banco,
             valor: valor,
             numero: numero,
-            situacao: situacao
+            situacao: situacao,
+            dataBaixa: moment(new Date).format("YYYY-MM-DD HH:mm:ss")
 
         };
 
@@ -223,6 +225,10 @@ function sendEvent(route, data_, type) {
             if (json) {
                 try {
                     objCalendar.refetchEvents();
+                    if(objCalendar != null){}
+                    else{
+                        location.reload();
+                    }
                 } catch (error) {
                     location.reload();
                 }

@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
             //=======PEGA AS INFOS DO EVT E COLOCA NAS VARIAVEIS===========
             let id = element.event.id;
-            let title = element.event.title;
+            let title = '⠀';
             let start = moment(element.event.start).format("DD/MM/YYYY");
             let description = element.event.extendedProps.description;
             let favorecido = element.event.extendedProps.favorecido;
@@ -219,6 +219,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     $("#modalCalendario").modal('show');
                     $("#modalCalendario #tituloModalCalendar").text('Adicionar Evento');
                     $("#modalCalendario button.deleteEvent").css('display','none');
+                    //$("#dataBaixa").val(moment(new Date).format("YYYY-MM-DD HH:MM:SS"));
+
                     //HABILITA OS INPUTS CLIENTE
                     $( "#clienteModal" ).show();
                     $( "#ID_cliente" ).prop( "disabled", false );
@@ -243,6 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     $("#modalCalendario").modal('show');
                     $("#modalCalendario #tituloModalCalendar").text('Adicionar Evento');
                     $("#modalCalendario button.deleteEvent").css('display','none');
+                    //$("#dataBaixa").val(moment(new Date).format("YYYY-MM-DD HH:MM:SS"));
  
                     //DESABILITA CATEGORIA CLIENTE 
                     $('#optionCli').attr('disabled', true);

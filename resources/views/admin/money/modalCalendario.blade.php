@@ -102,7 +102,7 @@
 
 
             <div class="form-group row">
-              <label for="start" class="col-sm-2 col-form-label">Inicio</label>
+              <label for="start" class="col-sm-2 col-form-label">Data</label>
               <div class="col-sm-10">
                 <input type="text" name="start" class="date form-control" id="start">
               </div>

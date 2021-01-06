@@ -79,10 +79,21 @@ class MoneyController extends Controller
         $oldEvent = evento::where('id', $request->id)->first();
         file_put_contents('atualizarEvtOld.json', $event);
         $event->fill($request->all());
+
+        
+        file_put_contents('atualizarEvtNew.json', $event);
         //EVENTO DEPOIS DA MODIFICACAO
         $newEvent = $event;
 
-
+        /*
+        //VERIFICA SE ENVENTO FOI ABERTO OU FECHADO E ATUALIZA A DATA DA BAIXA
+        if($oldEvent->situacao == 'on' & $newEvent->situacao == 'off'){
+            $event->dataBaixa = date("Y-m-d H:i:s", time());
+        }
+        if($oldEvent->situacao == 'off' & $newEvent->situacao == 'on'){
+            $event->dataBaixa = date("Y-m-d H:i:s", time());
+        }
+        */
 
         //VERIFICA SE HOUVE TROCA DE BANCO
         /*
@@ -103,7 +114,7 @@ class MoneyController extends Controller
         //CLIENTE 
         if (($oldEvent->situacao == 'on' & $newEvent->situacao == 'off') && $newEvent->tipoFav == 'cliente') {
             $event->color = '#b3b7bc';
-            $event->title = '- Registrado';
+            $event->title = '⠀';
 
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
                 file_put_contents('dump.json', 'SITUAÇÃO 3');
@@ -121,7 +132,7 @@ class MoneyController extends Controller
         } 
         else if (($oldEvent->situacao == 'off' & $newEvent->situacao == 'on') && $newEvent->tipoFav == 'cliente') {
             $event->color = '#8cf19f';
-            $event->title = '- Aberto';
+            $event->title = '⠀';
 
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
                 file_put_contents('dump.json', 'SITUAÇÃO 6');
@@ -171,7 +182,7 @@ class MoneyController extends Controller
         //FORNECEDOR,TRANSP,INVEST,FUNC...
         else if (($oldEvent->situacao == 'on' & $newEvent->situacao == 'off') && $newEvent->tipoFav != 'cliente') {
             $event->color = '#b3b7bc';
-            $event->title = '- Registrado';
+            $event->title = '⠀';
 
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
                 file_put_contents('dump.json', 'SITUAÇÃO 3');
@@ -189,7 +200,7 @@ class MoneyController extends Controller
         } 
         else if (($oldEvent->situacao == 'off' & $newEvent->situacao == 'on') && $newEvent->tipoFav != 'cliente') {
             $event->color = '#f1948c';
-            $event->title = '- Aberto';
+            $event->title = '⠀';
             
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
                 file_put_contents('dump.json', 'SITUAÇÃO 6');
@@ -280,7 +291,7 @@ class MoneyController extends Controller
     public function mostrarBanco($idBanco)
     {
         $banco = banco::where('ID_banco', $idBanco)->first();
-        $eventos = DB::table('evento')->select('*')->where('ID_banco',$idBanco)->where('situacao','off')->orderBy('start','desc')->get();
+        $eventos = DB::table('evento')->select('*')->where('ID_banco',$idBanco)->where('situacao','off')->orderBy('start','desc')->orderBy('dataBaixa','desc')->get();
         $saldoBanco = $banco->saldo;
         $i = 0;
         $lastEvt = null;

@@ -43,10 +43,12 @@
     });
 });
 </script>
+<script>
+    var banco = @json($banco);
+</script>
 @stop
 
 @section('content')
-
 <div id='calendar-wrap'>
         <div id='calendar' 
         data-route-carregar-eventos="{{route('money.carregarEventos')}}" 
@@ -75,7 +77,9 @@
                 <div><a style="font-size: 20px; color: black; text-align: center; font-weight: lighter; font-family: monospace">Saldo R$: {{number_format($banco->saldo,2,',','.')}}</a></div>
             </div>
         </div>
+        <div class='ml-5'><button type="button" class="btn btn-dark" onclick="abrirModalPergunta()">Novo</button></div>
     </div>
+    
     
     <div class="card-body">
                 
@@ -94,6 +98,7 @@
                     <th scope="col">Favorecido</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Saldo</th>
+                    <th scope="col" style="display: none;">DataBaixa</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,6 +116,7 @@
                     <td>{{$evento->favorecido}}</td>
                     <td style="color: {{$evento->corFonte}}">{{$evento->valor}}</td>
                     <td>{{$evento->saldo}}</td>
+                    <td style="display: none;">{{$evento->dataBaixa}}</td>
                 </tr>
                 @endforeach
             </tbody>
