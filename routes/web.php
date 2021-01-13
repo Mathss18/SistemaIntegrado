@@ -169,6 +169,7 @@ Route::group(['middleware' => ['auth']],function(){
     Route::resource('/admin/orcamento', 'Admin\OrcamentoController')->middleware('auth.tipo:Admin,Secretaria');
 
     //Rotas Pedido de compra
+    Route::post('/admin/pedidoCompra/atualizar','Admin\PedidoCompraController@atualizar')->name('pedidoCompra.atualizar')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/pedidoCompra/aprovar','Admin\PedidoCompraController@aprovar')->name('pedidoCompra.aprovar')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/pedidoCompra/mostrar','Admin\PedidoCompraController@mostrar')->name('pedidoCompra.mostrar')->middleware('auth.tipo:Admin,Secretaria');
     Route::post('/admin/pedidoCompra/adicionar','Admin\PedidoCompraController@adicionar')->name('pedidoCompra.adicionar')->middleware('auth.tipo:Admin,Secretaria');
@@ -177,6 +178,8 @@ Route::group(['middleware' => ['auth']],function(){
 
 
     //Rotas Money
+    Route::post('/admin/money/gerarRelatorio01','Admin\MoneyController@gerarRelatorio01')->name('money.gerarRelatorio01')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/money/rendimentoVsDespesas/{relatorio}','Admin\MoneyController@rendimentoVsDespesas')->name('money.rendimentoVsDespesas')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/carregarEventos','Admin\MoneyController@carregarEventos')->name('money.carregarEventos')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/mostrarBanco/{ID_banco}','Admin\MoneyController@mostrarBanco')->name('money.mostrarBanco')->middleware('auth.tipo:Admin,Secretaria');
     Route::put('/admin/money/atualizarEvento','Admin\MoneyController@atualizarEvento')->name('money.atualizarEvento')->middleware('auth.tipo:Admin,Secretaria');

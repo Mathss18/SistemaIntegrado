@@ -29,6 +29,7 @@ class NfeServiceMF
         $this->config = $config;
         $certificadoDigital = file_get_contents('..\app\Services\certMF.pfx');
         $this->tools = new Tools(json_encode($config), Certificate::readPfx($certificadoDigital, '01111972'));
+        $this->tools->model(55);
     }
 
     public function gerarNfe($nfe1, $nfe2, $nfe3, $datas, $transpo, $cliente, $nNFdb, $aliquota)
@@ -385,7 +386,7 @@ class NfeServiceMF
             $respFat = $nfe->tagfat($fat);
             //====================TAG DUPLICATA===================   
 
-            /*
+
             $diff = number_format(($nfe3['precoFinal'] + $nfe1['valorFrete']) / $nfe1['numParc'], 2, '.', '');
 
             $diff = number_format($fat->vLiq - $diff * $nfe1['numParc'], 2);
@@ -404,7 +405,7 @@ class NfeServiceMF
                 }
                 $respDup = $nfe->tagdup($dup);
             }
-            */
+
             // VALORES DISTINTOS DE DUPLICATA (MANUAL)
             /*
                         $dup1 = new stdClass();
@@ -550,7 +551,7 @@ class NfeServiceMF
 
             //Envia o lote
             $resp = $this->tools->sefazEnviaLote([$xmlSigned], 1);
-            $firma = Auth::user()->firma;
+            
 
             $st = new Standardize();
             $std = $st->toStd($resp);
@@ -560,34 +561,92 @@ class NfeServiceMF
             }
             $recibo = $std->infRec->nRec; // Vamos usar a variável $recibo para consultar o status da nota
 
-            $protocolo = $this->tools->sefazConsultaRecibo($recibo);
-            //return($protocolo);
+            sleep(4);
 
-            //Protocola o recibo no XML
-            $request = $xmlSigned;
-            $response = $protocolo;
-
-
-
-            $xmlFinal = Complements::toAuthorize($request, $response);
-
-            //"{cnpj}/nfe/homologacao/2020-08/{chave}.xml";
-
-            file_put_contents('nfeTransmit.xml', $xmlFinal);
-
-            $mes = date('m');
-            $ano = date('Y');
-            //header('Content-type: text/xml; charset=UTF-8');
-            //file_put_contents('storage/'.$mes.$ano.'/'.$chave.'.xml',$xmlFinal);
-            $path = 'NfeMF/'.$mes.'-'.$ano.'/'.$chave;
-            session(['path_nfe' => $path]);
-            Storage::put('Nfe' . $firma . '/' . $mes . '-' . $ano . '/' . $chave . '.xml', $xmlFinal);
-
-            Storage::put('Nfe/UltimoXMLT/' . $firma . '/' . 'lastTransmit.xml', $xmlFinal);
-
+            $xmlFinal = $this->consultaRecibo($recibo,$xmlSigned,$chave);
             return $xmlFinal;
+            
         } catch (\Exception $e) {
             echo "Erro Protocolo: " . $e->getMessage();
+        }
+    }
+
+    public function consultaRecibo($recibo,$xmlSigned,$chave)
+    {
+        try {
+            $protocolo = $this->tools->sefazConsultaRecibo($recibo);
+
+            //transforma o xml de retorno em um stdClass
+            $st = new Standardize();
+            $std = $st->toStd($protocolo);
+
+            if ($std->cStat == '103') { //lote enviado
+                //Lote ainda não foi precessado pela SEFAZ;
+            }
+            if ($std->cStat == '105') { //lote em processamento
+                //tente novamente mais tarde
+                sleep(3);
+                $this->consultaRecibo($recibo,$xmlSigned,$chave);
+            }
+
+            if ($std->cStat == '104') { //lote processado (tudo ok)
+
+                if ($std->protNFe->infProt->cStat == '100') { //Autorizado o uso da NF-e
+                    // $return = [
+                    //     "situacao" => "autorizada",
+                    //     "numeroProtocolo" => $std->protNFe->infProt->nProt,
+                    //     "xmlProtocolo" => $xmlResp
+                    // ];
+
+                    //Protocola o recibo no XML
+                    $request = $xmlSigned;
+                    $response = $protocolo;
+
+                    $xmlFinal = Complements::toAuthorize($request, $response);
+
+                    //"{cnpj}/nfe/homologacao/2020-08/{chave}.xml";
+
+                    file_put_contents('nfeTransmit.xml', $xmlFinal);
+
+                    $mes = date('m');
+                    $ano = date('Y');
+                    $firma = Auth::user()->firma;
+                    //header('Content-type: text/xml; charset=UTF-8');
+                    //file_put_contents('storage/'.$mes.$ano.'/'.$chave.'.xml',$xmlFinal);
+                    $path = 'NfeMF/' . $mes . '-' . $ano . '/' . $chave;
+                    session(['path_nfe' => $path]);
+                    Storage::put('Nfe' . $firma . '/' . $mes . '-' . $ano . '/' . $chave . '.xml', $xmlFinal);
+
+                    Storage::put('Nfe/UltimoXMLT/' . $firma . '/' . 'lastTransmit.xml', $xmlFinal);
+
+                    return $return = [
+                        "situacao" => "aprovada",
+                        "xmlFinal" => $xmlFinal,
+                    ];
+                } elseif (in_array($std->protNFe->infProt->cStat, ["110", "301", "302"])) { //DENEGADAS
+                    return $return = [
+                        "situacao" => "denegada",
+                        "numeroProtocolo" => $std->protNFe->infProt->nProt,
+                        "motivo" => $std->protNFe->infProt->xMotivo,
+                        "cstat" => $std->protNFe->infProt->cStat,
+                        // "xmlProtocolo" => $xmlResp
+                    ];
+                } else { //não autorizada (rejeição)
+                    return $return = [
+                        "situacao" => "rejeitada",
+                        "motivo" => $std->protNFe->infProt->xMotivo,
+                        "cstat" => $std->protNFe->infProt->cStat
+                    ];
+                }
+            } else { //outros erros possíveis
+                return $return = [
+                    "situacao" => "rejeitada",
+                    "motivo" => $std->xMotivo,
+                    "cstat" => $std->cStat
+                ];
+            }
+        } catch (\Exception $e) {
+            echo str_replace("\n", "<br/>", $e->getMessage());
         }
     }
 

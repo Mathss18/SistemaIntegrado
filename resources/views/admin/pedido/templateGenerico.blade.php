@@ -225,7 +225,7 @@
                                     <td class="editable1" contenteditable='true'>{{number_format($pedidoFull[$loop->index]->quantidade,2,'.',',')}}</td>
                                     <td class="editable1" contenteditable='true'>{{number_format($produto->preco_venda,2,'.',',')}}</td>
                                     <td class='total1'>{{number_format($pedidoFull[$loop->index]->quantidade*$produto->preco_venda,2,'.',',')}}</td>
-                                    <a style='display:none;'>{{$total += $pedidoFull[$loop->index]->quantidade*$produto->preco_venda}}</a>
+                                    
                                 </tr>
                                 @endforeach
                                 <tr>

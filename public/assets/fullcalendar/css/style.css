@@ -63,9 +63,14 @@ body {
 
 .fc-event-title{
   color: black;
-  font-weight: bolder;
-  font-size: smaller;
+  font-weight: 500;
+  font-size: 9px;
 
+}
+
+.fc-more-popover {
+  max-height: 95%;
+  overflow-y: auto;
 }
 
 .fc-daygrid-day-number{

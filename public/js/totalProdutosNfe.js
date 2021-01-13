@@ -1,3 +1,8 @@
+$(function () {
+    $("input[type='number']").on('input', function() {
+        somarTotalPreco();
+    });
+})
 function somarTotalPreco() {
     var tbody = document.getElementById("tableDT");
     var total = 0;

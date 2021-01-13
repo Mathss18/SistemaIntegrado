@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\pedidoCompra;
+use App\Models\produto_fornecedor;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
@@ -60,6 +61,80 @@ class PedidoCompraController extends Controller
         //
     }
 
+    public function atualizar(Request $request){
+        $firma = Auth::user()->firma;
+        $dataForm = $request->except([
+            '_token',
+        ]);
+
+        $array = json_decode($dataForm['json'] );
+        $qtdProd = sizeof($array);
+        
+        //SE TODOS OS PORDUTOS FOREM EXCLUIDOS, O PEDIDO DE COMPRA É EXCLUIDO
+        if($qtdProd <= 1){
+            var_dump((int)$array[0]->cod_pedidoCompra);
+            DB::table('pedidocompra')->where('cod_pedidoCompra',(int)$array[0]->cod_pedidoCompra)->delete();
+            return response()->json(['message' => 'excluido'], 500);
+        }
+        else{
+
+        //Altera a quantidade de produto do pedido de compra 
+        for ($i=0; $i < $qtdProd-1; $i++) { 
+            $pedidoCompra = pedidoCompra::find($array[$i]->ID);
+            $pedidoCompra->update(
+                [
+                    'qtde_prod' => $array[$i]->Qtde, 
+                ]
+                );
+        }
+        //Altera o valor de produto do produto_fornecedor
+        for ($i=0; $i < $qtdProd-1; $i++) { 
+            $produtoForne = produto_fornecedor::find($array[$i]->ID_Prod);
+            $produtoForne->update(
+                [
+                    'preco_venda' => $array[$i]->Valor, 
+                    'last_preco' => date('d/m/Y')
+                ]
+                );
+        }
+
+        for ($i=0; $i < $qtdProd; $i++) { 
+            $array[$i] = (array)$array[$i];
+        }
+        $pedidoCompra = DB::table('pedidoCompra')->select('*')
+        ->where('cod_pedidoCompra',$array[0]['cod_pedidoCompra'])
+        ->where('firma',$firma)->get()->toArray();
+        
+
+        $tamPedidoCompra = sizeof($pedidoCompra);
+        for ($i=0; $i < $tamPedidoCompra; $i++) { 
+            $pedidoCompra[$i] = (array)$pedidoCompra[$i];
+        }
+
+        foreach($pedidoCompra as $aV){
+            $arrayFull[] = $aV['ID_pedidoCompra'];
+        }
+        
+        foreach($array as $aV){
+            $arrayPedidoCompra[] = (int)$aV['ID'];
+        }
+        array_pop($arrayPedidoCompra);
+        
+        $diff = array_diff($arrayFull,$arrayPedidoCompra);
+
+        foreach ($diff as $IDpedidoCOmpra) {
+            DB::table('pedidocompra')->where('ID_pedidoCompra',$IDpedidoCOmpra)->delete();
+
+        }
+        
+        
+        return response()->json(['message' => 'Funfou'], 200);
+    }
+        
+    }
+
+    
+    
     public function aprovar(Request $request)
     {
         $dataForm = $request->except([
@@ -68,15 +143,17 @@ class PedidoCompraController extends Controller
             'submit'
         ]);
         $qtdDatas = count($dataForm['datas']);
+        $firma = Auth::user()->firma;
 
         $fornecedor = DB::table('fornecedor')->select('*')->where('ID_fornecedor', $dataForm['ID_Fornecedor'])->first();
-        $pedidoCompra = DB::table('pedidocompra')->select('*')->where('cod_pedidoCompra', $dataForm['codPedidoCompra'])->get();
+        $pedidoCompra = DB::table('pedidocompra')->select('*')->where('cod_pedidoCompra', $dataForm['codPedidoCompra'])->where('firma',$firma)->get();
 
         if ($pedidoCompra[0]->firma == 'FM') {
             $banco = 2;
         } else {
             $banco = 5;
         }
+        
         
         for ($i = 0; $i < $qtdDatas; $i++){
 
@@ -104,6 +181,19 @@ class PedidoCompraController extends Controller
                 ->update([
                     'status' => 'Aprovado',
                 ]);
+        }
+        
+        foreach ($pedidoCompra as $pc) {
+            $i = 0;
+            $produto = DB::table('produto_fornecedor')->select('*')->where('ID_produto_fornecedor', $pc->ID_produto_fornecedor)->get();
+            DB::table('entrada_produto')->insert(
+                [
+                    'ID_produto' => $pc->ID_produto_fornecedor, 
+                    'qtde' => $pc->qtde_prod,
+                    'valor_unitario' => $produto[$i]->preco_venda, 
+                ]
+                );
+                $i++;
         }
         //dd($pedidoCompra);
         return redirect()->back();

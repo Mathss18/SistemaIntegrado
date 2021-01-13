@@ -34,7 +34,7 @@
           <a href="#" data-toggle="modal" data-target="#modalBancos"><span class="fa fa-home mr-3"></span>Bancos</a>
         </li>
         <li>
-          <a href="#"><span class="fa fa-clipboard-list mr-3"></span>Relatórios</a>
+          <a href="#" data-toggle="modal" data-target="#modalRelatorios"><span class="fa fa-clipboard-list mr-3"></span>Relatórios</a>
         </li>
         <hr style="color: blue;">
         
@@ -42,7 +42,8 @@
 
     </nav>
     @include('admin.money.modalCalendario')
-      @include('admin.money.modalBancos')
+    @include('admin.money.modalBancos')
+    @include('admin.money.modalRelatorios')
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">

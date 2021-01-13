@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Orçamentos')
+@section('title', 'Pedido de Compra')
 
 @section('content_header')
 @stop
@@ -58,8 +58,8 @@
             <thead>
                 <tr>
                     <th scope="col">Código</th>
-                    <th scope="col">Descrição Produto</th>
                     <th scope="col">Fornecedor</th>
+                    <th scope="col">Descrição Produto</th>
                     <th scope="col">Data</th>
                 </tr>
             </thead>
@@ -67,8 +67,8 @@
                 @foreach($pedidosCompra as $pc)
                 <tr class='clickable-row' data-href="{{route('pedidoCompra.mostrarPronto',$pc->cod_pedidoCompra)}}">
                     <td>{{$pc->cod_pedidoCompra}}</td>
-                    <td>{{$pc->descricao}}</td>
                     <td>{{$pc->nome}}</td>
+                    <td>{{$pc->descricao}}</td>
                     <td>{{$pc->data}}</td>
                 </tr>
                 @endforeach

@@ -262,13 +262,13 @@ class NfeControllerMF extends Controller
 
         $xmlEnviada = $nfeService->transmitir($xmlAssinada, $xml[1]);
         //DESCOMENTAR ESSA LINHA PARA VER O SE ESTÁ FUNFANDO A XML
-        //dd($xmlEnviada);
+        //dd($xmlEnviada['situacao']);
 
         $path_nfe = $request->session()->get('path_nfe');
         //dd($path_nfe);
-        if ($xmlEnviada == null) {
+        if ($xmlEnviada['situacao'] == 'rejeitada' || $xmlEnviada['situacao'] == 'denegada') {
             //CASO A NOTA SEJA REJEITADA 
-            dd('Nota fiscal com erro: ' . $xmlEnviada);
+            dd('Nota fiscal com erro: ' . $xmlEnviada['motivo']);
             return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador. ' . $xmlEnviada);
         } else {
             $path_nfe = $request->session()->get('path_nfe');

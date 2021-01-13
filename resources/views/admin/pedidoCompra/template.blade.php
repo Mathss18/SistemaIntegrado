@@ -23,6 +23,9 @@
             <div>
                 <button class="btn btn-success" data-toggle="modal" data-target="#modalAprovar" onClick="valorFinal()">APROVAR</button>
             </div>
+            <div class="ml-3">
+                <button class="btn btn-dark" onClick="atualizarDados()" id="converter-tabela">SALVAR</button>
+            </div>
         </div>
     </div>
     <br>
@@ -94,19 +97,23 @@
                         <table id="tableDT" class="table" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col" style="display: none;">ID_Prod</th>
+                                    <th scope="col" style="display: none;">ID</th>
+                                    <th scope="col" style="display: none;">cod_pedidoCompra</th>
                                     <th scope="col">Código</th>
                                     <th scope="col">Descrição</th>
                                     <th scope="col">Qtde</th>
                                     <th scope="col">Valor</th>
                                     <th scope="col">Total</th>
-                                    <th scope="col"></th>
+                                    <th scope="col" class="no-print"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($produtos as $produto)
                                 <tr>
-                                    <td>{{$produto[0]->ID_produto_fornecedor}}</td>
+                                    <td style="display: none;">{{$produto[0]->ID_produto_fornecedor}}</td>
+                                    <td style="display: none;">{{$ultimoPedidoCompra[$loop->index]->ID_pedidoCompra}}</td>
+                                    <td style="display: none;">{{$ultimoPedidoCompra[$loop->index]->cod_pedidoCompra}}</td>
                                     <td>{{$produto[0]->cod_fabricacao}}</td>
                                     <td>{{$produto[0]->descricao}}</td>
                                     <td contenteditable class="editable">{{number_format($ultimoPedidoCompra[$loop->index]->qtde_prod,2,'.','')}}</td>
@@ -120,7 +127,7 @@
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
+                                    <td><p style="display: none;">{{$ultimoPedidoCompra[0]->cod_pedidoCompra}}</p></td>
                                     <td><b>VALOR FINAL:</b></td>
                                     <td><a style="color: red; font-weight: bolder;">R$: </a><b style="color: red;" id="totalFinal">{{number_format($total,2,'.','')}}</b></td>
                                 </tr>
@@ -237,13 +244,18 @@
         </div>
     </div>
 
+    <div id="rotas" style="display: none;" data-route-atualizar-pedidoCompra="{{route('pedidoCompra.atualizar')}}">
+    </div>
+
 
 </body>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" integrity="sha512-F5QTlBqZlvuBEs9LQPqc1iZv2UMxcVXezbHzomzS6Df4MZMClge/8+gXrKw2fl5ysdk4rWjR0vKS7NNkfymaBQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/table-to-json/1.0.0/jquery.tabletojson.min.js" integrity="sha512-kq3madMG50UJqYNMbXKO3loD85v8Mtv6kFqj7U9MMpLXHGNO87v0I26anynXAuERIM08MHNof1SDaasfw9hXjg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="{{ asset('js/parcelaPedidoCompra.js') }}"></script>
 <script>
     var linhas = document.getElementsByClassName('editable');
@@ -281,6 +293,95 @@
     var linhas = document.getElementsByClassName('editable');
     console.log(row);
     calculaTotal(linhas);
+    }
+</script>
+
+<script>
+    function routeAtualizarPedidoCompra() {
+        console.log(document.getElementById('rotas').dataset.routeAtualizarPedidocompra);
+        return document.getElementById('rotas').dataset.routeAtualizarPedidocompra;
+    }
+</script>
+
+<script>
+    function atualizarDados(){
+        var table = $('#tableDT').tableToJSON();
+        console.log(table);
+        var route = routeAtualizarPedidoCompra();
+
+        $.ajax({
+        type: 'POST',
+        url: route,
+        data: {json: JSON.stringify(table), _token: '{{csrf_token()}}'},
+        dataType: 'json',
+        success: function (Response) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                  })
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Alterações salvas com sucesso!'
+                  })
+            },
+            error: function (Response) {
+                console.log(Response);
+                if(Response.status == 500){
+                    let timerInterval
+                    Swal.fire({
+                    title: 'Excluindo Pedido de Compra',
+                    html: 'Excluindo Arquivos <b></b>.',
+                    timer: 3500,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        timerInterval = setInterval(() => {
+                        const content = Swal.getContent()
+                        if (content) {
+                            const b = content.querySelector('b')
+                            if (b) {
+                            b.textContent = Swal.getTimerLeft()
+                            }
+                        }
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                    }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        window.history.back();
+                        window.history.back();
+                    }
+                    })
+                }
+                else{
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Erro ao salvar alterações, nada foi feito!'
+                    })
+                }
+            }
+        });
     }
 </script>
 

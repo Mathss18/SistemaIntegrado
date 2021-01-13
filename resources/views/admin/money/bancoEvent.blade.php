@@ -103,7 +103,7 @@
             </thead>
             <tbody>
                 @foreach($eventos as $evento)
-                <tr style="color: {{$evento->corFonte}}">
+                <tr style="height: 1px;">
                     <td style="display: none;">{{$evento->id}}</td>
                     <td style="display: none;">{{$evento->start}}</td>
                     <td style="display: none;">{{$evento->description}}</td>
@@ -115,7 +115,7 @@
                     <td>{{$evento->dataFormat}}</td>
                     <td>{{$evento->favorecido}}</td>
                     <td style="color: {{$evento->corFonte}}">{{$evento->valor}}</td>
-                    <td>{{$evento->saldo}}</td>
+                    <td>R$: {{$evento->saldo}}</td>
                     <td style="display: none;">{{$evento->dataBaixa}}</td>
                 </tr>
                 @endforeach

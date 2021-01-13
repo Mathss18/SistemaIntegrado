@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Clientes')
+@section('title', 'Pedido de Compra')
 
 @section('content_header')
 @stop
@@ -211,7 +211,7 @@
                 <div class="form-group col-md-1">
                     <a readonly href="{{route('pedidoCompra.mostrarPronto',$codigoPedidoCompra->cod_pedidoCompra+1)}}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-plus"></span>
-                        Finalizar Orçamento
+                        Finalizar Pedido de Compra
                     </a>
                 </div>
             </div>

@@ -113,7 +113,7 @@ class MoneyController extends Controller
 
         //CLIENTE 
         if (($oldEvent->situacao == 'on' & $newEvent->situacao == 'off') && $newEvent->tipoFav == 'cliente') {
-            $event->color = '#b3b7bc';
+            $event->color = '#f2f2e400';
             $event->title = '⠀';
 
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
@@ -155,10 +155,10 @@ class MoneyController extends Controller
             }
         } 
         else if ($oldEvent->situacao == 'off' & $newEvent->situacao == 'off' && $newEvent->tipoFav == 'cliente') {
-            $event->color = '#b3b7bc';
+            $event->color = '#f2f2e400';
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
                 file_put_contents('dump.json','SITUAÇÃO 5');
-                $event->color = '#b3b7bc';
+                $event->color = '#f2f2e400';
                 $oldBanco = banco::where('ID_banco', $oldEvent->ID_banco)->first();
                 $newBanco = banco::where('ID_banco', $newEvent->ID_banco)->first();
                 $oldBanco->saldo = $oldBanco->saldo - $newEvent->valor;
@@ -167,7 +167,7 @@ class MoneyController extends Controller
                 $oldBanco->save();
             }
             if($oldEvent->valor != $newEvent->valor){
-                $event->color = '#b3b7bc';
+                $event->color = '#f2f2e400';
                 $newBanco = banco::where('ID_banco', $newEvent->ID_banco)->first();
                 $diferenca = $oldEvent->valor - $newEvent->valor;
                 $diferenca = number_format((float)$diferenca, 2, '.', ' ');
@@ -181,7 +181,7 @@ class MoneyController extends Controller
 
         //FORNECEDOR,TRANSP,INVEST,FUNC...
         else if (($oldEvent->situacao == 'on' & $newEvent->situacao == 'off') && $newEvent->tipoFav != 'cliente') {
-            $event->color = '#b3b7bc';
+            $event->color = '#f2f2e400';
             $event->title = '⠀';
 
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
@@ -223,16 +223,27 @@ class MoneyController extends Controller
             }
         } 
         else if ($oldEvent->situacao == 'off' & $newEvent->situacao == 'off' && $newEvent->tipoFav != 'cliente') {
-            $event->color = '#b3b7bc';
+            $event->color = '#f2f2e400';
             if ($oldEvent->ID_banco != $newEvent->ID_banco) {
                 file_put_contents('dump.json','SITUAÇÃO 5');
-                $event->color = '#b3b7bc';
+                $event->color = '#f2f2e400';
                 $oldBanco = banco::where('ID_banco', $oldEvent->ID_banco)->first();
                 $newBanco = banco::where('ID_banco', $newEvent->ID_banco)->first();
                 $oldBanco->saldo = $oldBanco->saldo + $newEvent->valor;
                 $newBanco->saldo = $newBanco->saldo - $newEvent->valor;
                 $newBanco->save();
                 $oldBanco->save();
+            }
+            if($oldEvent->valor != $newEvent->valor){
+                $event->color = '#f2f2e400';
+                $newBanco = banco::where('ID_banco', $newEvent->ID_banco)->first();
+                $diferenca = $oldEvent->valor - $newEvent->valor;
+                $diferenca = number_format((float)$diferenca, 2, '.', ' ');
+                file_put_contents('dump.json','SITUAÇÃO 7 b '.$diferenca);
+                $newBanco->saldo = $newBanco->saldo + $diferenca;
+
+                
+                $newBanco->save();
             }
         }
 
@@ -253,12 +264,12 @@ class MoneyController extends Controller
         //VERIFICA O TIPO DE FAVORECIDO E SE O EVENDO É CRIADO FECHADO OU ABERTO
         if($event->situacao == 'off' && $event->tipoFav == 'cliente'){
             
-            $event->color = '#b3b7bc';
+            $event->color = '#f2f2e400';
             $banco->saldo = $banco->saldo + $event->valor;
             $banco->save();
         }
         else if($event->situacao == 'off' && $event->tipoFav != 'cliente'){
-            $event->color = '#b3b7bc';
+            $event->color = '#f2f2e400';
             $banco->saldo = $banco->saldo - $event->valor;
             $banco->save();
         }
@@ -312,9 +323,10 @@ class MoneyController extends Controller
             }
             if($evento->tipoFav != 'cliente'){
                 $evento->corFonte = 'red';
+                $evento->valor = $evento->valor * -1;
             }
             else{
-                $evento->corFonte = 'green';
+                $evento->corFonte = 'black';
             }
             $lastEvt = $evento;
             $i++;
@@ -330,5 +342,24 @@ class MoneyController extends Controller
         
 
         return view('admin.money.bancoEvent',compact('eventos','banco','bancos'));
+    }
+
+    public function rendimentoVsDespesas($relatorio){
+        if($relatorio == 1){
+            // RENDIMENTOS VS DESPESAS
+            $totalDespesa = 0;
+            $totalGeral = 0;
+            $primeiroDiaMes = date('Y-m-01');
+            $ultimoDiaMes = date('Y-m-t');
+            $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))->where('e.start', '>=', $primeiroDiaMes)->where('e.start', '<=', $ultimoDiaMes)->groupBy('e.tipoFav')->get();
+            //dd($resultado);
+            return view('admin.money.rendimentoVsDespesas',compact('resultado','totalDespesa','totalGeral','primeiroDiaMes','ultimoDiaMes'));
+        }
+    }
+
+    public function gerarRelatorio01(Request $request){
+        //dd($request);
+        var_dump($request->all());
+        return response()->json(['message' => 'Funfou'], 200);
     }
 }
