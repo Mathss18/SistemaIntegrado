@@ -64,7 +64,11 @@ class NfeServiceMF
             $ide->natOp = $nfe1['natOp'] . "- Remessa para Industrializacao por Encomenda";
         } else if ($nfe1['natOp'] == "5921") {
             $ide->natOp = $nfe1['natOp'] . "- Retorno de Embalagem";
-        } else {
+        }
+        else if($nfe1['natOp'] == "6912"){
+            $ide->natOp = $nfe1['natOp']."- Remessa de mercadoria para demonstração";
+        }
+         else {
             $ide->natOp = $nfe1['natOp'];
         }
         //$ide->natOp = $nfe1['natOp'];
@@ -194,11 +198,12 @@ class NfeServiceMF
             $prod->CFOP = $nfe2['cfop'][$i];
             $prod->uCom = $nfe2['unidade'][$i]; //Unidade do produto
             $prod->qCom = $nfe2['quantidade'][$i]; //Quantidade do produto
-            $prod->vUnCom = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento']) / 100), 9); // Valor total - %desconto
+            $prod->vUnCom = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento']) / 100), 9,'.',''); // Valor total - %desconto
             $prod->cEANTrib = 'SEM GTIN';
             $prod->uTrib = $nfe2['unidade'][$i];
-            $prod->qTrib = $nfe2['quantidade'][$i];
-            $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento']) / 100), 9); // Valor total - %desconto
+            $prod->qTrib = (int)$nfe2['quantidade'][$i];
+            $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento']) / 100), 9,'.',''); // Valor total - %desconto
+            //dd($prod->vUnTrib);
             $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib), 2, '.', ''); // Valor do produto = QUANTIDADE X Unidade Tributaria
             if ($nfe1['valorFrete'] > 0.00) {
                 $diffFrete = number_format($nfe1['valorFrete'] / $nfe2['totalQtde'], 2, '.', '');
@@ -236,7 +241,7 @@ class NfeServiceMF
             $icms = new stdClass();
             $icms->item = $i + 1; //item da NFe
             $icms->orig = 0;
-            if ($nfe1['natOp'] == 5902)
+            if ($nfe1['natOp'] == 5902 || $dest->indIEDest == 2 || $dest->indIEDest == 9)
                 $icms->CSOSN = '400';
             else if ($nfe1['natOp'] == 5124)
                 $icms->CSOSN = '900';

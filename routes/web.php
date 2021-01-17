@@ -31,6 +31,9 @@ Route::group(['middleware' => ['auth']],function(){
     //Trocar Senha do User Logado (Entrar no controller);
     //Route::get('/admin/trocarSenha', 'Auth\TrocarSenhaController@trocarSenha');
 
+    //Rota teste
+    Route::get('/paginaTeste','Admin\TesteController@teste');
+
     //Rotas de Clientes
     Route::resource('/admin/cliente', 'Admin\ClienteController')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('autocompleteclientes','Admin\PedidoController@AutoCompleteClientes');

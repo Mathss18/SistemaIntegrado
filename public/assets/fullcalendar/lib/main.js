@@ -9025,7 +9025,7 @@ var FullCalendar = (function (exports) {
             innerProps.timeText &&
                 createElement("div", { className: 'fc-event-time' }, innerProps.timeText),
             createElement("div", { className: 'fc-event-title-container' },
-                createElement("div", { className: 'fc-event-title fc-sticky' },innerProps.event.extendedProps.favorecido || createElement(Fragment, null, "\u00A0")))));
+                createElement("div", { className: 'fc-event-title fc-sticky' },innerProps.event.extendedProps.favorecido+' - R$: '+innerProps.event.extendedProps.valor || createElement(Fragment, null, "\u00A0")))));
     }
     function getSegAnchorAttrs(seg) {
         var url = seg.eventRange.def.url;
@@ -13766,7 +13766,7 @@ var FullCalendar = (function (exports) {
         var event = props.event;
         var url = event.url;
         var anchorAttrs = url ? { href: url } : {};
-        var a = createElement("a", __assign({}, anchorAttrs), event.extendedProps.favorecido+' '+event.title);
+        var a = createElement("a", __assign({}, anchorAttrs), event.extendedProps.favorecido+' - '+event.extendedProps.valor);
         return a;
     }
     function buildTimeContent(seg, timeFormat, context) {

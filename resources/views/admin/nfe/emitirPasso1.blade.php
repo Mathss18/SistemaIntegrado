@@ -119,6 +119,7 @@
                         <option value="5910">REMESSA DE BRINDES</option>
                         <option value="5923">REMESSA DE MERC POR ORDEM DE TERCEIRO E VENDA À ORDEM</option>
                         <option value="5912">REMESSA DE MERCADORIA P/ DEMONSTRAÇÃO</option>
+                        <option value="6912">REMESSA DE MERCADORIA P/ DEMONSTRAÇÃO (interestaduais)</option>
                         <option value="5915">REMESSA DE MERCADORIA P/CONSERTO</option>
                         <option value="6915">REMESSA P/CONSERTO FORA DO ESTADO (SAÍDA)</option>
                         <option value="5905">REMESSA P/DEPOSITO FECHADO</option>

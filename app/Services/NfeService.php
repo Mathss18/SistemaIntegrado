@@ -61,6 +61,9 @@ class NfeService{
             else if($nfe1['natOp'] == "5901"){
                 $ide->natOp = $nfe1['natOp']."- Remessa para Industrialização por Encomenda";
             }
+            else if($nfe1['natOp'] == "6912"){
+                $ide->natOp = $nfe1['natOp']."- Remessa de mercadoria para demonstração";
+            }
             else{
                 $ide->natOp = $nfe1['natOp'];
             }

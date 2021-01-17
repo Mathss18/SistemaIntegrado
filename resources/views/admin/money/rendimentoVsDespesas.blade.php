@@ -42,7 +42,7 @@
 @endif
 <div><i class="fas fa-arrow-circle-left"></i>&nbsp;<a href="{{route('money.index')}}">Voltar ao Caléndario</a></div>
 <div class="card shadow mb-4">
-<div id="rotas" style="display: none;" data-route-gerar-ralatorio01="{{route('money.gerarRelatorio01')}}"></div>
+    <div id="rotas" style="display: none;" data-route-gerar-ralatorio01="{{route('money.gerarRelatorio01')}}"></div>
 
     <div class="card-body">
         <form id="formData" action="{{route('money.gerarRelatorio01')}}" method="post">
@@ -58,6 +58,14 @@
                     <input type="date" name="fim" id="fim" class="form-control" value="{{$ultimoDiaMes ?? ''}}">
                 </div>
                 <div class="form-group col-md-3">
+                    <label for="fim">Situação</label>
+                    <select class="form-control" name="situacao" id="situacao">
+                        <option value="off">Fechados</option>
+                        <option value="on">Abertos</option>
+                        <option value="%o%">Ambos</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
                     <label for="">&nbsp;</label><br>
                     <button type="button" id="submit" class="btn btn-primary" onClick="gerarRelatorio()"><i class="fas fa-search"></i></button>
                 </div>
@@ -65,68 +73,16 @@
         </form>
         <hr style="border:1px solid black">
         <div>
-            <div>
-                <table class="table table-striped table-borderless table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col-md-2">Categoria de Rendimento</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="height: 1px;">
-                            <td style="width: 25%">{{strtoupper($resultado[0]->tipoFav)}}</td>
-                            <td style="width: 25%">R$: {{number_format($resultado[0]->total,2,',','.')}}</td>
-                        </tr>
-                        <tr>
-                            <td style="color: blue;">Total de rendimentos:</td>
-                            <td style="color: blue;">R$: {{number_format($resultado[0]->total,2,',','.')}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="table-container01">
+                @include('admin.money.extra.tabelaRVD01')
             </div>
             <hr style="border:1px solid black">
-            <div>
-                <table class="table table-striped table-borderless table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col-md-2">Categoria de despesas</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for($i = 1; $i < sizeof($resultado); $i++) <tr>
-                            <td style="width: 25%">{{strtoupper($resultado[$i]->tipoFav)}}</td>
-                            <td style="width: 25%">R$: {{number_format($resultado[$i]->total,2,',','.')}}</td>
-                            </tr>
-                            <a style="display: none;">{{$totalDespesa += $resultado[$i]->total}}</a>
-                            @endfor
-                            <tr>
-                                <td style="color: blue;">Total de despesas:</td>
-                                <td style="color: blue;">R$: {{number_format($totalDespesa,2,',','.')}}</td>
-                            </tr>
-                    </tbody>
-                </table>
+            <div class="table-container02">
+                @include('admin.money.extra.tabelaRVD02')
             </div>
             <hr style="border:1px solid black">
-            <div>
-                <table class="table table-striped table-borderless table-sm">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        @if(($resultado[0]->total-$totalDespesa) > 0)
-                        <tr>
-                            <td style="color: black; width: 25%"><b>Total:</b></td>
-                            <td style="color: blue; width: 25%">R$: {{number_format(($resultado[0]->total-$totalDespesa),2,',','.')}}</td>
-                        </tr>
-                        @else
-                        <tr>
-                            <td style="color: black; width: 25%"><b>Total:</b></td>
-                            <td style="color: red; width: 25%">R$: {{number_format(($resultado[0]->total-$totalDespesa),2,',','.')}}</td>
-                        </tr>
-                        @endif
-                    </tbody>
-                </table>
+            <div class="table-container03">
+                @include('admin.money.extra.tabelaRVD03')
             </div>
             <hr style="border:1px solid black">
         </div>

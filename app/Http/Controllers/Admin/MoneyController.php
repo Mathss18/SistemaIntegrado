@@ -323,7 +323,7 @@ class MoneyController extends Controller
             }
             if($evento->tipoFav != 'cliente'){
                 $evento->corFonte = 'red';
-                $evento->valor = $evento->valor * -1;
+                //$evento->valor = $evento->valor * -1;
             }
             else{
                 $evento->corFonte = 'black';
@@ -351,15 +351,49 @@ class MoneyController extends Controller
             $totalGeral = 0;
             $primeiroDiaMes = date('Y-m-01');
             $ultimoDiaMes = date('Y-m-t');
-            $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))->where('e.start', '>=', $primeiroDiaMes)->where('e.start', '<=', $ultimoDiaMes)->groupBy('e.tipoFav')->get();
-            //dd($resultado);
+
+            
+
+            $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))->where('e.situacao','like','off')->where('e.start', '>=', $primeiroDiaMes)->where('e.start', '<=', $ultimoDiaMes)->groupBy('e.tipoFav')->get();
+            for($i = 1; $i < sizeof($resultado); $i++){
+                $totalDespesa += $resultado[$i]->total;
+            }
             return view('admin.money.rendimentoVsDespesas',compact('resultado','totalDespesa','totalGeral','primeiroDiaMes','ultimoDiaMes'));
         }
     }
 
     public function gerarRelatorio01(Request $request){
         //dd($request);
-        var_dump($request->all());
-        return response()->json(['message' => 'Funfou'], 200);
+        
+        $dataForm = $request->except([
+            '_token',
+            '_method',
+            'submit'
+        ]);
+        $totalDespesa = 0;
+        $totalGeral = 0;
+        
+        try {
+            //var_dump($dataForm);
+            $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))
+            ->where('e.situacao','like',$dataForm['situacao'])
+            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+            ->groupBy('e.tipoFav')->get();
+        
+            for($i = 1; $i < sizeof($resultado); $i++){
+                $totalDespesa += $resultado[$i]->total;
+            }
+            
+            
+            $tabela01 = view('admin.money.extra.tabelaRVD01', compact('resultado','totalDespesa','totalGeral'))->render(); 
+            $tabela02 = view('admin.money.extra.tabelaRVD02', compact('resultado','totalDespesa','totalGeral'))->render();
+            $tabela03 = view('admin.money.extra.tabelaRVD03', compact('resultado','totalDespesa','totalGeral'))->render();  
+            
+            return response()->json(compact('tabela01','tabela02','tabela03'));
+        } catch (\Exception $e) {
+            return $e;
+        }
+        
+
     }
 }
