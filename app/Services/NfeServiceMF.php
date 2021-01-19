@@ -68,6 +68,9 @@ class NfeServiceMF
         else if($nfe1['natOp'] == "6912"){
             $ide->natOp = $nfe1['natOp']."- Remessa de mercadoria para demonstração";
         }
+        else if($nfe1['natOp'] == "6910"){
+            $ide->natOp = $nfe1['natOp']."- Remessa em bonificação, doação ou brinde";
+        }
          else {
             $ide->natOp = $nfe1['natOp'];
         }
@@ -241,7 +244,7 @@ class NfeServiceMF
             $icms = new stdClass();
             $icms->item = $i + 1; //item da NFe
             $icms->orig = 0;
-            if ($nfe1['natOp'] == 5902 || $dest->indIEDest == 2 || $dest->indIEDest == 9)
+            if ($nfe1['natOp'] == 5902 || $nfe1['natOp'] == 6912 || $nfe1['natOp'] == 6910 || $dest->indIEDest == 2 || $dest->indIEDest == 9)
                 $icms->CSOSN = '400';
             else if ($nfe1['natOp'] == 5124)
                 $icms->CSOSN = '900';
