@@ -12,6 +12,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    /* Important part */
+    .modal-dialog {
+        overflow-y: initial !important;
+    }
+
+    .modal-body {
+        height: 50vh;
+        overflow-y: auto;
+    }
+
+    .modal-lg {
+        max-width: 90% !important;
+    }
+</style>
 @stop
 
 @section('js')
@@ -27,6 +42,48 @@
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
 <script src="{{ asset('js/relatorio01.js') }}"></script>
+<script>
+    $(".clickable-row").click(function() {
+    $('#modalRVD01').modal('toggle');
+    $('#modalRVD01').modal('show');
+
+});
+</script>
+<script>
+    $(".clickable-row-FORNECEDOR").click(function() {
+    $('#modalRVD02-FORNECEDOR').modal('toggle');
+    $('#modalRVD02-FORNECEDOR').modal('show');
+
+});
+</script>
+<script>
+    $(".clickable-row-FUNCIONARIO").click(function() {
+    $('#modalRVD02-FUNCIONARIO').modal('toggle');
+    $('#modalRVD02-FUNCIONARIO').modal('show');
+
+});
+</script>
+<script>
+    $(".clickable-row-IMPOSTO").click(function() {
+    $('#modalRVD02-IMPOSTO').modal('toggle');
+    $('#modalRVD02-IMPOSTO').modal('show');
+
+});
+</script>
+<script>
+    $(".clickable-row-TRANSPORTADORA").click(function() {
+    $('#modalRVD02-TRANSPORTADORA').modal('toggle');
+    $('#modalRVD02-TRANSPORTADORA').modal('show');
+
+});
+</script>
+<script>
+    $(".clickable-row-INVESTIMENTO").click(function() {
+    $('#modalRVD02-INVESTIMENTO').modal('toggle');
+    $('#modalRVD02-INVESTIMENTO').modal('show');
+
+});
+</script>
 
 @stop
 
@@ -87,4 +144,5 @@
             <hr style="border:1px solid black">
         </div>
 
+        
         @stop

@@ -82,7 +82,7 @@
                 <h4>Deseja fazer uma?</h4>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#ModalEntrada" data-dismiss="modal">Entrada</button>
+                        <!--button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#ModalEntrada" data-dismiss="modal">Entrada</button-->
                         <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#ModalSaida" data-dismiss="modal">Saida</button>
                     </div>
                 </form>

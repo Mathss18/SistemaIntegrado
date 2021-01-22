@@ -56,7 +56,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-address-card"></i>
                     </div>
-                    <input id="data_inicio" name="data_inicio" type="date" class="form-control" required>
+                    <input id="data_inicio" name="data_inicio" value="{{date('Y-m-01')}}" type="date" class="form-control" required>
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
                     <div class="input-group-addon ">
                         <i class="fa fa-envelope"></i>
                     </div>
-                    <input id="data_fim" name="data_fim" type="date" class="form-control" required>
+                    <input id="data_fim" name="data_fim" type="date" value="{{date('Y-m-t')}}" class="form-control" required>
                 </div>
             </div>
 

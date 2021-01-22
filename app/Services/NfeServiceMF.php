@@ -204,7 +204,7 @@ class NfeServiceMF
             $prod->vUnCom = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento']) / 100), 9,'.',''); // Valor total - %desconto
             $prod->cEANTrib = 'SEM GTIN';
             $prod->uTrib = $nfe2['unidade'][$i];
-            $prod->qTrib = (int)$nfe2['quantidade'][$i];
+            $prod->qTrib = (float)$nfe2['quantidade'][$i];
             $prod->vUnTrib = number_format($nfe2['precoProd'][$i] - (($nfe2['precoProd'][$i] * $nfe3['porcento']) / 100), 9,'.',''); // Valor total - %desconto
             //dd($prod->vUnTrib);
             $prod->vProd = number_format(($prod->qTrib * $prod->vUnTrib), 2, '.', ''); // Valor do produto = QUANTIDADE X Unidade Tributaria

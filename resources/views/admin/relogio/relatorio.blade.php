@@ -56,7 +56,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-address-card"></i>
                     </div>
-                    <input id="data_inicio" value="{{Session::get('dataInicioRelogio') ?? ''}}" name="data_inicio" type="date" class="form-control" required>
+                    <input id="data_inicio" value="{{Session::get('dataInicioRelogio') ?? date('Y-m-01')}}" name="data_inicio" type="date" class="form-control" required>
                 </div>
             </div>
 
@@ -66,7 +66,7 @@
                     <div class="input-group-addon ">
                         <i class="fa fa-envelope"></i>
                     </div>
-                    <input id="data_fim" value="{{Session::get('dataFimRelogio') ?? ''}}" name="data_fim" type="date" class="form-control" required>
+                    <input id="data_fim" value="{{Session::get('dataFimRelogio') ?? date('Y-m-t')}}" name="data_fim" type="date" class="form-control" required>
                 </div>
             </div>
 
