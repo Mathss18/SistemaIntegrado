@@ -25,34 +25,41 @@ function gerarRelatorio(){
             situacao: situacao
             },
         success: function (data) {
-            console.log("SUCCESS : ", data);
-            //REFRESH TABELA 01
-            $('div.table-container01').fadeOut();
-            setTimeout(function(){ 
-                $('div.table-container01').html(data.tabela01);
-            }, 300); 
-            $('div.table-container01').fadeIn();
+            console.log(data);
+            if(data.message == 'error'){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Nenhum valor encontrado.',
+                  })
+            }
+            else{
+                //REFRESH TABELA 01
+                $('div.table-container01').fadeOut();
+                setTimeout(function(){ 
+                    $('div.table-container01').html(data.tabela01);
+                }, 300); 
+                $('div.table-container01').fadeIn();
 
-            //REFRESH TABELA 02
-            $('div.table-container02').fadeOut();
-            setTimeout(function(){ 
-                $('div.table-container02').html(data.tabela02);
-            }, 300); 
-            $('div.table-container02').fadeIn();
+                //REFRESH TABELA 02
+                $('div.table-container02').fadeOut();
+                setTimeout(function(){ 
+                    $('div.table-container02').html(data.tabela02);
+                }, 300); 
+                $('div.table-container02').fadeIn();
 
-            //REFRESH TABELA 03
-            $('div.table-container3').fadeOut();
-            setTimeout(function(){ 
-                $('div.table-container03').html(data.tabela03);
-            }, 300); 
-            $('div.table-container03').fadeIn();
-            
-            
+                //REFRESH TABELA 03
+                $('div.table-container3').fadeOut();
+                setTimeout(function(){ 
+                    $('div.table-container03').html(data.tabela03);
+                }, 300); 
+                $('div.table-container03').fadeIn(); 
+        }
 
         },
         error: function (e) {
             console.log("ERROR : ", e);
-            alert('Erro ao trazer relatório.');
+            alert('Erro de comunicação com o banco de dados.');
 
         }
     });

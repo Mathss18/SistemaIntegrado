@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dayMaxEventRows: true,
         selectable: true,
         droppable: true, // this allows things to be dropped onto the calendar
+        showNonCurrentDates: false, //Mostra apenas os dias do mes atual
         drop: function (arg) {
             // is the "remove after drop" checkbox checked?
             if (document.getElementById('drop-remove').checked) {
@@ -50,35 +51,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 arg.draggedEl.parentNode.removeChild(arg.draggedEl);
             }
         },
-        windowResize: function(arg) {
+        windowResize: function (arg) {
             objCalendar.refetchEvents();
         },
-        eventDrop: function(element){
+        eventDrop: function (element) {
             let startDate = moment(element.event.start).format("YYYY-MM-DD");
             let endDate = moment(element.event.end).format("YYYY-MM-DD");
 
-            if(endDate=='Invalid date')
-                endDate=null;
+            if (endDate == 'Invalid date')
+                endDate = null;
 
             let newEvent = {
-                _method:'PUT',
+                _method: 'PUT',
                 id: element.event.id,
                 start: startDate,
                 end: endDate
 
             };
 
-            sendEvent(routeEventsAtualizar(),newEvent,'PUT');
+            sendEvent(routeEventsAtualizar(), newEvent, 'PUT');
             console.log(element);
         },
-        eventClick: function(element){
+        eventClick: function (element) {
             //========RESETAR FORM==============
             resetarForm("#formEvt");
             //=======ABRE O MODAL PARA ALTERAR EVENTO===========
             $("#modalCalendario").modal('show');
             $("#modalCalendario #tituloModalCalendar").text('Alterar Evento');
-            $("#modalCalendario button.deleteEvent").css('display','flex');
-        
+            $("#modalCalendario button.deleteEvent").css('display', 'flex');
+
             //=======PEGA AS INFOS DO EVT E COLOCA NAS VARIAVEIS===========
             let id = element.event.id;
             let title = '⠀';
@@ -95,78 +96,78 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#tipoCliForne').val(tipoFav);
 
             //=======SE O TIPO FOR CLI TIRA INPUT FORNE==========
-            switch(tipoFav) {
+            switch (tipoFav) {
                 case 'fornecedor':
-                    
-                    $( "#fornecedorModal" ).show();
-                    $( "#ID_fornecedor" ).prop( "disabled", false );
-                    $( "#ttexto1" ).prop( "disabled", false );
-    
-                    $( "#inputsModal" ).show();
-                    $( "#categoria" ).prop( "disabled", true );
-                    $('#tipoCliForne').attr('value','fornecedor');
-                    
+
+                    $("#fornecedorModal").show();
+                    $("#ID_fornecedor").prop("disabled", false);
+                    $("#ttexto1").prop("disabled", false);
+
+                    $("#inputsModal").show();
+                    $("#categoria").prop("disabled", true);
+                    $('#tipoCliForne').attr('value', 'fornecedor');
+
                     $("#ttexto1").val(favorecido);
                     $("#categoria").val(tipoFav);
-                  break;
+                    break;
                 case 'transportadora':
-                    $( "#transportadoraModal" ).show();
-                    $( "#ID_transportadora" ).prop( "disabled", false );
-                    $( "#ttexto2" ).prop( "disabled", false );
-    
-                    $( "#inputsModal" ).show();
-                    $( "#categoria" ).prop( "disabled", true );
-                    $('#tipoCliForne').attr('value','transportadora');
+                    $("#transportadoraModal").show();
+                    $("#ID_transportadora").prop("disabled", false);
+                    $("#ttexto2").prop("disabled", false);
+
+                    $("#inputsModal").show();
+                    $("#categoria").prop("disabled", true);
+                    $('#tipoCliForne').attr('value', 'transportadora');
                     $("#ttexto2").val(favorecido);
                     $("#categoria").val(tipoFav);
-                  break;
+                    break;
                 case 'funcionario':
-                    $( "#funcionarioModal" ).show();
-                    $( "#ID_funcionario" ).prop( "disabled", false );
-                    $( "#ttexto3" ).prop( "disabled", false );
-    
-                    $( "#inputsModal" ).show();
-                    $( "#categoria" ).prop( "disabled", true );
-                    $('#tipoCliForne').attr('value','funcionario');
+                    $("#funcionarioModal").show();
+                    $("#ID_funcionario").prop("disabled", false);
+                    $("#ttexto3").prop("disabled", false);
+
+                    $("#inputsModal").show();
+                    $("#categoria").prop("disabled", true);
+                    $('#tipoCliForne').attr('value', 'funcionario');
                     $("#ttexto3").val(favorecido);
                     $("#categoria").val(tipoFav);
-                break;  
+                    break;
                 case 'imposto':
-                    $( "#impostoModal" ).show();
-                    $( "#ID_imposto" ).prop( "disabled", false );
-                    $( "#ttexto4" ).prop( "disabled", false );
-    
-                    $( "#inputsModal" ).show();
-                    $( "#categoria" ).prop( "disabled", true );
-                    $('#tipoCliForne').attr('value','imposto');
+                    $("#impostoModal").show();
+                    $("#ID_imposto").prop("disabled", false);
+                    $("#ttexto4").prop("disabled", false);
+
+                    $("#inputsModal").show();
+                    $("#categoria").prop("disabled", true);
+                    $('#tipoCliForne').attr('value', 'imposto');
                     $("#ttexto4").val(favorecido);
                     $("#categoria").val(tipoFav);
-                break;
+                    break;
                 case 'investimento':
-                    $( "#investimentoModal" ).show();
-                    $( "#ID_investimento" ).prop( "disabled", false );
-                    $( "#ttexto5" ).prop( "disabled", false );
-    
-                    $( "#inputsModal" ).show();
-                    $( "#categoria" ).prop( "disabled", true );
-                    $('#tipoCliForne').attr('value','investimento');
+                    $("#investimentoModal").show();
+                    $("#ID_investimento").prop("disabled", false);
+                    $("#ttexto5").prop("disabled", false);
+
+                    $("#inputsModal").show();
+                    $("#categoria").prop("disabled", true);
+                    $('#tipoCliForne').attr('value', 'investimento');
                     $("#ttexto5").val(favorecido);
                     $("#categoria").val(tipoFav);
-                break;   
+                    break;
                 case 'cliente':
-                    $( "#clienteModal" ).show();
-                    $( "#ID_cliente" ).prop( "disabled", false );
-                    $( "#ttexto" ).prop( "disabled", false );
-    
-                    $( "#inputsModal" ).show();
-                    $( "#categoria" ).prop( "disabled", true );
-                    $('#tipoCliForne').attr('value','cliente');
+                    $("#clienteModal").show();
+                    $("#ID_cliente").prop("disabled", false);
+                    $("#ttexto").prop("disabled", false);
+
+                    $("#inputsModal").show();
+                    $("#categoria").prop("disabled", true);
+                    $('#tipoCliForne').attr('value', 'cliente');
                     $("#ttexto").val(favorecido);
                     $("#categoria").val(tipoFav);
-                break; 
+                    break;
                 default:
-                  // code block
-              }
+                // code block
+            }
 
             //=======COLOCA O RESTO DOS VALORES NO FORM==========
             $("#title").val(title);
@@ -177,29 +178,29 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#numero").val(numero);
             $("#situacao").bootstrapToggle(situacao);
             $("#situacao").val(situacao);
-            console.log('Atual '+situacao);
-            $('#banco>option[value='+ID_banco+']').attr("selected", true);
+            console.log('Atual ' + situacao);
+            $('#banco>option[value=' + ID_banco + ']').attr("selected", true);
 
         },
-        eventResize: function(element){
+        eventResize: function (element) {
             let startDate = moment(element.event.start).format("YYYY-MM-DD");
             let endDate = moment(element.event.end).format("YYYY-MM-DD");
 
-            if(endDate=='Invalid date')
-                endDate=null;
-                
+            if (endDate == 'Invalid date')
+                endDate = null;
+
             let newEvent = {
-                _method:'PUT',
+                _method: 'PUT',
                 id: element.event.id,
                 start: startDate,
                 end: endDate
 
             };
 
-            sendEvent(routeEventsAtualizar(),newEvent,'PUT');
+            sendEvent(routeEventsAtualizar(), newEvent, 'PUT');
             console.log(element);
         },
-        select: function(element){
+        select: function (element) {
             Swal.fire({
                 title: 'Qual o tipo da transação?',
                 icon: 'question',
@@ -208,35 +209,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 cancelButtonText: `Sair`,
                 confirmButtonText: `Conta a Receber`,
                 denyButtonText: `Conta a Pagar`,
-              }).then((result) => {
+            }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     //RESETA MODAL
                     resetarForm("#formEvt");
                     //DEIXA VISIVEL INPUTS MODAL
-                    $("#inputsModal" ).show();
+                    $("#inputsModal").show();
                     //ABRE MODAL
                     $("#modalCalendario").modal('show');
                     $("#modalCalendario #tituloModalCalendar").text('Adicionar Evento');
-                    $("#modalCalendario button.deleteEvent").css('display','none');
+                    $("#modalCalendario button.deleteEvent").css('display', 'none');
                     //$("#dataBaixa").val(moment(new Date).format("YYYY-MM-DD HH:MM:SS"));
 
                     //HABILITA OS INPUTS CLIENTE
-                    $( "#clienteModal" ).show();
-                    $( "#ID_cliente" ).prop( "disabled", false );
-                    $( "#ttexto" ).prop( "disabled", false );
+                    $("#clienteModal").show();
+                    $("#ID_cliente").prop("disabled", false);
+                    $("#ttexto").prop("disabled", false);
                     //SELECIONA CATEGORIA CLIENTE E DESABILITA AS OUTRAS
                     $("#categoria").val('cliente');
                     $('#categoria option:not(:selected)').attr('disabled', true);
                     $('#optionCli').attr('disabled', false);
                     //TIPO FAV = CLI
-                    $('#tipoCliForne').attr('value','cliente');
+                    $('#tipoCliForne').attr('value', 'cliente');
 
-                    $( "#categoria" ).prop( "disabled", true );
-          
+                    $("#categoria").prop("disabled", true);
+
                     let start = moment(element.start).format("DD/MM/YYYY");
                     $("#start").val(start);
-        
+
                     calendar.unselect();
                 } else if (result.isDenied) {
                     //RESETA MODAL
@@ -244,32 +245,32 @@ document.addEventListener('DOMContentLoaded', function () {
                     //ABRE MODAL
                     $("#modalCalendario").modal('show');
                     $("#modalCalendario #tituloModalCalendar").text('Adicionar Evento');
-                    $("#modalCalendario button.deleteEvent").css('display','none');
+                    $("#modalCalendario button.deleteEvent").css('display', 'none');
                     //$("#dataBaixa").val(moment(new Date).format("YYYY-MM-DD HH:MM:SS"));
- 
+
                     //DESABILITA CATEGORIA CLIENTE 
                     $('#optionCli').attr('disabled', true);
 
                     //TIPO FAV = Forne
-                    $('#tipoCliForne').attr('value','fornecedor');
-               
+                    $('#tipoCliForne').attr('value', 'fornecedor');
+
                     let start = moment(element.start).format("DD/MM/YYYY");
                     $("#start").val(start);
-        
+
                     calendar.unselect();
                 }
-              })
-            
+            })
+
         },
         events: routeEventsCarregar(),
-        
+
     });
     objCalendar = calendar;
 
     calendar.render();
 
 
-    
+
 });
 
 

@@ -66,7 +66,7 @@ class MoneyController extends Controller
         $end = (!empty($request->end)) ? ($request->end) : ('');
 
         /** Retornaremos apenas os eventos ENTRE as datas iniciais e finais visiveis no calendário */
-        $eventos = evento::whereBetween('start', [$start, $end])->orderBy('situacao','desc')->get($returnedColumns);
+        $eventos = evento::whereBetween('start', [$start, $end])->orderBy('situacao', 'desc')->get($returnedColumns);
 
 
         return response()->json($eventos);
@@ -364,13 +364,13 @@ class MoneyController extends Controller
                     ->where('e.start', '>=', $primeiroDiaMes)->where('e.start', '<=', $ultimoDiaMes)
                     ->orderBy('e.start', 'desc')
                     ->get();
-                    array_push($tipoFavArray,$resultadoDespesas);
+                array_push($tipoFavArray, $resultadoDespesas);
             }
 
 
 
 
-            return view('admin.money.rendimentoVsDespesas', compact('resultado', 'totalDespesa', 'totalGeral', 'primeiroDiaMes', 'ultimoDiaMes', 'resultadoRendimentos','tipoFavArray'));
+            return view('admin.money.rendimentoVsDespesas', compact('resultado', 'totalDespesa', 'totalGeral', 'primeiroDiaMes', 'ultimoDiaMes', 'resultadoRendimentos', 'tipoFavArray'));
         }
     }
 
@@ -385,58 +385,63 @@ class MoneyController extends Controller
         ]);
         $totalDespesa = 0;
         $totalGeral = 0;
+        $loop = 1;
 
-        try {
-            //var_dump($dataForm);
-            $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))
-                ->where('e.situacao', 'like', $dataForm['situacao'])
-                ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
-                ->groupBy('e.tipoFav')->get();
+        try{
+        //var_dump($dataForm);
+        $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))
+            ->where('e.situacao', 'like', $dataForm['situacao'])
+            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+            ->groupBy('e.tipoFav')->get();
 
-            for ($i = 1; $i < sizeof($resultado); $i++) {
-                $totalDespesa += $resultado[$i]->total;
-            }
+        for ($i = 1; $i < sizeof($resultado); $i++) {
+            $totalDespesa += $resultado[$i]->total;
+        }
 
-            $resultadoRendimentos = DB::table('evento as e')
-                ->join('banco as b', 'b.ID_banco', '=', 'e.ID_banco')
-                ->select('*')
-                ->where('e.situacao', 'like', $dataForm['situacao'])
-                ->where('e.tipoFav', 'like', 'cliente')
-                ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
-                ->orderBy('e.start', 'desc')
-                ->get();
+        $resultadoRendimentos = DB::table('evento as e')
+            ->join('banco as b', 'b.ID_banco', '=', 'e.ID_banco')
+            ->select('*')
+            ->where('e.situacao', 'like', $dataForm['situacao'])
+            ->where('e.tipoFav', 'like', 'cliente')
+            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+            ->orderBy('e.start', 'desc')
+            ->get();
 
 
-            $tipoFavDespesa =  DB::table('evento as e')
-                ->select('e.tipoFav')
-                ->where('e.situacao', 'like', $dataForm['situacao'])
-                ->where('e.tipoFav', 'not like', 'cliente')
-                ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
-                ->groupBy('e.tipoFav')
-                ->get();
-                //var_dump($tipoFavDespesa);
-            $tipoFavArray = [];
+        $tipoFavDespesa =  DB::table('evento as e')
+            ->select('e.tipoFav')
+            ->where('e.situacao', 'like', $dataForm['situacao'])
+            ->where('e.tipoFav', 'not like', 'cliente')
+            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+            ->groupBy('e.tipoFav')
+            ->get();
+
+        if (sizeOf($tipoFavDespesa) == 0) {
+            $resultadoDespesas = [];
+        }
+        $tipoFavArray = [];
+
 
             foreach ($tipoFavDespesa as $tfd) {
                 $resultadoDespesas = DB::table('evento as e')
                     ->join('banco as b', 'b.ID_banco', '=', 'e.ID_banco')
                     ->select('*')
                     ->where('e.situacao', 'like', $dataForm['situacao'])
-                    ->where('e.tipoFav', 'like', $tfd->tipoFav)
+                    ->where('e.tipoFav', 'like', 'fornecedor')
                     ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
                     ->orderBy('e.start', 'desc')
                     ->get();
-                    array_push($tipoFavArray,$resultadoDespesas);
+                array_push($tipoFavArray, $resultadoDespesas);
             }
+        
+        $tabela01 = view('admin.money.extra.tabelaRVD01', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoRendimentos'))->render();
+        $tabela02 = view('admin.money.extra.tabelaRVD02', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoDespesas', 'tipoFavArray'))->render();
+        $tabela03 = view('admin.money.extra.tabelaRVD03', compact('resultado', 'totalDespesa', 'totalGeral'))->render();
 
-
-            $tabela01 = view('admin.money.extra.tabelaRVD01', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoRendimentos', 'resultadoDespesas','tipoFavArray'))->render();
-            $tabela02 = view('admin.money.extra.tabelaRVD02', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoRendimentos', 'resultadoDespesas','tipoFavArray'))->render();
-            $tabela03 = view('admin.money.extra.tabelaRVD03', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoRendimentos', 'resultadoDespesas','tipoFavArray'))->render();
-
-            return response()->json(compact('tabela01', 'tabela02', 'tabela03'));
-        } catch (\Exception $e) {
-            return $e;
+        return response()->json(compact('tabela01', 'tabela02', 'tabela03'));
+        }
+        catch(\Exception $e){
+            return response()->json(['message' => 'error']);
         }
     }
 }
