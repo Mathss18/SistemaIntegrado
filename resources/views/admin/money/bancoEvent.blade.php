@@ -78,6 +78,7 @@
             </div>
         </div>
         <div class='ml-5'><button type="button" class="btn btn-dark" onclick="abrirModalPergunta()">Novo</button></div>
+        <div class='ml-5'><button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalBancos">Bancos</button></div>
     </div>
     
     
@@ -125,6 +126,6 @@
     </div>
 </div>
 
-
+@include('admin.money.modalBancos')
 
 @stop

@@ -108,7 +108,7 @@ class OrcamentoController extends Controller
         //DESCOMENTAR PARA VER PRODUTOS DO ORCAMENTO
         //dd($produtos);
 
-        return view('admin.orcamento.template', compact('ultimoOrca','produtos','cliente','total'));
+        return view('admin.orcamento.template', compact('ultimoOrca','produtos','cliente','total','firma'));
     }
 
     public function mostrarPronto($codOrcamentoRequest){
@@ -133,7 +133,7 @@ class OrcamentoController extends Controller
         //DESCOMENTAR PARA VER PRODUTOS DO ORCAMENTO
         //dd($produtos);
 
-        return view('admin.orcamento.template', compact('ultimoOrca','produtos','cliente','total'));
+        return view('admin.orcamento.template', compact('ultimoOrca','produtos','cliente','total','firma'));
 
     }
 }

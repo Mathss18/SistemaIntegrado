@@ -20,12 +20,14 @@ Route::get('/', function () {
 // === Desabilitar rota de Registo
 Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');;
 
-
+/*
 Route::get('/home', function() {
     return view('home');
 })->name('home')->middleware('auth');
+*/
+//Route::get('/home','HomeController@index')->name('home')
 
 Route::group(['middleware' => ['auth']],function(){
     //Trocar Senha do User Logado (Entrar no controller);
@@ -182,7 +184,7 @@ Route::group(['middleware' => ['auth']],function(){
 
     //Rotas Money
     Route::post('/admin/money/gerarRelatorio01','Admin\MoneyController@gerarRelatorio01')->name('money.gerarRelatorio01')->middleware('auth.tipo:Admin,Secretaria');
-    Route::get('/admin/money/rendimentoVsDespesas/{relatorio}','Admin\MoneyController@rendimentoVsDespesas')->name('money.rendimentoVsDespesas')->middleware('auth.tipo:Admin,Secretaria');
+    Route::get('/admin/money/relatorios/{relatorio}','Admin\MoneyController@relatorios')->name('money.relatorios')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/carregarEventos','Admin\MoneyController@carregarEventos')->name('money.carregarEventos')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/mostrarBanco/{ID_banco}','Admin\MoneyController@mostrarBanco')->name('money.mostrarBanco')->middleware('auth.tipo:Admin,Secretaria');
     Route::put('/admin/money/atualizarEvento','Admin\MoneyController@atualizarEvento')->name('money.atualizarEvento')->middleware('auth.tipo:Admin,Secretaria');

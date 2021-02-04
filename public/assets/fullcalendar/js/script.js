@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dayMaxEventRows: true,
         selectable: true,
         droppable: true, // this allows things to be dropped onto the calendar
-        showNonCurrentDates: false, //Mostra apenas os dias do mes atual
+        fixedWeekCount: false, //Mostra apenas os dias do mes atual
         drop: function (arg) {
             // is the "remove after drop" checkbox checked?
             if (document.getElementById('drop-remove').checked) {

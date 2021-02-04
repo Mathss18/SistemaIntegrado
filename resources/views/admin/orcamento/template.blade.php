@@ -36,6 +36,8 @@
 
     <div id="printable" class="corpoOrcamento">
         <div class="container card-body fundo"> <!--borda vai aqui -->
+
+            @if($firma == 'FM')
             <div class="row" style="border-bottom: 1px solid gray; border-radius: 15;">
                 <div class="col-2">
                     <img src="https://i.imgur.com/DErSgKM.jpg" alt="">
@@ -47,12 +49,35 @@
                             <h6><b>Endereço:</b> RUA JOSE PASSARELA &nbsp;&nbsp;&nbsp;&nbsp; <b>Número:</b> 240 &nbsp;&nbsp;&nbsp;&nbsp; <b>Telefone:</b> (19) 3434-5840</h6>
                             <h6><b>Bairro:</b> JARDIM SAO JORGE &nbsp;&nbsp;&nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp;&nbsp;&nbsp; <b>Email:</b> flexmol@flexmol.com.br</h6>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <h4><a id='change'>ORÇAMENTO</a>: N°: <u>{{$ultimoOrca[0]->cod_orcamento}}</u></h4>
                         </div>
                     </div>
                 </div>
             </div>
+            @else
+            <div class="row" style="border-bottom: 1px solid gray; border-radius: 15;">
+                <div class="col-3">
+                    <img src="https://i.imgur.com/WsHypqu.jpg" alt="">
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col">
+                            <h4>METAL FLEX - INDUSTRIA E COMERCIO DE MOLAS LTDA - ME</h4>
+                            <h6><b>Rua:</b> RUA PRINCESA ISABEL, 70 &nbsp;&nbsp; <b>Cidade:</b> Piracicaba &nbsp;&nbsp; <b>Telefone:</b> (19)3422-7978</h6>
+                            <h6><b>Bairro:</b> JARDIM PACAEMBU &nbsp;&nbsp;<b>Email:</b> atendimento@metalflex.ind.br</h6>
+                        </div>
+                        <div class="col-3">
+                            <h4><a id='change'>ORÇAMENTO</a>: N°: <u>{{$ultimoOrca[0]->cod_orcamento}}</u></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+
+
+
             <br>
             <div class="row">
                 

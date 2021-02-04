@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\FuncionarioPedidoController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Auth;
+use PhpParser\Node\Expr\FuncCall;
+use Redirect;
+use Session;
+use App\Models\cliente;
+use App\Models\funcionario_pedido;
 
 class HomeController extends Controller
 {
@@ -23,6 +31,41 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $aproveitamento = $this->relatorio();
+
+        return view('home', compact('aproveitamento'));
+    }
+
+    public function relatorio()
+    {
+
+        $dataInicio = date('Y-m-01');
+        $dataFim = date('Y-m-t');
+        $nomeFuncionario = Auth::user()->name;
+
+        
+        $hoje = date('Y-m-d');
+
+
+        $pedidosAbertosAtrasados = DB::table('funcionario_pedido as fp')->join('funcionario as f', 'f.ID_funcionario', '=', 'fp.ID_funcionario')->join('pedido as p', 'p.ID_pedido', '=', 'fp.ID_pedido')->join('cliente as c', 'c.ID_cliente', '=', 'fp.ID_cliente')->select('fp.ID_funcionario_pedido', 'p.OF', 'p.codigo', 'p.data_pedido', 'p.data_entrega', 'p.quantidade', 'p.tipo', 'p.ID_cliente', 'fp.data_controle', 'fp.data_baixa', 'c.nome')->where('f.nome', '=', $nomeFuncionario)->where('fp.data_controle', '>=', $dataInicio)->where('fp.data_controle', '<=', $dataFim)->where('p.data_entrega', '<=', $hoje)->where('fp.status', '=', 'Aberto')->orderBy('fp.ID_funcionario_pedido', 'desc')->get();
+        $pedidosFechadosAtrasados = DB::table('funcionario_pedido as fp')->join('funcionario as f', 'f.ID_funcionario', '=', 'fp.ID_funcionario')->join('pedido as p', 'p.ID_pedido', '=', 'fp.ID_pedido')->join('cliente as c', 'c.ID_cliente', '=', 'fp.ID_cliente')->select('fp.ID_funcionario_pedido', 'p.OF', 'p.codigo', 'p.data_pedido', 'p.data_entrega', 'p.quantidade', 'p.tipo', 'p.ID_cliente', 'fp.data_controle', 'fp.data_baixa', 'c.nome')->where('f.nome', '=', $nomeFuncionario)->where('fp.data_controle', '>=', $dataInicio)->where('fp.data_controle', '<=', $dataFim)->whereRaw('fp.data_baixa > p.data_entrega')->where('fp.status', '=', 'Fechado')->orderBy('fp.ID_funcionario_pedido', 'desc')->get();
+        $pedidosFechadosAdiantados = DB::table('funcionario_pedido as fp')->join('funcionario as f', 'f.ID_funcionario', '=', 'fp.ID_funcionario')->join('pedido as p', 'p.ID_pedido', '=', 'fp.ID_pedido')->join('cliente as c', 'c.ID_cliente', '=', 'fp.ID_cliente')->select('fp.ID_funcionario_pedido', 'p.OF', 'p.codigo', 'p.data_pedido', 'p.data_entrega', 'p.quantidade', 'p.tipo', 'p.ID_cliente', 'fp.data_controle', 'fp.data_baixa', 'c.nome')->where('f.nome', '=', $nomeFuncionario)->where('fp.data_controle', '>=', $dataInicio)->where('fp.data_controle', '<=', $dataFim)->whereRaw('fp.data_baixa <= p.data_entrega')->where('fp.status', '=', 'Fechado')->orderBy('fp.ID_funcionario_pedido', 'desc')->get();
+
+        $porCentoPaa = $pedidosAbertosAtrasados->count();
+
+        $porCentoPfa = $pedidosFechadosAtrasados->count();
+
+        $porCentoPfad = $pedidosFechadosAdiantados->count();
+
+        $totalPorCento = $porCentoPaa + $porCentoPfa + $porCentoPfad;
+        if ($totalPorCento == 0) {
+            $totalPorCento = 1;
+        }
+        $aproveitamento = (($totalPorCento - $porCentoPaa - $porCentoPfa) * 100) / $totalPorCento;
+        $aproveitamento = number_format($aproveitamento, 2);
+
+
+        return $aproveitamento;
+
     }
 }

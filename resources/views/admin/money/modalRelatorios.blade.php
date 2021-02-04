@@ -11,7 +11,10 @@
       <div class="modal-body">
         <div class="col">
             <div class="row">
-              <div><i class="fas fa-chart-pie"></i>&nbsp;<a style="font-size: 20px;" href="{{route('money.rendimentoVsDespesas',1)}}">Rendimentos vs. despesas</a></div>
+              <div><i class="fas fa-chart-pie"></i>&nbsp;<a style="font-size: 20px;" href="{{route('money.relatorios',1)}}">Rendimentos vs. despesas</a></div>
+            </div>
+            <div class="row">
+              <div><i class="fas fa-chart-pie"></i>&nbsp;<a style="font-size: 20px;" href="{{route('money.relatorios',2)}}">Rendimentos ao longo do tempo</a></div>
             </div>
         </div>
       </div>

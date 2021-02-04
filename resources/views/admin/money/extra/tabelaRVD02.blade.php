@@ -20,7 +20,7 @@
 
 @for($i = 0; $i < sizeof($resultado)-1; $i++)
 <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id='modalRVD02-{{strtoupper($tipoFavArray[$i][0]->tipoFav)}}' tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="modalRVD02-{{strtoupper($tipoFavArray[$i][0]->tipoFav)}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

@@ -404,20 +404,20 @@ class NfeService{
                 /*
                     $dup1 = new stdClass();
                     $dup1->nDup = '001';
-                    $dup1->dVenc = '2020-01-20';
+                    $dup1->dVenc = '2021-02-01';
                     $dup1->vDup = 1000.00;
                     $nfe->tagdup($dup1);
                    
                     $dup2 = new stdClass();
                     $dup2->nDup = '002';
-                    $dup2->dVenc = '2021-01-27';
-                    $dup2->vDup = 61.55;
+                    $dup2->dVenc = '2021-03-03';
+                    $dup2->vDup = 1904.50;
                     $nfe->tagdup($dup2);
 
                     $dup3 = new stdClass();
                     $dup3->nDup = '003';
-                    $dup3->dVenc = '2021-02-20';
-                    $dup3->vDup = 1061.55;
+                    $dup3->dVenc = '2021-04-03';
+                    $dup3->vDup = 1904.50;
                     $nfe->tagdup($dup3);
                     
                     $dup4 = new stdClass();
@@ -432,7 +432,8 @@ class NfeService{
                     $dup5->vDup = '2333.35';
                     $nfe->tagdup($dup5);
                     //dd($datas);
-                    */
+                */
+                    
             }
                 //====================TAG PAGAMENTO===================
                 $pag = new stdClass();

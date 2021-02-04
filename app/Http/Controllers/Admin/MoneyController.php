@@ -320,7 +320,7 @@ class MoneyController extends Controller
         return view('admin.money.bancoEvent', compact('eventos', 'banco', 'bancos'));
     }
 
-    public function rendimentoVsDespesas($relatorio)
+    public function relatorios($relatorio)
     {
         if ($relatorio == 1) {
             // RENDIMENTOS VS DESPESAS
@@ -371,6 +371,92 @@ class MoneyController extends Controller
 
 
             return view('admin.money.rendimentoVsDespesas', compact('resultado', 'totalDespesa', 'totalGeral', 'primeiroDiaMes', 'ultimoDiaMes', 'resultadoRendimentos', 'tipoFavArray'));
+        } else if ($relatorio == 2) {
+            $rendimentos = [];
+            $despesas = [];
+            $firstDays = [];
+            $lastDays = [];
+            $totalRendDesp = [];
+            $mes = '';
+            for ($i = 0; $i < 12; $i++) {
+                switch ($i) {
+                    case 0:
+                        $mes = 'january';
+                        break;
+                    case 1:
+                        $mes = 'february';
+                        break;
+                    case 2:
+                        $mes = 'march';
+                        break;
+                    case 3:
+                        $mes = 'april';
+                        break;
+                    case 4:
+                        $mes = 'may';
+                        break;
+                    case 5:
+                        $mes = 'june';
+                        break;
+                    case 6:
+                        $mes = 'july';
+                        break;
+                    case 7:
+                        $mes = 'august';
+                        break;
+                    case 8:
+                        $mes = 'september';
+                        break;
+                    case 9:
+                        $mes = 'october';
+                        break;
+                    case 10:
+                        $mes = 'november';
+                        break;
+                    case 11:
+                        $mes = 'december';
+                        break;
+                }
+
+                $primeioDia = new \DateTime();
+                $primeioDia->modify('first day of ' . $mes);
+                $primeioDia = $primeioDia->format('Y-m-d');
+                array_push($firstDays, $primeioDia);
+
+                $ultimoDia = new \DateTime();
+                $ultimoDia->modify('last day of' . $mes);
+                $ultimoDia = $ultimoDia->format('Y-m-d');
+                array_push($lastDays, $ultimoDia);
+
+
+                //dd($firstDays);
+                $rendimento = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total'))
+                    ->where('e.situacao', 'like', 'off')
+                    ->where('e.tipoFav', 'like', 'cliente')
+                    ->where('e.start', '>=', $primeioDia)->where('e.start', '<=', $ultimoDia)
+                    ->get();
+
+                $despesa = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total'))
+                    ->where('e.situacao', 'like', 'off')
+                    ->where('e.tipoFav', 'not like', 'cliente')
+                    ->where('e.start', '>=', $primeioDia)->where('e.start', '<=', $ultimoDia)
+                    ->get();
+
+
+
+                //dd($resultado[0]->total);
+                array_push($rendimentos, $rendimento[0]->total);
+                array_push($despesas, $despesa[0]->total);
+                if ($i == 0)
+                    array_push($totalRendDesp, ($rendimentos[$i] - $despesas[$i]) + 632840.94);
+                else
+                    array_push($totalRendDesp, ($rendimentos[$i] - $despesas[$i]) + $totalRendDesp[$i - 1]);
+
+                if ($rendimentos[$i] == null && $despesas[$i] == null)
+                    $totalRendDesp[$i] = 0;
+            }
+            //dd($rendimentos, $despesas, $totalRendDesp, $aux);
+            return view('admin.money.rendimentoAoLongoDoTempo', compact('totalRendDesp'));
         }
     }
 
@@ -385,41 +471,40 @@ class MoneyController extends Controller
         ]);
         $totalDespesa = 0;
         $totalGeral = 0;
-        $loop = 1;
 
-        try{
-        //var_dump($dataForm);
-        $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))
-            ->where('e.situacao', 'like', $dataForm['situacao'])
-            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
-            ->groupBy('e.tipoFav')->get();
+        try {
+            //var_dump($dataForm);
+            $resultado = DB::table('evento as e')->select(DB::raw('sum(e.valor) as total,e.tipoFav as tipoFav'))
+                ->where('e.situacao', 'like', $dataForm['situacao'])
+                ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+                ->groupBy('e.tipoFav')->get();
 
-        for ($i = 1; $i < sizeof($resultado); $i++) {
-            $totalDespesa += $resultado[$i]->total;
-        }
+            for ($i = 1; $i < sizeof($resultado); $i++) {
+                $totalDespesa += $resultado[$i]->total;
+            }
 
-        $resultadoRendimentos = DB::table('evento as e')
-            ->join('banco as b', 'b.ID_banco', '=', 'e.ID_banco')
-            ->select('*')
-            ->where('e.situacao', 'like', $dataForm['situacao'])
-            ->where('e.tipoFav', 'like', 'cliente')
-            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
-            ->orderBy('e.start', 'desc')
-            ->get();
+            $resultadoRendimentos = DB::table('evento as e')
+                ->join('banco as b', 'b.ID_banco', '=', 'e.ID_banco')
+                ->select('*')
+                ->where('e.situacao', 'like', $dataForm['situacao'])
+                ->where('e.tipoFav', 'like', 'cliente')
+                ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+                ->orderBy('e.start', 'desc')
+                ->get();
 
 
-        $tipoFavDespesa =  DB::table('evento as e')
-            ->select('e.tipoFav')
-            ->where('e.situacao', 'like', $dataForm['situacao'])
-            ->where('e.tipoFav', 'not like', 'cliente')
-            ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
-            ->groupBy('e.tipoFav')
-            ->get();
+            $tipoFavDespesa =  DB::table('evento as e')
+                ->select('e.tipoFav')
+                ->where('e.situacao', 'like', $dataForm['situacao'])
+                ->where('e.tipoFav', 'not like', 'cliente')
+                ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
+                ->groupBy('e.tipoFav')
+                ->get();
 
-        if (sizeOf($tipoFavDespesa) == 0) {
-            $resultadoDespesas = [];
-        }
-        $tipoFavArray = [];
+            if (sizeOf($tipoFavDespesa) == 0) {
+                $resultadoDespesas = [];
+            }
+            $tipoFavArray = [];
 
 
             foreach ($tipoFavDespesa as $tfd) {
@@ -427,20 +512,19 @@ class MoneyController extends Controller
                     ->join('banco as b', 'b.ID_banco', '=', 'e.ID_banco')
                     ->select('*')
                     ->where('e.situacao', 'like', $dataForm['situacao'])
-                    ->where('e.tipoFav', 'like', 'fornecedor')
+                    ->where('e.tipoFav', 'like', $tfd->tipoFav)
                     ->where('e.start', '>=', $dataForm['inicio'])->where('e.start', '<=', $dataForm['fim'])
                     ->orderBy('e.start', 'desc')
                     ->get();
                 array_push($tipoFavArray, $resultadoDespesas);
             }
-        
-        $tabela01 = view('admin.money.extra.tabelaRVD01', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoRendimentos'))->render();
-        $tabela02 = view('admin.money.extra.tabelaRVD02', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoDespesas', 'tipoFavArray'))->render();
-        $tabela03 = view('admin.money.extra.tabelaRVD03', compact('resultado', 'totalDespesa', 'totalGeral'))->render();
 
-        return response()->json(compact('tabela01', 'tabela02', 'tabela03'));
-        }
-        catch(\Exception $e){
+            $tabela01 = view('admin.money.extra.tabelaRVD01', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoRendimentos'))->render();
+            $tabela02 = view('admin.money.extra.tabelaRVD02', compact('resultado', 'totalDespesa', 'totalGeral', 'resultadoDespesas', 'tipoFavArray'))->render();
+            $tabela03 = view('admin.money.extra.tabelaRVD03', compact('resultado', 'totalDespesa', 'totalGeral'))->render();
+
+            return response()->json(compact('tabela01', 'tabela02', 'tabela03'));
+        } catch (\Exception $e) {
             return response()->json(['message' => 'error']);
         }
     }

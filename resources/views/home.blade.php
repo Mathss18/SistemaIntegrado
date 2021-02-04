@@ -30,8 +30,19 @@
         <div class="card-body">
             <a class="btn btn-dark" href="{{route('money.index')}}">Acessar</a>
         </div>
-        
+
     </div>
+</div>
+@elseif(Auth::user()->funcao == 'Producao')
+<div class="content">
+
+    @if($aproveitamento <= 100.0 && $aproveitamento>= 80.0)
+        <p style="font-size: 18px;">Seu aproveitamento neste mês é de <b style="color: green;">{{$aproveitamento}} %</b></p>
+    @elseif($aproveitamento <= 79.0 && $aproveitamento>= 50.0)
+        <p style="font-size: 18px;">Seu aproveitamento neste mês é de <b style="color: yellow;">{{$aproveitamento}} %</b></p>
+    @else
+        <p style="font-size: 18px;">Seu aproveitamento neste mês é de <b style="color: red;">{{$aproveitamento}} %</b></p>
+    @endif
 </div>
 @endif
 @stop
