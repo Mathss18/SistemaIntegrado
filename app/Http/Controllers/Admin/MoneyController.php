@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\banco;
+use App\Models\cliente;
 use App\Models\evento;
+use App\Models\fornecedor;
+use App\Models\Funcionario;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
@@ -242,8 +245,56 @@ class MoneyController extends Controller
 
         $event = new evento;
         $event->fill($request->all());
-        file_put_contents('varDump.txt', $event);
+        file_put_contents('varDump.json', $event);
         $banco = banco::where('ID_banco', $event->ID_banco)->first();
+
+        
+        if($event->tipoFav == 'cliente' && $event->ID_cliente == null){
+            $cliente = new cliente();
+            $cliente->nome = $event->favorecido;
+            $cliente->ibge = 'money';
+            $cliente->tipo = 'C';
+            $cliente->mostrar = 'nao';
+            $cliente->save();
+        }
+        else if($event->tipoFav == 'transportadora' && $event->ID_transportadora == null){
+            $transp = new cliente();
+            $transp->nome = $event->favorecido;
+            $transp->ibge = 'money';
+            $transp->tipo = 'T';
+            $transp->mostrar = 'nao';
+            $transp->save();
+        }
+        else if($event->tipoFav == 'funcionario' && $event->ID_funcionario == null){
+            $func = new Funcionario();
+            $func->nome = $event->favorecido;
+            $func->money = 'sim';
+            $func->funcPedido = 'nao';
+            $func->perfil = 'Producao';
+            $func->save();
+        }
+        else if($event->tipoFav == 'fornecedor' && $event->ID_fornecedor == null){
+            $fornecedor = new fornecedor();
+            $fornecedor->nome = $event->favorecido;
+            $fornecedor->inscricao_estadual = 'money';
+            $fornecedor->firma = 'MF';
+            $fornecedor->save();
+        }
+        else if($event->tipoFav == 'imposto' && $event->ID_fornecedor == null){
+            $fornecedor = new fornecedor();
+            $fornecedor->nome = $event->favorecido;
+            $fornecedor->inscricao_estadual = 'money';
+            $fornecedor->firma = 'MF';
+            $fornecedor->save();
+        }
+        else if($event->tipoFav == 'investimento' && $event->ID_fornecedor == null){
+            $fornecedor = new fornecedor();
+            $fornecedor->nome = $event->favorecido;
+            $fornecedor->inscricao_estadual = 'money';
+            $fornecedor->firma = 'MF';
+            $fornecedor->save();
+        }
+        
 
         //VERIFICA O TIPO DE FAVORECIDO E SE O EVENDO É CRIADO FECHADO OU ABERTO
         if ($event->situacao == 'off' && $event->tipoFav == 'cliente') {

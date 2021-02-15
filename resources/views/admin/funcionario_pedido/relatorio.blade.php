@@ -18,8 +18,28 @@
 <!------ Inclui arquivos JS *no fim*---------->
 
 @section('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
+<script type="text/javascript" charset="UTF-8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json"></script>
+<script>
+    $(document).ready(function() {
+        $('.tableDT').DataTable({
+            "language": {
+                url: '../../js/traducao.json',
+                decimal: ",",
+            },
+            paging: false
+        });
+    });
+</script>
+<script>
+    $(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+</script>
 @stop
 
 
@@ -47,7 +67,7 @@
     @if($pedidosFechadosAdiantados->count() > 0)
     <div class="row">
         <div class="card-body">
-            <table id="tableDT" class="table table-striped table-bordered" style="width:100%">
+            <table class="tableDT table table-striped table-bordered" style="width:100%">
                 <h5 style="color:green;">Pedidos Adiantados ou na Data: {{$pedidosFechadosAdiantados->count()}}<h5>
                         <thead>
                             <tr>
@@ -90,7 +110,7 @@
         @if($pedidosAbertosAtrasados->count() > 0)
         <div class="row">
             <div class="card-body">
-                <table id="tableDT" class="table table-striped table-bordered" style="width:100%">
+                <table class="tableDT table table-striped table-bordered" style="width:100%">
                     <h5 style="color:red;">Pedidos Atrasados - Abertos: {{$pedidosAbertosAtrasados->count()}}<h5>
                             <thead>
                                 <tr>
@@ -130,7 +150,7 @@
         @if($pedidosFechadosAtrasados->count() > 0)
         <div class="row">
             <div class="card-body">
-                <table id="tableDT" class="table table-striped table-bordered" style="width:100%">
+                <table class="tableDT table table-striped table-bordered" style="width:100%">
                     <h5 style="color:orange;">Pedidos Atrasados - Fechados: {{$pedidosFechadosAtrasados->count()}}<h5>
                             <thead>
                                 <tr>

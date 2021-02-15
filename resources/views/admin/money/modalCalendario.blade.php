@@ -52,7 +52,7 @@
               <div class="form-group row">
                 <label for="fornecedor" class="col-sm-2 col-form-label">Fornecedor</label>
                 <div class="col-sm-10">
-                  <input required style="display:none" id="ID_fornecedor" type="text" class="typeahead form-control " style="margin:0px auto;width:0px;" disabled>
+                  <input required style="display:none" id="ID_fornecedor" type="text" class="forneTable typeahead form-control " style="margin:0px auto;width:0px;" disabled>
                   <input required class="typeahead form-control" id="ttexto1" style="margin:0px auto;width:383px;" type="text" disabled>
                 </div>
               </div>
@@ -83,7 +83,7 @@
               <div class="form-group row">
                 <label for="imposto" class="col-sm-2 col-form-label">Imposto</label>
                 <div class="col-sm-10">
-                  <input required style="display:none" id="ID_imposto" type="text" class="typeahead form-control " style="margin:0px auto;width:0px;" disabled>
+                  <input required style="display:none" id="ID_imposto" type="text" class="forneTable typeahead form-control " style="margin:0px auto;width:0px;" disabled>
                   <input required class="typeahead form-control" id="ttexto4" style="margin:0px auto;width:383px;" type="text" disabled>
                 </div>
               </div>
@@ -93,7 +93,7 @@
               <div class="form-group row">
                 <label for="ID_investimento" class="col-sm-2 col-form-label">Invest.</label>
                 <div class="col-sm-10">
-                  <input required style="display:none" id="ID_investimento" type="text" class="typeahead form-control " style="margin:0px auto;width:0px;" disabled>
+                  <input required style="display:none" id="ID_investimento" type="text" class="forneTable typeahead form-control " style="margin:0px auto;width:0px;" disabled>
                   <input required class="typeahead form-control" id="ttexto5" style="margin:0px auto;width:383px;" type="text" disabled>
                 </div>
               </div>

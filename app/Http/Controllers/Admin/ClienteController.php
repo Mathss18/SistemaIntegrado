@@ -15,7 +15,7 @@ class ClienteController extends Controller
     {
         $titulo = 'Gestão de Clientes e Transportadoras';
         $clientes = new Cliente();
-        $clientes = $clientes->all();
+        $clientes = DB::table('cliente')->select('*')->where('mostrar','like','sim')->get();
         return view('admin.cliente.index',compact('titulo','clientes'));
     }
 
@@ -36,7 +36,7 @@ class ClienteController extends Controller
             '_method',
             'submit'
         ]);
-
+        $dataFormCli['mostrar'] = 'sim';
         
         $cliente->create($dataFormCli);
         return redirect()->route('cliente.index')->with('success', 'Cadastro Realizado Com Sucesso!');

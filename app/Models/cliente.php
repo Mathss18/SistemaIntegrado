@@ -14,6 +14,6 @@ class cliente extends Model
 
     protected $fillable = [
         'nome','cpf_cnpj','email','telefone','telefone2','inscricao_estadual','logradouro',
-        'numero','cidade','uf','bairro','contato','cep','tipo','ibge','ID_transp'
+        'numero','cidade','uf','bairro','contato','cep','tipo','ibge','ID_transp','mostrar'
     ];
 }

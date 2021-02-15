@@ -393,7 +393,7 @@ class NfeServiceMF
             //dd($fat->vOrig,$fat->vDesc, $fat->vOrig-$fat->vDesc);
             $respFat = $nfe->tagfat($fat);
             //====================TAG DUPLICATA===================   
-
+            
 
             $diff = number_format(($nfe3['precoFinal'] + $nfe1['valorFrete']) / $nfe1['numParc'], 2, '.', '');
 
@@ -414,24 +414,25 @@ class NfeServiceMF
                 $respDup = $nfe->tagdup($dup);
             }
 
+            
             // VALORES DISTINTOS DE DUPLICATA (MANUAL)
             /*
                         $dup1 = new stdClass();
                         $dup1->nDup = '001';
-                        $dup1->dVenc = '2021-01-05';
-                        $dup1->vDup = '930.00';
+                        $dup1->dVenc = '2021-02-11';
+                        $dup1->vDup = '217.00';
                         $nfe->tagdup($dup1);
                     
                         $dup2 = new stdClass();
                         $dup2->nDup = '002';
-                        $dup2->dVenc = '2021-02-05';
-                        $dup2->vDup = '942.12';
+                        $dup2->dVenc = '2021-02-11';
+                        $dup2->vDup = '216.46';
                         $nfe->tagdup($dup2);
 
                         $dup3 = new stdClass();
                         $dup3->nDup = '003';
-                        $dup3->dVenc = '2021-03-05';
-                        $dup3->vDup = '942.13';
+                        $dup3->dVenc = '2021-03-11';
+                        $dup3->vDup = '216.46';
                         $nfe->tagdup($dup3);
                         //dd($datas);
             */

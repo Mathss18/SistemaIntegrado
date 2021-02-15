@@ -9,7 +9,7 @@ var fornecedores = new Bloodhound({
 });
 fornecedores.initialize();
 
-$("#ttexto1").typeahead({
+$("#ttexto5").typeahead({
     hint: true,
     highlight: true,
     minLength: 1
@@ -21,6 +21,6 @@ $("#ttexto1").typeahead({
 }).bind("typeahead:selected", function(obj, datum, name) {
     console.log(datum);
     $(this).data("seletectedId", datum.value);
-    $('#ID_fornecedor').val(datum.value);
+    $('#ID_investimento').val(datum.value);
     console.log(datum.value);
 });

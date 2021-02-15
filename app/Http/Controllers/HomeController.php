@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use PhpParser\Node\Expr\FuncCall;
-use Redirect;
+use DateTime;
 use Session;
 use App\Models\cliente;
 use App\Models\funcionario_pedido;
@@ -31,19 +31,27 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $aproveitamento = $this->relatorio();
-
-        return view('home', compact('aproveitamento'));
-    }
-
-    public function relatorio()
-    {
-
         $dataInicio = date('Y-m-01');
         $dataFim = date('Y-m-t');
+
+        $dataInicioLastMonth = new DateTime("first day of last month");
+        $dataFimLastMonth = new DateTime("last day of last month");
+        $dataInicioLastMonth->format('Y-m-d'); // 2012-02-01
+        $dataFimLastMonth->format('Y-m-d'); // 2012-02-29
+
+        $aproveitamento = $this->relatorio($dataInicio, $dataFim);
+        $aproveitamentoLastMonth = $this->relatorio($dataInicioLastMonth, $dataFimLastMonth);
+
+        return view('home', compact('aproveitamento','aproveitamentoLastMonth'));
+    }
+
+    public function relatorio($dataInicio, $dataFim)
+    {
+
+
         $nomeFuncionario = Auth::user()->name;
 
-        
+
         $hoje = date('Y-m-d');
 
 
@@ -66,6 +74,5 @@ class HomeController extends Controller
 
 
         return $aproveitamento;
-
     }
 }
