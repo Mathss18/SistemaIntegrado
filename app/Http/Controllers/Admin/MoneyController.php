@@ -248,53 +248,48 @@ class MoneyController extends Controller
         file_put_contents('varDump.json', $event);
         $banco = banco::where('ID_banco', $event->ID_banco)->first();
 
-        
-        if($event->tipoFav == 'cliente' && $event->ID_cliente == null){
+
+        if ($event->tipoFav == 'cliente' && $event->ID_cliente == null) {
             $cliente = new cliente();
             $cliente->nome = $event->favorecido;
             $cliente->ibge = 'money';
             $cliente->tipo = 'C';
             $cliente->mostrar = 'nao';
             $cliente->save();
-        }
-        else if($event->tipoFav == 'transportadora' && $event->ID_transportadora == null){
+        } else if ($event->tipoFav == 'transportadora' && $event->ID_transportadora == null) {
             $transp = new cliente();
             $transp->nome = $event->favorecido;
             $transp->ibge = 'money';
             $transp->tipo = 'T';
             $transp->mostrar = 'nao';
             $transp->save();
-        }
-        else if($event->tipoFav == 'funcionario' && $event->ID_funcionario == null){
+        } else if ($event->tipoFav == 'funcionario' && $event->ID_funcionario == null) {
             $func = new Funcionario();
             $func->nome = $event->favorecido;
             $func->money = 'sim';
             $func->funcPedido = 'nao';
             $func->perfil = 'Producao';
             $func->save();
-        }
-        else if($event->tipoFav == 'fornecedor' && $event->ID_fornecedor == null){
+        } else if ($event->tipoFav == 'fornecedor' && $event->ID_fornecedor == null) {
+            $fornecedor = new fornecedor();
+            $fornecedor->nome = $event->favorecido;
+            $fornecedor->inscricao_estadual = 'money';
+            $fornecedor->firma = 'MF';
+            $fornecedor->save();
+        } else if ($event->tipoFav == 'imposto' && $event->ID_fornecedor == null) {
+            $fornecedor = new fornecedor();
+            $fornecedor->nome = $event->favorecido;
+            $fornecedor->inscricao_estadual = 'money';
+            $fornecedor->firma = 'MF';
+            $fornecedor->save();
+        } else if ($event->tipoFav == 'investimento' && $event->ID_fornecedor == null) {
             $fornecedor = new fornecedor();
             $fornecedor->nome = $event->favorecido;
             $fornecedor->inscricao_estadual = 'money';
             $fornecedor->firma = 'MF';
             $fornecedor->save();
         }
-        else if($event->tipoFav == 'imposto' && $event->ID_fornecedor == null){
-            $fornecedor = new fornecedor();
-            $fornecedor->nome = $event->favorecido;
-            $fornecedor->inscricao_estadual = 'money';
-            $fornecedor->firma = 'MF';
-            $fornecedor->save();
-        }
-        else if($event->tipoFav == 'investimento' && $event->ID_fornecedor == null){
-            $fornecedor = new fornecedor();
-            $fornecedor->nome = $event->favorecido;
-            $fornecedor->inscricao_estadual = 'money';
-            $fornecedor->firma = 'MF';
-            $fornecedor->save();
-        }
-        
+
 
         //VERIFICA O TIPO DE FAVORECIDO E SE O EVENDO É CRIADO FECHADO OU ABERTO
         if ($event->situacao == 'off' && $event->tipoFav == 'cliente') {
@@ -508,6 +503,46 @@ class MoneyController extends Controller
             }
             //dd($rendimentos, $despesas, $totalRendDesp, $aux);
             return view('admin.money.rendimentoAoLongoDoTempo', compact('totalRendDesp'));
+        } else if ($relatorio == 3) {
+
+            $nomeFuncionario = Auth::user()->name;
+            $aproveitamentos = [];
+
+            $hoje = date('Y-m-d');
+            $dataInicio = date('Y-m-01');
+            $dataFim = date('Y-m-t');
+
+            $funcionarios = DB::table('funcionario as f')->select('*')
+                ->where('f.funcPedido', 'sim')
+                ->orderBy('nome', 'asc')
+                ->get();
+
+            //dd($funcionarios);
+
+            for ($i = 0; $i < count($funcionarios); $i++) {
+
+                $pedidosAbertosAtrasados = DB::table('funcionario_pedido as fp')->join('funcionario as f', 'f.ID_funcionario', '=', 'fp.ID_funcionario')->join('pedido as p', 'p.ID_pedido', '=', 'fp.ID_pedido')->join('cliente as c', 'c.ID_cliente', '=', 'fp.ID_cliente')->select('fp.ID_funcionario_pedido', 'p.OF', 'p.codigo', 'p.data_pedido', 'p.data_entrega', 'p.quantidade', 'p.tipo', 'p.ID_cliente', 'fp.data_controle', 'fp.data_baixa', 'c.nome')->where('f.nome', '=', $funcionarios[$i]->nome)->where('fp.data_controle', '>=', $dataInicio)->where('fp.data_controle', '<=', $dataFim)->where('p.data_entrega', '<=', $hoje)->where('fp.status', '=', 'Aberto')->orderBy('fp.ID_funcionario_pedido', 'desc')->get();
+                $pedidosFechadosAtrasados = DB::table('funcionario_pedido as fp')->join('funcionario as f', 'f.ID_funcionario', '=', 'fp.ID_funcionario')->join('pedido as p', 'p.ID_pedido', '=', 'fp.ID_pedido')->join('cliente as c', 'c.ID_cliente', '=', 'fp.ID_cliente')->select('fp.ID_funcionario_pedido', 'p.OF', 'p.codigo', 'p.data_pedido', 'p.data_entrega', 'p.quantidade', 'p.tipo', 'p.ID_cliente', 'fp.data_controle', 'fp.data_baixa', 'c.nome')->where('f.nome', '=', $funcionarios[$i]->nome)->where('fp.data_controle', '>=', $dataInicio)->where('fp.data_controle', '<=', $dataFim)->whereRaw('fp.data_baixa > p.data_entrega')->where('fp.status', '=', 'Fechado')->orderBy('fp.ID_funcionario_pedido', 'desc')->get();
+                $pedidosFechadosAdiantados = DB::table('funcionario_pedido as fp')->join('funcionario as f', 'f.ID_funcionario', '=', 'fp.ID_funcionario')->join('pedido as p', 'p.ID_pedido', '=', 'fp.ID_pedido')->join('cliente as c', 'c.ID_cliente', '=', 'fp.ID_cliente')->select('fp.ID_funcionario_pedido', 'p.OF', 'p.codigo', 'p.data_pedido', 'p.data_entrega', 'p.quantidade', 'p.tipo', 'p.ID_cliente', 'fp.data_controle', 'fp.data_baixa', 'c.nome')->where('f.nome', '=', $funcionarios[$i]->nome)->where('fp.data_controle', '>=', $dataInicio)->where('fp.data_controle', '<=', $dataFim)->whereRaw('fp.data_baixa <= p.data_entrega')->where('fp.status', '=', 'Fechado')->orderBy('fp.ID_funcionario_pedido', 'desc')->get();
+
+                $porCentoPaa = $pedidosAbertosAtrasados->count();
+
+                $porCentoPfa = $pedidosFechadosAtrasados->count();
+
+                $porCentoPfad = $pedidosFechadosAdiantados->count();
+
+                $totalPorCento = $porCentoPaa + $porCentoPfa + $porCentoPfad;
+                if ($totalPorCento == 0) {
+                    $totalPorCento = 1;
+                }
+                $aproveitamento = (($totalPorCento - $porCentoPaa - $porCentoPfa) * 100) / $totalPorCento;
+                $aproveitamento = number_format($aproveitamento, 2);
+                array_push($aproveitamentos, $aproveitamento);
+            }
+
+            //dd($funcionarios);
+
+            return view('admin.money.relatorioProducao', compact('aproveitamentos','funcionarios'));
         }
     }
 

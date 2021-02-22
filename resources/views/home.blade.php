@@ -37,14 +37,14 @@
 <div class="content">
     @if($aproveitamento <= 100.0 && $aproveitamento>= 80.0)
         <p style="font-size: 18px;">Seu aproveitamento neste mês é de <b style="color: green;">{{$aproveitamento}} %</b></p>
-    @elseif($aproveitamento <= 79.0 && $aproveitamento>= 50.0)
+    @elseif($aproveitamento <= 79.9 && $aproveitamento>= 50.0)
         <p style="font-size: 18px;">Seu aproveitamento neste mês é de <b style="color: orange;">{{$aproveitamento}} %</b></p>
     @else
         <p style="font-size: 18px;">Seu aproveitamento neste mês é de <b style="color: red;">{{$aproveitamento}} %</b></p>
     @endif
     @if($aproveitamentoLastMonth <= 100.0 && $aproveitamentoLastMonth>= 80.0)
         <p style="font-size: 18px;">Seu aproveitamento no mês passado foi de <b style="color: green;">{{$aproveitamentoLastMonth}} %</b></p>
-    @elseif($aproveitamentoLastMonth <= 79.0 && $aproveitamentoLastMonth>= 50.0)
+    @elseif($aproveitamentoLastMonth <= 79.9 && $aproveitamentoLastMonth>= 50.0)
         <p style="font-size: 18px;">Seu aproveitamento no mês passado foi de <b style="color: orange;">{{$aproveitamentoLastMonth}} %</b></p>
     @else
         <p style="font-size: 18px;">Seu aproveitamento no mês passado foi de <b style="color: red;">{{$aproveitamentoLastMonth}} %</b></p>

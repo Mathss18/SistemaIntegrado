@@ -413,30 +413,25 @@ class NfeServiceMF
                 }
                 $respDup = $nfe->tagdup($dup);
             }
-
             
-            // VALORES DISTINTOS DE DUPLICATA (MANUAL)
             /*
+            // VALORES DISTINTOS DE DUPLICATA (MANUAL)
+            
                         $dup1 = new stdClass();
                         $dup1->nDup = '001';
-                        $dup1->dVenc = '2021-02-11';
-                        $dup1->vDup = '217.00';
+                        $dup1->dVenc = '2021-02-17';
+                        $dup1->vDup = '12590.08';
                         $nfe->tagdup($dup1);
                     
                         $dup2 = new stdClass();
                         $dup2->nDup = '002';
-                        $dup2->dVenc = '2021-02-11';
-                        $dup2->vDup = '216.46';
+                        $dup2->dVenc = '2021-03-04';
+                        $dup2->vDup = '14527.68';
                         $nfe->tagdup($dup2);
-
-                        $dup3 = new stdClass();
-                        $dup3->nDup = '003';
-                        $dup3->dVenc = '2021-03-11';
-                        $dup3->vDup = '216.46';
-                        $nfe->tagdup($dup3);
-                        //dd($datas);
             */
         }
+        
+
         //====================TAG PAGAMENTO===================
         if ($nfe1['natOp'] == 5124) {
             $pag = new stdClass();
