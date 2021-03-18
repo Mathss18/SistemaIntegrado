@@ -51,7 +51,7 @@
                                 <td><input type="hidden" name="codFabriProd[]" value='{{$produto->cod_fabricacao}}' type="text">{{$produto->cod_fabricacao}}</td>
                                 <td><input type="hidden" name="descricaoProd[]" value ='{{$produto->descricao}}' type="text">{{$produto->descricao}}</td>
                                 <td><input class="form-control" step='0.01' type="number" name="quantidade[]" value ='{{$quantidades[$loop->index]}}' class="qtde" type="text"></td>
-                                <td><input class="form-control" step='0.0001' type="number" name="precoProd[]" value ='{{$produto->preco_venda}}' class="preco" type="text"></td>
+                                <td><input class="form-control" step='0.00001' type="number" name="precoProd[]" value ='{{$produto->preco_venda}}' class="preco" type="text"></td>
                                 <td style="display: none;" ><input type="hidden" name="ncm[]" value ='{{$produto->ncm}}' type="text">{{$produto->ncm}}</td>
                                 <td><a onclick="deletaRow(this);" href="#"><i class="fas fa-trash"></i></a></td>
                             </tr>

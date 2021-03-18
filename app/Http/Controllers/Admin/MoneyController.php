@@ -540,9 +540,82 @@ class MoneyController extends Controller
                 array_push($aproveitamentos, $aproveitamento);
             }
 
-            //dd($funcionarios);
 
-            return view('admin.money.relatorioProducao', compact('aproveitamentos','funcionarios'));
+
+            return view('admin.money.relatorioProducao', compact('aproveitamentos', 'funcionarios'));
+        } else if ($relatorio == 4) {
+
+            //Pegando as informações do form e jogando em váriaveis 
+            $data_inico = date('Y-m-01');
+            $data_fim = date('Y-m-t');
+            //$banho = 'ARAME';
+
+            $totalGasto = 0;
+            $totalAdquiridoFM = 0;
+            $totalAdquiridoMF = 0;
+            $relatorioMateriais = [];
+            $totaisGastos = [];
+
+            //Criando a Query para fazer o relátorio
+            $tipos = DB::table('saida_produto as e')->select('e.banho')->groupBy('e.banho')->orderBy('e.banho')->get();
+
+            $dados2 = DB::table('entrada_produto as e')
+                ->join('produto_fornecedor as pf', 'e.ID_produto', '=', 'pf.ID_produto_fornecedor')
+                ->select('pf.descricao', DB::raw('sum(e.qtde) as quantidade_adquirida'), 'e.valor_unitario', 'e.data_entrada')
+                ->where('e.data_entrada', '>=', $data_inico)->where('e.data_entrada', '<=', $data_fim)
+                ->where('pf.grupo', 'LIKE', 'Arame')
+                ->where('pf.firma', 'LIKE', 'FM')
+                ->groupBy('pf.descricao')
+                ->orderBy('pf.descricao', 'ASC')
+                ->get();
+
+            $dados3 = DB::table('entrada_produto as e')
+                ->join('produto_fornecedor as pf', 'e.ID_produto', '=', 'pf.ID_produto_fornecedor')
+                ->select('pf.descricao', DB::raw('sum(e.qtde) as quantidade_adquirida'), 'e.valor_unitario', 'e.data_entrada')
+                ->where('e.data_entrada', '>=', $data_inico)->where('e.data_entrada', '<=', $data_fim)
+                ->where('pf.grupo', 'LIKE', 'Produto_Quimico')
+                ->where('pf.firma', 'LIKE', 'MF')
+                ->groupBy('pf.descricao')
+                ->orderBy('pf.descricao', 'ASC')
+                ->get();
+
+            foreach ($dados2 as $d) {
+                $totalAdquiridoFM += ($d->quantidade_adquirida * $d->valor_unitario);
+            }
+            foreach ($dados3 as $d) {
+                $totalAdquiridoMF += ($d->quantidade_adquirida * $d->valor_unitario);
+            }
+
+
+            //dd($totalAdquiridoFM);
+            foreach ($tipos as $tipo) {
+                $dados = DB::table('saida_produto as e')->join('produto_fornecedor as p', 'p.ID_produto_fornecedor', '=', 'e.ID_produto')
+                    ->join('estoque as a', 'a.ID_produtoForne', '=', 'p.ID_produto_fornecedor')
+                    ->select('p.descricao', DB::raw('sum(e.qtde) as quantidade_gasta'), 'a.valor_unitario', 'e.data_saida')
+                    ->where('data_saida', '>=', $data_inico)->where('data_saida', '<=', $data_fim)
+                    ->where('e.banho', 'LIKE', $tipo->banho)->groupBy('p.descricao')
+                    ->orderBy('p.descricao', 'ASC')
+                    ->get();
+                array_push($relatorioMateriais, $dados);
+            }
+
+
+
+            foreach ($relatorioMateriais as $rm) {
+                foreach ($rm as $r) {
+                    $totalGasto = $totalGasto + $r->quantidade_gasta * $r->valor_unitario;
+                }
+
+                array_push($totaisGastos, $totalGasto);
+                $totalGasto = 0;
+            }
+
+            //dd($dados);
+
+
+            $totalGasto = number_format($totalGasto, 2, ',', '.');
+
+            return view('admin.money.relatorioMaterial', compact('tipos', 'totaisGastos', 'dados2', 'totalAdquiridoFM', 'totalAdquiridoMF'));
         }
     }
 
@@ -613,5 +686,98 @@ class MoneyController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'error']);
         }
+    }
+
+    public function gerarRelatorio04(Request $request)
+    {
+        $dataForm = $request->except([
+            '_token',
+            '_method',
+            'submit'
+        ]);
+
+        //Pegando as informações do form e jogando em váriaveis 
+        $data_inico = $dataForm['inicio'];
+        $data_fim = $dataForm['fim'];
+        //$banho = 'ARAME';
+
+        $totalGasto = 0;
+        $totalAdquiridoFM = 0;
+        $totalAdquiridoMF = 0;
+        $relatorioMateriais = [];
+        $totaisGastos = [];
+
+        try {
+
+            //Criando a Query para fazer o relátorio
+            $tipos = DB::table('saida_produto as e')->select('e.banho')->groupBy('e.banho')->orderBy('e.banho')->get();
+
+            $dados2 = DB::table('entrada_produto as e')
+                ->join('produto_fornecedor as pf', 'e.ID_produto', '=', 'pf.ID_produto_fornecedor')
+                ->select('pf.descricao', DB::raw('sum(e.qtde) as quantidade_adquirida'), 'e.valor_unitario', 'e.data_entrada')
+                ->where('e.data_entrada', '>=', $data_inico)->where('e.data_entrada', '<=', $data_fim)
+                ->where('pf.grupo', 'LIKE', 'Arame')
+                ->where('pf.firma', 'LIKE', 'FM')
+                ->groupBy('pf.descricao')
+                ->orderBy('pf.descricao', 'ASC')
+                ->get();
+
+            $dados3 = DB::table('entrada_produto as e')
+                ->join('produto_fornecedor as pf', 'e.ID_produto', '=', 'pf.ID_produto_fornecedor')
+                ->select('pf.descricao', DB::raw('sum(e.qtde) as quantidade_adquirida'), 'e.valor_unitario', 'e.data_entrada')
+                ->where('e.data_entrada', '>=', $data_inico)->where('e.data_entrada', '<=', $data_fim)
+                ->where('pf.grupo', 'LIKE', 'Produto_Quimico')
+                ->where('pf.firma', 'LIKE', 'MF')
+                ->groupBy('pf.descricao')
+                ->orderBy('pf.descricao', 'ASC')
+                ->get();
+
+            foreach ($dados2 as $d) {
+                $totalAdquiridoFM += ($d->quantidade_adquirida * $d->valor_unitario);
+            }
+            foreach ($dados3 as $d) {
+                $totalAdquiridoMF += ($d->quantidade_adquirida * $d->valor_unitario);
+            }
+
+
+            //dd($totalAdquiridoFM);
+            foreach ($tipos as $tipo) {
+                $dados = DB::table('saida_produto as e')->join('produto_fornecedor as p', 'p.ID_produto_fornecedor', '=', 'e.ID_produto')
+                    ->join('estoque as a', 'a.ID_produtoForne', '=', 'p.ID_produto_fornecedor')
+                    ->select('p.descricao', DB::raw('sum(e.qtde) as quantidade_gasta'), 'a.valor_unitario', 'e.data_saida')
+                    ->where('data_saida', '>=', $data_inico)->where('data_saida', '<=', $data_fim)
+                    ->where('e.banho', 'LIKE', $tipo->banho)->groupBy('p.descricao')
+                    ->orderBy('p.descricao', 'ASC')
+                    ->get();
+                array_push($relatorioMateriais, $dados);
+            }
+
+
+
+            foreach ($relatorioMateriais as $rm) {
+                foreach ($rm as $r) {
+                    $totalGasto = $totalGasto + $r->quantidade_gasta * $r->valor_unitario;
+                }
+
+                array_push($totaisGastos, $totalGasto);
+                $totalGasto = 0;
+            }
+
+            //dd($dados);
+
+
+            $totalGasto = number_format($totalGasto, 2, ',', '.');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        //return view('admin.money.relatorioMaterial', compact('tipos', 'totaisGastos', 'dados2', 'totalAdquiridoFM', 'totalAdquiridoMF'));
+       
+        // LISTA DE RESULTADOS DE FLEX MOL
+        $lista01 = view('admin.money.extra.listaRM01',  compact('tipos', 'totaisGastos', 'dados2', 'totalAdquiridoFM', 'totalAdquiridoMF'))->render();
+        // LISTA DE RESULTADOS DE METAL FLEX
+        $lista02 = view('admin.money.extra.listaRM02',  compact('tipos', 'totaisGastos', 'dados2', 'totalAdquiridoFM', 'totalAdquiridoMF'))->render();
+
+        return response()->json(compact('lista01', 'lista02'));
     }
 }

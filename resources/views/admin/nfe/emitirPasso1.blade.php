@@ -96,55 +96,13 @@
                         <option value="5124">5124 - INDUSTRIALIZAÇÃO</option>
                         <option value="5901">5901 - REMESSA P/INDUSTRIALIZAÇÃO POR ENCOMENDA</option>
                         <option value="6910">6910 - REMESSA EM BONIFICAÇÃO, DOAÇÃO OU BRINDE</option>
+                        <option value="5202 ">5202 - DEVOLUÇÃO DE COMPRA PARA COMERCIALIZAÇÃO</option>
 
                         <option value="2209">2209 - DEVOLUCAO DE MERCADORIA</option>
                         <option value="1201">1201 - NOTA ENTRADA</option>
                         <option value="5903">5903 - RETORNO DE MERC RECEBIDA IND NAO APLIC REFER PROCESSO</option>
                         <option value="5124">5124 - INDUSTRIALIZACAO</option>
-                        <option value="5916">5916-RETORNO DE MERC OU BEM RECEBIDO P CONSERTO OU REPARO</option>
-                        <option value="1551">COMPRA DE BEM P O ATIVO IMOBILIZADO</option>
-                        <option value="1101">COMPRA PARA INDUSTRIALIZACAO OU PROD RURAL</option>
-                        <option value="1410">DEV DE VENDA DE PROD DO ESTAB SUJ AO REG SUBT TRIB</option>
-                        <option value="5411">DEVOLUCAO DE COMPRA P COM EM OP COM MERC SUJ AO REG SUBST TR</option>
-                        <option value="5410">DEVOLUCAO DE COMPRA P IND DE MERC SUJ A SP</option>
-                        <option value="1202">DEVOLUCAO DE VENDA DE MERC ADQ OU REC DE TERC</option>
-                        <option value="2201">DEVOLUCAO DE VENDA DE PRODUCAO DO ESTABELECIMENTO</option>
-                        <option value="5202">DEVOLUÇÃO DE COMPRA DE MERCADORIA</option>
-                        <option value="6202">DEVOLUÇÃO DE COMPRAS FORA DO ESTADO (SAÍDA).</option>
-                        <option value="5918">DEVOLUÇÃO DE MERC. RECEBIDA EM CONSIGNAÇÃO</option>
-                        <option value="5201">DEVOLUÇÃO DE MERCADORIA</option>
-                        <option value="5413">DEVOLUÇÃO DE MERCADORIA DESTINADA AO USO E CONSUMO ST</option>
-                        <option value="6949">DEVOLUÇÃO PARA TROCA</option>
-                        <option value="5502">REMESSA COM FIM ESPECIFICO DE EXPORTAÇÃO</option>
-                        <option value="5911">REMESSA DE AMOSTRA GRÁTIS</option>
-                        <option value="5910">REMESSA DE BRINDES</option>
-                        <option value="5923">REMESSA DE MERC POR ORDEM DE TERCEIRO E VENDA À ORDEM</option>
-                        <option value="5912">REMESSA DE MERCADORIA P/ DEMONSTRAÇÃO</option>
-                        <option value="6912">REMESSA DE MERCADORIA P/ DEMONSTRAÇÃO (interestaduais)</option>
-                        <option value="5915">REMESSA DE MERCADORIA P/CONSERTO</option>
-                        <option value="6915">REMESSA P/CONSERTO FORA DO ESTADO (SAÍDA)</option>
-                        <option value="5905">REMESSA P/DEPOSITO FECHADO</option>
-                        <option value="1949">RETORNO</option>
-                        <option value="5906">RETORNO DE DEPOSITO FECHADO</option>
-                        <option value="2949">RETORNO DE MERCADORIA NÃO ENTREGUE AO DESTINATÁRIO</option>
-                        <option value="6916">RETORNO DE MERCADORIA OU BENS RECEBIDO P CONCERTO REPARO</option>
-                        <option value="5913">RETORNO DE REMESSA PARA DEMONSTRAÇÃO</option>
-                        <option value="6902">RETORNO DE REMESSA PARA INDUSTRIALIZACAO</option>
-                        <option value="5921">Retorno de Embalagem</option>
-                        <option value="5949">Retorno de Remessa para Retrabalho</option>
-                        <option value="6551">VENDA DE ATIVO</option>
-                        <option value="5551">VENDA DE ATIVO IMOBILIZADO</option>
-                        <option value="5403">VENDA DE MER AD EM OP COM MERC SUJ A REG SUB TRIB</option>
-                        <option value="5119">VENDA DE MERC ADQ DE TERCEIRO COM VENDA À ORDEM</option>
-                        <option value="6119">VENDA DE MERC.POR CONTA E ORDEM DE TERCEIRO</option>
-                        <option value="5401">VENDA DE PRODUTO COM ST</option>
-                        <option value="6401">VENDA DE PRODUTO COM ST</option>
-                        <option value="5102">VENDAS DENTRO DO ESTADO - 5102</option>
-                        <option value="54055102">VENDAS DENTRO DO ESTADO / VENDAS ST</option>
-                        <option value="6107">VENDAS FORA DO ESTADO</option>
-                        <option value="6102">VENDAS FORA DO ESTADO (SAÍDA).</option>
-                        <option value="5405">VENDAS ST / VENDAS DENTRO DO ESTADO - 5405</option>
-                        <option value="6404">VENDAS ST FORA DO ESTADO</option>
+                        
                     </select>
                 </div>
             </div>

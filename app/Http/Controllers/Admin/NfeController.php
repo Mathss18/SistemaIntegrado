@@ -317,8 +317,9 @@ class NfeController extends Controller
 
         $path_nfe = $request->session()->get('path_nfe');
         //dd($path_nfe);
-        if($xmlEnviada==null){
-            //CASO A NOTA SEJA REJEITADA 
+        if ($xmlEnviada['situacao'] == 'rejeitada' || $xmlEnviada['situacao'] == 'denegada') {
+             //CASO A NOTA SEJA REJEITADA 
+             dd('Nota fiscal com erro: ' . $xmlEnviada['motivo']);
             return redirect('admin/nfe')->with('error', 'Nada foi feito, NFe com problema, favor contatar o administrador. '.$xmlEnviada);
         }
         else{

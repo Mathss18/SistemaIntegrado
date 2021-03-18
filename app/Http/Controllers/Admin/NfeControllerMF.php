@@ -250,6 +250,7 @@ class NfeControllerMF extends Controller
         $nNFdb = $ultimo->nNF + 1;
 
         //DESCOMENTAR ESSA LINHA PARA VER O ARMAZENAMENTO DA SESSION
+
         //dd($data);
 
         $xml = $nfeService->gerarNfe($nfe1, $nfe2, $nfe3, $datas, $transp, $cliente, $nNFdb, $aliquota);
@@ -262,7 +263,7 @@ class NfeControllerMF extends Controller
 
         $xmlEnviada = $nfeService->transmitir($xmlAssinada, $xml[1]);
         //DESCOMENTAR ESSA LINHA PARA VER O SE ESTÁ FUNFANDO A XML
-        //dd($xmlEnviada['situacao']);
+        //dd($xmlEnviada);
 
         $path_nfe = $request->session()->get('path_nfe');
         //dd($path_nfe);

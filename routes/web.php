@@ -184,6 +184,7 @@ Route::group(['middleware' => ['auth']],function(){
 
     //Rotas Money
     Route::post('/admin/money/gerarRelatorio01','Admin\MoneyController@gerarRelatorio01')->name('money.gerarRelatorio01')->middleware('auth.tipo:Admin,Secretaria');
+    Route::post('/admin/money/gerarRelatorio04','Admin\MoneyController@gerarRelatorio04')->name('money.gerarRelatorio04')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/relatorios/{relatorio}','Admin\MoneyController@relatorios')->name('money.relatorios')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/carregarEventos','Admin\MoneyController@carregarEventos')->name('money.carregarEventos')->middleware('auth.tipo:Admin,Secretaria');
     Route::get('/admin/money/mostrarBanco/{ID_banco}','Admin\MoneyController@mostrarBanco')->name('money.mostrarBanco')->middleware('auth.tipo:Admin,Secretaria');

@@ -19,6 +19,9 @@
             <div class="row">
               <div><i class="fas fa-chart-pie"></i>&nbsp;<a style="font-size: 20px;" href="{{route('money.relatorios',3)}}">Relatórios de produção</a></div>
             </div>
+            <div class="row">
+              <div><i class="fas fa-chart-pie"></i>&nbsp;<a style="font-size: 20px;" href="{{route('money.relatorios',4)}}">Relatórios de materiais</a></div>
+            </div>
         </div>
       </div>
       <div class="modal-footer">
