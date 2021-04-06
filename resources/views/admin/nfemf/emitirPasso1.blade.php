@@ -95,6 +95,7 @@
                         <option value="5901">5901 - REMESSA P/INDUSTRIALIZAÇÃO POR ENCOMENDA</option>
                         <option value="6912">6912 - REMESSA DE MERCADORIA P/ DEMONSTRAÇÃO (interestaduais)</option>
                         <option value="6910">6910 - REMESSA EM BONIFICAÇÃO, DOAÇÃO OU BRINDE</option>
+                        <option value="5949">5949 - OUTRA SAÍDA DE MERCADORIA OU PRESTAÇÃO DE SERVIÇO NÃO ESPECIFICADO</option>
 
                         <option value="2209">2209 - DEVOLUCAO DE MERCADORIA</option>
                         <option value="1201">1201 - NOTA ENTRADA</option>

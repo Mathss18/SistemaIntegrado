@@ -616,6 +616,40 @@ class MoneyController extends Controller
             $totalGasto = number_format($totalGasto, 2, ',', '.');
 
             return view('admin.money.relatorioMaterial', compact('tipos', 'totaisGastos', 'dados2', 'totalAdquiridoFM', 'totalAdquiridoMF'));
+        } else if($relatorio == 5){
+            $resultados = [];
+            $valorPorTipo = [];
+
+
+            $tipos = DB::table('produto_fornecedor')
+            ->select('grupo')
+            ->distinct()
+            ->get();
+
+            foreach ($tipos as $tipo) {
+                $valor = 0;
+
+                 $resultado = DB::table('estoque as e')
+                ->join('produto_fornecedor as pf', 'e.ID_produtoForne', '=', 'pf.ID_produto_fornecedor')
+                ->select('e.qtde','e.valor_unitario','pf.descricao','pf.grupo', DB::raw('e.qtde*e.valor_unitario as totalEstoque'))
+                ->where('pf.grupo',$tipo->grupo)
+                ->groupBy('pf.descricao')
+                ->orderBy('pf.descricao', 'ASC')
+                ->get();
+
+                array_push($resultados, $resultado);
+
+                foreach ($resultado as $res) {
+                    $valor += $res->totalEstoque;
+                }
+
+
+                array_push($valorPorTipo, $valor);
+            }
+            
+
+            //dd($valorPorTipo);
+            return view('admin.money.relatorioValorEstoque',compact('resultados','tipos','valorPorTipo'));
         }
     }
 

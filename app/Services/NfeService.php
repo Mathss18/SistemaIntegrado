@@ -394,7 +394,7 @@ class NfeService
             //====================TAG DUPLICATA===================   
 
             //COMENTAR A PARTIR DAQUI
-
+            
             $diff = number_format(($nfe3['precoFinal'] + $nfe1['valorFrete']) / $nfe1['numParc'], 2, '.', '');
 
             $diff = number_format($fat->vLiq - $diff * $nfe1['numParc'], 2);
@@ -413,39 +413,28 @@ class NfeService
                 }
                 $respDup = $nfe->tagdup($dup);
             }
-
+            
 
             // VALORES DISTINTOS DE DUPLICATA (MANUAL)
             /*
                     $dup1 = new stdClass();
                     $dup1->nDup = '001';
-                    $dup1->dVenc = '2021-03-05';
-                    $dup1->vDup = 10300.50;
+                    $dup1->dVenc = '2021-03-24';
+                    $dup1->vDup = 1000.00;
                     $nfe->tagdup($dup1);
                    
                     $dup2 = new stdClass();
                     $dup2->nDup = '002';
-                    $dup2->dVenc = '2021-04-05';
-                    $dup2->vDup = 5150.25;
+                    $dup2->dVenc = '2021-04-23';
+                    $dup2->vDup = 1825.40;
                     $nfe->tagdup($dup2);
 
                     $dup3 = new stdClass();
                     $dup3->nDup = '003';
-                    $dup3->dVenc = '2021-05-05';
-                    $dup3->vDup = 5150.25;
+                    $dup3->dVenc = '2021-05-23';
+                    $dup3->vDup = 1825.40;
                     $nfe->tagdup($dup3);
                 
-                    $dup4 = new stdClass();
-                    $dup4->nDup = '004';
-                    $dup4->dVenc = '2021-01-31';
-                    $dup4->vDup = '2333.33';
-                    $nfe->tagdup($dup4);
-
-                    $dup5 = new stdClass();
-                    $dup5->nDup = '005';
-                    $dup5->dVenc = '2021-02-15';
-                    $dup5->vDup = '2333.35';
-                    $nfe->tagdup($dup5);
                     //dd($datas);
                 */
         }
