@@ -64,7 +64,11 @@ class NfeService
             $ide->natOp = $nfe1['natOp'] . "- Remessa de mercadoria para demonstração";
         } else if ($nfe1['natOp'] == "5202") {
             $ide->natOp = $nfe1['natOp'] . "- Devolução de compra para comercialização";
-        } else {
+        } 
+        else if ($nfe1['natOp'] == "5949") {
+            $ide->natOp = $nfe1['natOp'] . "- Remessa ou retorno de locação de bens";
+        }
+        else {
             $ide->natOp = $nfe1['natOp'];
         }
         //$ide->natOp = $nfe1['natOp'];
@@ -416,27 +420,29 @@ class NfeService
             
 
             // VALORES DISTINTOS DE DUPLICATA (MANUAL)
-            /*
+                /*
                     $dup1 = new stdClass();
                     $dup1->nDup = '001';
-                    $dup1->dVenc = '2021-03-24';
-                    $dup1->vDup = 1000.00;
+                    $dup1->dVenc = '2021-05-25';
+                    $dup1->vDup = 27168.88;
                     $nfe->tagdup($dup1);
                    
                     $dup2 = new stdClass();
                     $dup2->nDup = '002';
-                    $dup2->dVenc = '2021-04-23';
-                    $dup2->vDup = 1825.40;
+                    $dup2->dVenc = '2021-06-15';
+                    $dup2->vDup = 27208.88;
                     $nfe->tagdup($dup2);
 
                     $dup3 = new stdClass();
                     $dup3->nDup = '003';
-                    $dup3->dVenc = '2021-05-23';
-                    $dup3->vDup = 1825.40;
+                    $dup3->dVenc = '2021-07-13';
+                    $dup3->vDup = 1046.77;
                     $nfe->tagdup($dup3);
+                */
+                
                 
                     //dd($datas);
-                */
+                
         }
         //====================TAG PAGAMENTO===================
         $pag = new stdClass();

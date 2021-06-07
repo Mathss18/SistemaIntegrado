@@ -494,7 +494,7 @@ class MoneyController extends Controller
                 array_push($rendimentos, $rendimento[0]->total);
                 array_push($despesas, $despesa[0]->total);
                 if ($i == 0)
-                    array_push($totalRendDesp, ($rendimentos[$i] - $despesas[$i]) + 632840.94);
+                    array_push($totalRendDesp, ($rendimentos[$i] - $despesas[$i]) + (632840.94 + 1986.62)); //Valor de calço
                 else
                     array_push($totalRendDesp, ($rendimentos[$i] - $despesas[$i]) + $totalRendDesp[$i - 1]);
 

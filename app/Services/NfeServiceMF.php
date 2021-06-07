@@ -417,27 +417,29 @@ class NfeServiceMF
                 $respDup = $nfe->tagdup($dup);
             }
             
-            
+        
             // VALORES DISTINTOS DE DUPLICATA (MANUAL)
                 /*
                         $dup1 = new stdClass();
                         $dup1->nDup = '001';
-                        $dup1->dVenc = '2021-03-19';
-                        $dup1->vDup = '20498.98';
+                        $dup1->dVenc = '2021-05-10';
+                        $dup1->vDup = '15000.00';
                         $nfe->tagdup($dup1);
                     
                         $dup2 = new stdClass();
                         $dup2->nDup = '002';
-                        $dup2->dVenc = '2021-04-01';
-                        $dup2->vDup = '8968.30';
+                        $dup2->dVenc = '2021-06-09';
+                        $dup2->vDup = '6920.70';
                         $nfe->tagdup($dup2);
 
                         $dup3 = new stdClass();
                         $dup3->nDup = '003';
-                        $dup3->dVenc = '2021-04-12';
-                        $dup3->vDup = '8968.30';
+                        $dup3->dVenc = '2021-07-09';
+                        $dup3->vDup = '6920.70';
                         $nfe->tagdup($dup3);
-            */
+                */
+                        
+            
         }
         
 
@@ -517,7 +519,8 @@ class NfeServiceMF
             //$xml = $nfe->getXML();
             //dd($xml);
         } catch (\Throwable $th) {
-            dd($th);
+
+            dd($nfe);
         }
 
 
